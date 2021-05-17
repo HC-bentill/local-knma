@@ -1,0 +1,33 @@
+
+
+
+
+<table>
+  <thead>
+    <tr>
+      <th>Test</th>
+      <th>Cost</th>
+      <th>Insurance Cover</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php
+       foreach($result as $res){  
+        if($res = ''){
+          $db = $this->db->query("SELECT * from test where testid = 0")->result();
+        }
+        else{
+          $db = $this->db->query("SELECT * from test where testid = $res")->result();
+        }
+
+       foreach ($db as $ke) {
+      
+    ?>
+      <tr>
+        <td><?php echo $ke->test; ?></td>
+        <td><?php echo $ke->amount; ?></td>
+        <td><?php echo $ke->nhis; ?></td>
+      </tr>
+    <?php  } } ?>
+  </tbody>
+</table>

@@ -1,0 +1,152 @@
+html.dark .checkbox-primary label:before,
+.checkbox-primary label:before {
+	background: #319fbb;
+	border-color: #2c8ea7;
+}
+
+html.dark .checkbox-text-primary input[type="checkbox"]:checked + label:after,
+.checkbox-text-primary input[type="checkbox"]:checked + label:after {
+	color: #319fbb;
+}
+
+html.dark .radio-primary input[type="radio"]:checked + label:after,
+.radio-primary input[type="radio"]:checked + label:after {
+	background: #319fbb;
+	-webkit-box-shadow: 0px 0px 1px #319fbb;
+	box-shadow: 0px 0px 1px #319fbb;
+}
+
+.switch.switch-primary .ios-switch .on-background {
+	background: #319fbb;
+}
+
+.progress-bar {
+	background-color: #319fbb;
+}
+
+.progress .progress-bar-primary {
+	background-color: #319fbb;
+}
+
+.slider-primary .ui-slider-range,
+.slider-primary .ui-slider-handle {
+	background: #319fbb;
+}
+
+.slider-gradient.slider-primary .ui-slider-range,
+.slider-gradient.slider-primary .ui-slider-handle {
+	background-image: -webkit-linear-gradient(left, #4eb6d1 0, #319fbb 50%, #267d93 100%);
+	background-image: linear-gradient(left, #4eb6d1 0, #319fbb 50%, #267d93 100%);
+}
+
+.slider-gradient.ui-slider-vertical.slider-primary .ui-slider-range,
+.slider-gradient.ui-slider-vertical.slider-primary .ui-slider-handle {
+	background-image: -webkit-linear-gradient(to right, #4eb6d1 0, #319fbb 50%, #267d93 100%);
+	background-image: linear-gradient(to right, #4eb6d1 0, #319fbb 50%, #267d93 100%);
+}
+
+.datepicker thead tr:first-child th:hover,
+.datepicker tfoot tr th:hover,
+.datepicker table tr td span:hover {
+	background: #319fbb;
+}
+
+.datepicker .datepicker-switch:hover,
+.datepicker .prev:hover,
+.datepicker .next:hover {
+	background: #319fbb;
+}
+
+.datepicker table tbody tr td.day:hover {
+	background: #319fbb;
+}
+
+.datepicker table tbody tr td.day.active {
+	background: #267d93;
+}
+
+html:not(.sidebar-light) .datepicker.datepicker-dark {
+	background: transparent;
+}
+
+html:not(.sidebar-light) .datepicker.datepicker-dark table tbody tr td.day:hover {
+	background: #319fbb;
+}
+
+html:not(.sidebar-light) .datepicker.datepicker-dark table tbody tr td.day.active {
+	background: #267d93;
+}
+
+.datepicker.datepicker-primary table thead tr:first-child {
+	background-color: #319fbb;
+}
+
+.datepicker.datepicker-primary table thead tr:first-child th:hover {
+	background-color: #267d93;
+}
+
+.datepicker.datepicker-primary table thead tr:last-child {
+	background-color: #3aaecb;
+}
+
+.datepicker.datepicker-primary table thead tr:last-child th:hover {
+	background-color: #319fbb;
+}
+
+.select2-container-multi .select2-choices .select2-search-choice {
+	background: #319fbb;
+}
+
+.wizard-steps > li.active .badge {
+	background-color: #319fbb;
+}
+
+.wizard-steps > li.active a,
+.wizard-steps > li.active a:hover,
+.wizard-steps > li.active a:focus {
+	border-top-color: #319fbb;
+}
+
+.wizard-tabs ul > li.active .badge {
+	background-color: #319fbb;
+}
+
+html .wizard-progress .steps-progress .progress-indicator,
+html.dark .wizard-progress .steps-progress .progress-indicator {
+	background: #319fbb;
+}
+
+html .wizard-progress .wizard-steps li.completed a span,
+html.dark .wizard-progress .wizard-steps li.completed a span {
+	border-color: #319fbb;
+	background: #319fbb;
+}
+
+html .wizard-progress .wizard-steps li.active a span,
+html.dark .wizard-progress .wizard-steps li.active a span {
+	color: #319fbb;
+	border-color: #319fbb;
+}
+
+.table > thead > tr > td.primary,
+.table > tbody > tr > td.primary,
+.table > tfoot > tr > td.primary,
+.table > thead > tr > th.primary,
+.table > tbody > tr > th.primary,
+.table > tfoot > tr > th.primary,
+.table > thead > tr.primary > td,
+.table > tbody > tr.primary > td,
+.table > tfoot > tr.primary > td,
+.table > thead > tr.primary > th,
+.table > tbody > tr.primary > th,
+.table > tfoot > tr.primary > th {
+	background-color: #319fbb !important;
+}
+
+.dataTables_processing {
+	background-color: #319fbb;
+}
+
+.liquid-meter-wrapper .liquid-meter-selector a.active {
+	color: #319fbb;
+}

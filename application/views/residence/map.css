@@ -1,0 +1,17 @@
+<style>
+
+
+    .textColor{color: gray; font-weight: bolder; padding-left: .5em}
+
+
+    input:checked + .full   {
+        background-color: green;
+      }
+    input:checked + .part  {
+        background-color: #ff9800;
+    }
+    input:checked + .noPay  {
+         background-color: red;
+    }
+
+    </style>

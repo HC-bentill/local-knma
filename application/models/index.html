@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>403 Forbidden</title>
+</head>
+<body>
+
+<p>Directory access is forbidden.</p>
+
+</body>
+</html>
+					 	 <!--  Add driver document modal-->
+                        <div id="myModal" class="modal fade modal-info" id="exampleModalInfo" aria-hidden="true" aria-labelledby="exampleModalInfo"
+                  			role="dialog" tabindex="-1">
+						  <div class="modal-dialog">
+							<!-- Modal content-->
+							<div class="modal-content">
+							  <div class="modal-header panel-heading">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Renew/Update Driver Document</h4>
+							  </div>
+							  <div class="modal-body">
+								<form id="addDriverDoct" autocomplete="off" />
+								<div class="row">
+									<div class="col-xs-12">
+										<div class="col-sm-12">
+                                				<div align="center" style="background: #096A65;min-height: 190px; min-width: 190px; max-height: 190px; max-width: 190px; float: right">
+								             		 <img id="courierpic1" name="courierpic1" class="img-thumbnail img-responsive"/>
+							           			</div>		
+                                		</div>
+                                		<div class="row">
+												<div class="col-sm-4"></div>
+												<div class="col-sm-4"></div>
+												<div class="col-sm-4">
+													<div class="form-group form-material floating row">
+													 
+														<input type="text" class="form-control" readonly />
+														<input type="file" name="userfile1" id="userfile1" accept="image/*" onchange="loadFile1(event)" />
+														<label class="control-label" style="width: 190px; text-align: right" >Load Photo</label>
+														
+												 </div>
+												</div>
+								  		</div>
+										<div class="form-group form-material floating row">
+										  	<div class="col-sm-12">
+										  		<label class="control-label">Document Number</label>
+												<input type="text" class="form-control" id="documentnumber" name="docnum"/>
+												
+										  	</div>
+										  	
+										  	<div class="col-sm-12 hidden">
+												<input type="text" class="form-control" id="docid" name="docid"/>
+												<label class="floating-label">Document id</label>
+										  	</div>
+										  </div>
+										  <div class="form-group form-material row">
+											  <div class="col-sm-6">
+												  <label class="control-label" for="select">Courier</label>
+												  <select class="form-control" name="courier" id="couriername">
+													<option value=''></option>
+													<?php
+															$courier =  $this->db->query("SELECT * FROM courier where delete_status ='Active'")->result();
+															foreach ($courier as $value) :
+													  ?>
+													   <option value="<?= $value->courier_id;?>"><?=$value->first_name.' '.$value->last_name.' <b>( '.$value->username.' )</b>'?></option>
+													<?php  endforeach; ?>
+												  </select>
+											</div>
+											<div class="col-sm-6">
+											  <label class="control-label" for="select">Document Type</label>
+											  <select class="form-control" name="doctype" id="documenttype">
+											  	<option value=''></option>
+											  	<?php foreach ($document as $value) : ?>
+												   <option value='<?=$value->documentid?>'><?=$value->documentname?></option>
+												<?php  endforeach; ?>
+											  </select>
+										  </div>
+										</div>
+										<div class="form-group form-material floating row">
+										  <div class="col-sm-6">
+										  	  <label class="control-label">Registration Date</label>
+											  <input type="date" class="form-control" id="registrationdate" name="regdate"/>
+										  </div>
+										  <div class="col-sm-6">
+										  	   <label class="control-label">Expiry Date</label>
+											  <input type="date" class="form-control" id="expirydate" name="expdate"/>
+										  </div>
+										 </div>
+									</div>
+								 </div>		
+							  </div>
+							   <div class="modal-footer">
+                                	<button id='savenew_aaa' onclick="validateThisForm()" type="button" class="btn btn-success">Save</button>
+                                	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                              </div>
+							</div>
+
+						  </div>
+						</div>
+					 </form>
+					   <!-- End Page -->
+<script>
+	
+	//document.getElementById('savenew_a').disabled = 'true';
+	var selected_row_id;
+	var selected_agent_id;
+	
+	function initiate_update(x){
+		
+		if(x > 0){
+			var agentid = document.getElementById(x).getAttribute("data-value");
+			lef(agentid);
+		}else{
+			document.getElementById('exampleToastrError').click();
+			
+		}
+	}
+	
+	function initiate_view(x){
+		
+		if(x > 0){
+			var agentid = document.getElementById(x).getAttribute("data-value");
+			view(agentid);
+		}else{
+			document.getElementById('exampleToastrError').click();
+			
+		}
+	}
+	
+	function clicktbl(x){
+		
+		
+		var table = document.getElementById("tt");
+		for (var i = 1, row; row = table.rows[i]; i++) {
+			document.getElementById(i).style.backgroundColor= "#FFFFFF";
+		}
+
+		
+		document.getElementById(x.rowIndex).style.backgroundColor="#ddd";
+		var type = document.getElementById(x.rowIndex).getAttribute("data-value");
+		
+		selected_agent_id = type;
+		selected_row_id = x.rowIndex;
+		
+		
+	}
+	
+	function initiate_delete(x){
+		
+		if (typeof(x) == 'undefined') {
+			document.getElementById('exampleToastrError').click();
+		}else{
+  			
+			if(x > 0){
+				var type = document.getElementById(x).getAttribute("data-value");
+				document.getElementById("dpop").click();
+				
+			}else{
+				
+
+			}
+
+	}
+		
+		
+	}
+		
+	
+	
+	
+</script>
+ 
+<script>
+	function call_ed_fxn(a){
+		alert ("update : " + a);
+		
+		
+	}
+</script>
+  
+<script>
+  	
+	var loadFile = function(event) {
+    var output = document.getElementById('courierpic');
+    output.src = URL.createObjectURL(event.target.files[0]);
+  };
+	
+	
+	var loadFile1 = function(event) {
+    var output = document.getElementById('courierpic1');
+    output.src = URL.createObjectURL(event.target.files[0]);
+  };
+	
+//	var loadFiledit = function(event) {
+//    var output = document.getElementById('agentpic2');
+//    output.src = URL.createObjectURL(event.target.files[0]);
+//  };
+	  
+</script>
+
+<script>
+//	
+//	function SubForm (){
+//		
+//	var baseurl = "<?php echo base_url(); ?>" ; 
+//	var url = baseurl + "upload/do_upload"; 
+//		
+//	
+//    $.ajax({
+//        url:url,
+//        type:'post',
+//        data:$('#myForm').serialize(),
+//		enctype: 'multipart/form-data',
+//        success:function(){
+//			
+//			document.getElementById("exampleTopRight").click();
+//			reset_form();
+//			draw_table();
+//        }
+//    });
+//	}
+//	
+	function sub_form_s (){
+
+	
+			
+			var baseurl = "<?php echo base_url(); ?>" ; 
+			var url = baseurl + "Documents/add_document"; 
+			document.getElementById('savenew_a').disabled = false;
+			document.getElementById("savenew_a").innerHTML = "Saving...."	
+
+			$.ajax({
+				url:url,
+				type:'post',
+				data:$('#addDocument').serialize(),
+				
+				success:function(){
+
+					document.getElementById("savenew_a").innerHTML = "Save Document"
+					document.getElementById("exampleToastrSuccessShadow").click();	
+					reset_form_f();
+				}
+			});
+		}
+	
+		function save_driver_document (){
+
+	
+			
+			var baseurl = "<?php echo base_url(); ?>" ; 
+			var url = baseurl + "Documents/save_driver_document"; 
+			document.getElementById('savenew_aaa').disabled = false;
+			document.getElementById("savenew_aaa").innerHTML = "Saving...."	
+
+			$.ajax({
+				url:url,
+				type:'post',
+				data:$('#addDriverDocument').serialize(),
+				
+				success:function(){
+
+					document.getElementById("savenew_aaa").innerHTML = "Save"
+					document.getElementById("exampleToastrSuccessShadow").click();	
+					reset_form_driver();
+					draw_table();
+				}
+			});
+		}
+	
+	
+	function validateForm(){
+		var a = document.forms["addDocument"]["docname"].value;
+		//alert(j);
+		if (a == "") {
+			document.getElementById('docname').style.display = 'inline-block';
+			return false;
+		}
+		else{
+			sub_form_s();
+			return true;
+		}
+				
+	}
+	
+		
+	function validateThisForm(){
+		var a = document.forms["addDriverDocument"]["docnum"].value;
+		var b = document.forms["addDriverDocument"]["courier"].value;
+	
+		var c = document.forms["addDriverDocument"]["doctype"].value;
+			//alert(c);
+		var d = document.forms["addDriverDocument"]["regdate"].value;
+			
+		var e = document.forms["addDriverDocument"]["expdate"].value;
+	
+
+		if (a == "") {
+			document.getElementById('docnum').style.display = 'inline-block';
+		}
+		else if(b == ""){
+			document.getElementById('docnum').style.display = 'none';
+			document.getElementById('cou').style.display = 'inline-block';
+			return false;
+		}
+		else if(c == ""){
+			document.getElementById('docnum').style.display = 'none';
+			document.getElementById('cou').style.display = 'none';
+			document.getElementById('doctypee').style.display = 'inline-block';
+			return false;
+		}
+		else if(d == ""){
+			document.getElementById('docnum').style.display = 'none';
+			document.getElementById('cou').style.display = 'none';
+			document.getElementById('doctypee').style.display = 'none';
+			document.getElementById('regdate').style.display = 'inline-block';
+			return false;
+		}
+		else{
+			save_driver_document();
+			return true;
+		}
+				
+	}
+	
+	
+	
+	 
+	function reset_form(){		
+		document.getElementById("myForm").reset();
+		
+	}
+	
+	function reset_form_f(){		
+		document.getElementById("addDocument").reset();
+		
+	}
+	
+	function reset_form_driver(){		
+		document.getElementById("addDriverDocument").reset();
+		
+	}
+	  
+		
+	function view(a){
+		//alert('hello');
+		$('#something').load('<?=base_url()?>Courier/view_courier/'+a);
+	
+	}
+	
+	function lef(a){
+		
+		  	$('#myModal').modal({backdrop: 'static', keyboard: false})  
+			$('#myModal').modal('show');
+		  
+		  	document.getElementById("docid").value = a;
+		
+		  var baseurl = "<?php echo base_url(); ?>";
+		var xmlhttp = new XMLHttpRequest();
+		var url = baseurl + "Documents/get_document/" + a;
+		
+		xmlhttp.onreadystatechange=function() {
+    		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        		myFunction(xmlhttp.responseText);
+    		}
+		}
+
+		xmlhttp.open("GET", url, true);
+		xmlhttp.send();
+
+		function myFunction(response) {
+			
+			var arr = JSON.parse(response);
+			
+			for (var i = 0; i < arr.length; i++) {
+				
+				document.getElementById("documentnumber").value = arr[i].documentno;
+				document.getElementById("couriername").value = arr[i].couriercode;
+				document.getElementById("registrationdate").value = arr[i].registrationdate;
+				document.getElementById("expirydate").value = arr[i].expirydate;
+				document.getElementById("documenttype").value = arr[i].documenttype;
+				
+//				var text = arr[i].agentcat;				
+//				var eID = "agecat";	
+//				
+//				setTimeout(function(){
+//					populate_combos_by_text(eID,text);
+//				}, 50);
+//				
+				
+				
+				var str1 = arr[i].documentno;
+				var str2 = ".jpg";
+				var res = str1.concat(str2);
+				
+				
+				var pic = "<?php echo base_url(); ?>" + res;
+				
+				//alert(pic);
+				
+				//var output = document.getElementById('agentpic2');
+    			//output.src = URL.createObjectURL(agimg);
+				
+				document.getElementById("courierpic1").src = pic;
+				
+				
+				}
+	
+			
+			};
+
+	
+}
+	
+	
+		function checkAddress(checkbox){
+		
+		if (document.getElementById(checkbox).checked){
+			var devstate = "true";
+			//update to true
+		}else{
+			//update to false
+			var devstate = "false";
+		}
+		
+		
+		
+		//$('#myAction').modal({backdrop: 'static', keyboard: false})  
+		//$('#myAction').modal('show');
+	
+		
+		var baseurl = "<?php echo base_url(); ?>";
+		
+		var xmlhttp = new XMLHttpRequest();
+		var url1 = baseurl + "courier/update_courier_status/" + checkbox  + "/" + devstate ;
+		var url = url1;
+		
+		
+		xmlhttp.onreadystatechange=function() {
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				myFunction(xmlhttp.responseText);
+			}
+		}
+
+		xmlhttp.open("GET",url, true);
+		xmlhttp.send();
+		
+		
+		function myFunction(response) {
+			
+			document.getElementById("exampleTopRight").click();
+		}
+		
+		
+	}
+	
+	 function draw_table(){		
+		$('#loaddocument').load('<?=base_url()?>Documents/redraw_document_table');		
+
+	}
+	 
+
+
+</script>

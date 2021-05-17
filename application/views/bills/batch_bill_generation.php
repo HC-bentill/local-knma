@@ -1,0 +1,123 @@
+<!-- start: page -->
+
+<div class="row">
+    <div class="col-md-12">
+      <section class="card card-featured-bottom card-featured-primary">
+        <?= $this->session->flashdata('message');?>
+        <div class="card-body">
+          <form method="POST" action="<?= base_url('BillGeneration/generate_batch_bill')?>" autocomplete="off">
+            <div class="row" style="border:1px solid grey;margin-bottom:1em;border-style: dashed;border-radius:1em;padding:1em;">
+              <div class="col-lg-12">
+                <div class="form-group m-form__group row">
+                    <div class="col-lg-3">
+                        <select data-plugin-selecttwo="" data-plugin-options="{ &quot;minimumResultsForSearch&quot;: 5 }" class="form-control" name="year" required>
+                            <option value="">Select Year</option> 
+                            <?php $current_year = date("Y");?>
+                            <?php for($i=2017; $i<=$current_year; $i++): ?>
+                                <option value="<?=$i?>"><?=$i?></option>
+                            <?php endfor; ?>     
+                        </select>
+                    </div>
+                    <div class="col-lg-3 criteria" id="#">
+                        <select data-plugin-selecttwo="" data-plugin-options="{ &quot;minimumResultsForSearch&quot;: 5 }" class="form-control" id="product" name="product">
+                            <option value="">All Bill Types</option> 
+                            <?php foreach($products as $p){ ?>
+                                <option value="<?= $p->id?>"><?=$p->name?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="col-lg-3 criteria" id="#">
+                        <select data-plugin-selecttwo="" data-plugin-options="{ &quot;minimumResultsForSearch&quot;: 5 }" class="form-control" id="electoral_area" name="electoral_area">
+                            <option value="">All Electoral Areas</option>
+                            <?php foreach($area as $a){ ?>
+                                <option value="<?= $a->id?>"><?=$a->name?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="col-lg-3 criteria" id="#">
+                        <select data-plugin-selecttwo="" data-plugin-options="{ &quot;minimumResultsForSearch&quot;: 5 }" class="form-control"  id="town" name="town">
+                            <option value="0">All Towns</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <div class="col-lg-3 criteria" id="#">
+                        <select data-plugin-selecttwo="" data-plugin-options="{ &quot;minimumResultsForSearch&quot;: 5 }" class="form-control"  id="runtime_type" name="runtime_type">
+                            <option value="normal">Normal (Runs Ungenerated records)</option>
+                            <option value="force">Force Run(Runs All records)</option>
+                        </select>
+                    </div>
+                    <?php if(has_permission($this->session->userdata('user_info')['id'],'fixed_amount')){ ?>
+                      <div class="col-sm-3">
+                        <select data-plugin-selecttwo="" data-plugin-options="{ &quot;minimumResultsForSearch&quot;: 5 }" id="amount_type" name="amount_type" class="form-control" autocomplete="off" required>  
+                          <option value="fee_fixing">Fee Fixing</option>
+                          <option value="fixed_amount">Fixed Amount</option>
+                        </select>
+                      </div>
+                    <?php  } ?>
+                    <div class="col-sm-3"  id="amount" style="display: none;">
+                      <input type="number" value="0" class="form-control" name="amount" autocomplete="off"/>
+                    </div>
+                    <div class="col-lg-3">
+                        <button type="submit" id="save" class="btn btn-success">
+                            Generate Bill
+                        </button>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </form>
+          <table class="table table-bordered table-striped mb-0" id="datatable-tabletools">
+            <thead>
+              <tr>
+                <th class="text-center">BATCH NO</th>
+                <th class="text-center">YEAR</th>
+                <th class="text-center">BILL TYPE</th>
+                <th class="text-center">RUN TYPE</th>
+                <th class="text-center">ELECTORAL AREA</th>
+                <th class="text-center">TOWN</th>
+                <th class="text-center">COUNT</th>
+                <th class="text-center">AMOUNT TYPE</th>
+                <th class="text-center">STATUS</th>
+                <th class="text-center">GENERATED BY</th>
+                <th class="text-center">DATETIME DELIVERED</th>
+              </tr>
+            </thead>
+            <tbody>
+                <?php foreach($bill_generation as $value):?>
+                  <tr>
+                    <td><?= $value->batch_no ?></td>
+                    <td class="text-center"><?= $value->year ?></td>
+                    <td><?= ($value->product_name)?$value->product_name : "ALL"; ?></td> 
+                    <td><?= $value->runtime_type ?></td>  
+                    <td><?= ($value->area)?$value->area : "ALL";?></td>
+                    <td><?= ($value->town)?$value->town : "ALL";?></td>   
+                    <td><?=$value->no_record?></td>
+                    <td><?= ($value->amount_type=="fee_fixing")?$value->amount_type :$value->amount_type."- GHs".number_format((float) $value->amount, 2, '.', ',') ;?></td>
+                    <td>
+                      <?php if ($value->status == 1) { ?>
+                        <span class="badge badge-success">Successful</span>
+                      <?php } else { ?>
+                        <span class="badge badge-danger">Failed</span>
+                      <?php } ?>
+                    </td>
+                    <td>
+                      <?php if($value->creator_category == "admin"){?>
+                        <?php $admin = collected_by_admin($value->created_by);?>
+                        <?= $admin['firstname'].' '.$admin['lastname']?>
+                      <?php }else if($value->creator_category == "agent"){?>
+                        <?php $agent = collected_by_agent($value->created_by);?>
+                        <?= $agent['firstname'].' '.$agent['lastname'].' ('.$agent['agent_code'].')'?>
+                      <?php }else{}?>
+                    </td>
+                    <td><?= date('Y-m-d H:i:s',strtotime($value->datetime_created))?></td>
+                  </tr>
+                <?php endforeach; ?>
+              </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+
+<!-- end: page -->
