@@ -489,7 +489,7 @@ class Business extends CI_Controller {
 			$data['no_of_floors'] = "";
 		}
 
-		if($this->input->post('avail_of_telcom_network') !== 'Yes'){
+		if($this->input->post('avail_of_telcom_network') == 'Yes'){
 			$data['avail_of_telcom_network_yes'] = trim($this->input->post('telcom_network'));
 		}else{
 			$data['avail_of_telcom_network_yes'] = "";

@@ -2332,6 +2332,8 @@ class Api extends REST_Controller {
 			$data['toilet_facility'] = $this->post('toilet');
 			$data['avai_of_water'] = $this->post('water');
 			$data['avai_of_refuse']= $this->post('refuse');
+			$data['avail_of_electricity']= $this->post('availOfElectricity');
+			$data['avail_of_telcom_network']= $this->post('availOfTelecom');
 			$data['noOfOccupants'] = trim($this->post('noOfOccupants'));
 			$data['upn_number'] = trim($this->post('upnNumber'));
 			$data['code'] = $code;
@@ -2376,6 +2378,11 @@ class Api extends REST_Controller {
 				$data['dumping_site_yes'] = trim($this->post('refuseYes'));
 			}else{
 				$data['dumping_site_no'] = trim($this->post('refuseNo'));
+			}
+			if($this->post('availOfTelecom') == 'Yes'){
+				$data['avail_of_telcom_network_yes'] = trim($this->post('telecomNetwork'));
+			}else{
+				$data['avail_of_telcom_network_yes'] = "";
 			}
 	
 			if($owner_exit){
