@@ -85,17 +85,17 @@ defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automat
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
 // system variables
-define('SYSTEM_ID',"ANMA");
-define('SYSTEM_PREFIX',"AN");
+define('SYSTEM_ID',"KNMA");
+define('SYSTEM_PREFIX',"KN");
 define('SYSTEM_BUSINESS_PROPERTY_PER_PREFIX',"B");
 define('SYSTEM_BUSINESS_PROPERTY_TEM_PREFIX',"T");
 define('SYSTEM_RESIDENTIAL_PROPERTY_PER_PREFIX',"R");
 define('SYSTEM_RESIDENTIAL_PROPERTY_TEM_PREFIX',"RT");
-define('SYSTEM_BUSINESS_OCCUPANT_PREFIX',"AN");
-define('SYSTEM_NAME',"Akuapem North Municipal Assembly");
+define('SYSTEM_BUSINESS_OCCUPANT_PREFIX',"KN");
+define('SYSTEM_NAME',"Ketu North Municipal Assembly");
 define('SYSTEM_POST_BOX',"P.O.Box 100");
 define('SYSTEM_ADDRESS',"Akropong- Akuapem");
-define('SYSTEM_TOWN',",Accra, Ghana");
+define('SYSTEM_TOWN',",Volta Region, Ghana");
 define('SYSTEM_PHONE',"030 290 7239");
 define('SYSTEM_MAIL',"info@anma.gov.gh");
 define('SYSTEM_GHPOSTGPS',"GhanaPostGPS: GW-0450-8542");
