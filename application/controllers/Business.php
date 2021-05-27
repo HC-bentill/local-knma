@@ -389,7 +389,8 @@ class Business extends CI_Controller {
 		$this->load->library('upload', $config);
 
 		if (!$this->upload->do_upload('userfile')) {
-			
+			$file_path = '';
+			$image = "";
 		} else {
 			$file_data = $this->upload->data();
 
@@ -529,7 +530,7 @@ class Business extends CI_Controller {
 		}
 
 		foreach ($com_needs as $key => $value) {
-        	$community_needs = array('property__id' => $bus_id ,'need_id' => $this->input->post("com_needs")[$key]);
+        	$community_needs = array('property_id' => $bus_id ,'need_id' => $this->input->post("com_needs")[$key]);
         	$this->res->add_community_needs($community_needs);
         }
 

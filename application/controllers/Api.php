@@ -1849,22 +1849,26 @@ class Api extends REST_Controller {
 			$data['accessed'] = trim($this->post('accessed'));
 			$rateable_amount = trim($this->post('rateableAmount'));
 			$rate = trim($this->post('rate'));
+			$owner['person_category'] = trim($this->post('category'));
 			$owner['firstname'] = ucfirst(trim($this->post('ownerFirstname')));
 			$owner['lastname'] = ucfirst(trim($this->post('ownerLastname')));
 			$owner['primary_contact'] = trim($this->post('ownerPrimaryContact'));
 			$owner['secondary_contact'] = trim($this->post('ownerSecondaryContact'));
-			$owner['owner_native'] = trim($this->post('native'));
+			// $owner['owner_native'] = trim($this->post('native'));
 			$owner['email'] = trim($this->post('ownerEmail'));
 			$owner['postal_address'] = trim($this->post('ownerPostalAddress'));
-			$owner['religion'] = trim($this->post('religion'));
+			$owner['gender'] = trim($this->post('ownerGender'));
+			$owner['owner_pwd'] = trim($this->post('ownerPWD'));
+			$owner['ghpostgps_code'] = trim($this->post('ownerGhpostgps'));
+			// $owner['religion'] = trim($this->post('religion'));
 			$data['code'] = $code;
 			$data['type_of_building'] = $this->post('businessBuilding');
 			if($this->post('businessBuilding') === 'Temporary'){
 				$data['detail_for_temp']  = trim($this->post('buildingType'));
 			}
-			if($this->post('religion') === "Others"){
-				$owner['other_religion'] = $this->post('religionName');
-			}
+			// if($this->post('religion') === "Others"){
+			// 	$owner['other_religion'] = $this->post('religionName');
+			// }
 			if($owner_exit){
 				$owner_id = $owner_exit;
 			}else{
@@ -2260,6 +2264,7 @@ class Api extends REST_Controller {
 			$towncode = get_towncode($this->post('town'));
 			$owner_exit = owner_exit($this->post('ownerPrimaryContact'));
 			$category = $this->post('invoiceType');
+			$com_needs = $this->post('needs');
 			
 			$code = $this->bus->resnumber_new($this->post('areaCouncil'),$this->post('town'),$category);
 			$primary_contact = trim($this->post('ownerPrimaryContact'));
@@ -2277,19 +2282,23 @@ class Api extends REST_Controller {
 				$gen_rescode = SYSTEM_PREFIX.$areacode .$towncode.SYSTEM_RESIDENTIAL_PROPERTY_PER_PREFIX. str_pad($code, 4, '0', STR_PAD_LEFT);
 			}
 
-			if($this->post('manualLatLong') != ""){
-				$manLatLong = explode(",",$this->post('manualLatLong'));
-			}
+			// if($this->post('manualLatLong') != ""){
+			// 	$manLatLong = explode(",",$this->post('manualLatLong'));
+			// }
 			
 			$houseno = $towncode.str_pad($code, 4, '0', STR_PAD_LEFT);
+			$owner['person_category'] = trim($this->post('category'));
 			$owner['firstname'] = ucfirst(trim($this->post('ownerFirstname')));
 			$owner['lastname'] = ucfirst(trim($this->post('ownerLastname')));
 			$owner['primary_contact'] = trim($this->post('ownerPrimaryContact'));
 			$owner['secondary_contact'] = trim($this->post('ownerSecondaryContact'));
-			$owner['owner_native'] = trim($this->post('native'));
-			$owner['religion'] = trim($this->post('religion'));
+			$owner['gender'] = trim($this->post('ownerGender'));
+			$owner['owner_pwd'] = trim($this->post('ownerPWD'));
+			// $owner['owner_native'] = trim($this->post('native'));
+			// $owner['religion'] = trim($this->post('religion'));
 			$owner['email'] = trim($this->post('ownerEmail'));
 			$owner['postal_address'] = trim($this->post('ownerPostalAddress'));
+			$owner['ghpostgps_code'] = trim($this->post('ownerGhpostgps'));
 			$data['year_of_construction'] = trim($this->post('yearConstruction'));
 			$data['buis_prop_code'] = $gen_rescode;
 			$data['town'] = trim($this->post('town'));
@@ -2315,7 +2324,7 @@ class Api extends REST_Controller {
 			$data['no_of_residents'] = trim($this->post('noOfResidents'));
 			$data['resident_greater_18'] = trim($this->post('noOfResidentsGreater18'));
 			$data['category'] = trim($this->post('invoiceType'));
-			// $data['no_of_rooms'] = trim($this->post('noRooms'));
+			$data['no_of_rooms'] = trim($this->post('noRooms'));
 			$data['building_permit'] = trim($this->post('selected2'));
 			$data['planning_permit'] = trim($this->post('planningPermit'));
 			$data['construction_material'] = trim($this->post('consMaterial'));
@@ -2331,21 +2340,18 @@ class Api extends REST_Controller {
 			$data['building_type'] = $this->post('buildingType');
 			$data['temporary_building']= $this->post('temporaryDetail');
 			$data['building_status'] = trim($this->post('buildingStatus'));
+			$data['no_of_pwd'] = trim($this->post('noPWD'));
 			$data['accessed'] = trim($this->post('accessed'));
 			$data['assessable_status'] = trim($this->post('assessableStatus'));
 			$data['property_image'] = trim($this->post('photo'));
 			$rateable_amount = trim($this->post('rateableAmount'));
 			$rate = trim($this->post('rate'));
-			if($this->post('manualLatLong') != ""){
-				$data['man_gps_lat'] = $manLatLong[0];
-				$data['man_gps_long'] = $manLatLong[1];
-			}
 			if(trim($this->post('buildingStatus')) == "0"){
 				$data['inhabitant_status'] = $this->post('inhabitedStatus');
 			}
-			if($this->post('religion') === "Others"){
-				$owner['other_religion'] = $this->post('religionName');
-			}
+			// if($this->post('religion') === "Others"){
+			// 	$owner['other_religion'] = $this->post('religionName');
+			// }
 			if($this->post('propertyType') !== 'Compound'){
 				$data['no_of_floors'] = trim($this->post('noFloors'));
 			}
@@ -2378,8 +2384,14 @@ class Api extends REST_Controller {
 				$owner_id = $this->bus->add_owner($owner);
 			}
 
+
 			if($owner_id){
 				$res_id = $this->bus->add_business($data);
+
+				foreach ($com_needs as $key => $value) {
+					$community_needs = array('property_id' => $res_id ,'need_id' => $this->post("needs")[$key]);
+					$this->bus->add_community_needs($community_needs);
+				}
 
 				if($this->post('accessed') == 1){
 					$data  = array(
