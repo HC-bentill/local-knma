@@ -160,11 +160,11 @@
                             </tbody>
                         </table>
 						<div class="text-right">
-							<img src="<?=base_url().MCE_SIGNATURE?>" alt="Signature" style="width:12em;height:8em;margin-right:0.5em"/>
+							<!-- <img src="<?=base_url().MCE_SIGNATURE?>" alt="Signature" style="width:12em;height:8em;margin-right:0.5em"/> -->
 							<img src="<?=base_url().MCD_SIGNATURE?>" alt="Signature" style="width:12em;height:8em;"/>
 						</div>
 						<div class="text-right">
-							<img src="<?=base_url().MCE_STAMP?>" alt="Signature" style="width:12em;height:8em;margin-right:0.5em"/>
+							<!-- <img src="<?=base_url().MCE_STAMP?>" alt="Signature" style="width:12em;height:8em;margin-right:0.5em"/> -->
 							<img src="<?=base_url().MCD_STAMP?>" alt="Signature" style="width:12em;height:8em;"/>
 						</div>
                     </div>

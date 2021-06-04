@@ -102,5 +102,5 @@ define('SYSTEM_GHPOSTGPS',"GhanaPostGPS: GW-0450-8542");
 define('SYSTEM_LOGO',"assets/img/elem.png");
 define('MCE_SIGNATURE',"assets/img/MCD_signature.png");
 define('MCE_STAMP',"assets/img/STAMP1.png");
-define('MCD_SIGNATURE',"assets/img/MFO_signature.png");
-define('MCD_STAMP',"assets/img/STAMP2.png");
+define('MCD_SIGNATURE',"assets/img/director_signature.png");
+define('MCD_STAMP',"assets/img/director_stamp.png");

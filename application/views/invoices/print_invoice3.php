@@ -280,13 +280,12 @@
 						</tbody>
 					</table>
 					<div class="text-right">
-						<div style="position: relative; left: 0; top: 0;">
-							<img src="<?=base_url().MCE_SIGNATURE?>" alt="Signature" style="width:12em;height:8em;margin-right:0.5em;position:relative;top:0;left:0;"/>
-							<img src="<?=base_url().MCE_STAMP?>" alt="Signature" style="width:12em;height:8em;margin-right:0.5em;opacity:0.5;position: absolute;top: 30px;left: 500px;"/>
-
-							<img src="<?=base_url().MCD_SIGNATURE?>" alt="Signature" style="width:12em;height:8em;"/>
-							<img src="<?=base_url().MCD_STAMP?>" alt="Signature" style="width:12em;height:8em;margin-right:0.5em;opacity:0.5;position: absolute;top: 30px;left: 350px;"/>
-						</div>
+						<!-- <img src="<?=base_url().MCE_SIGNATURE?>" alt="Signature" style="width:12em;height:8em;margin-right:0.5em"/> -->
+						<img src="<?=base_url().MCD_SIGNATURE?>" alt="Signature" style="width:12em;height:8em;"/>
+					</div>
+					<div class="text-right">
+						<!-- <img src="<?=base_url().MCE_STAMP?>" alt="Signature" style="width:12em;height:8em;margin-right:0.5em"/> -->
+						<img src="<?=base_url().MCD_STAMP?>" alt="Signature" style="width:12em;height:8em;"/>
 					</div>
 				</div>
 			</div>
