@@ -77,7 +77,7 @@
                               <br>
                               <p class="mb-0">
                                 <span class="text-dark"><b>Mobile Money No:</b></span>
-                                <span class="value">0541214224</span>
+                                <span class="value">-</span>
                               </p>
                               <p class="mb-0">
                                 <span class="text-dark"><b>Bank Name:</b></span>
@@ -85,11 +85,11 @@
                               </p>
                               <p class="mb-0">
                                 <span class="text-dark"><b>Account No:</b></span>
-                                <span class="value">2091130001396</span>
+                                <span class="value">5031130001417</span>
                               </p>
                               <p class="mb-0">
                                 <span class="text-dark"><b>Bank Branch:</b></span>
-                                <span class="value">AKROPONG AKUAPEM</span>
+                                <span class="value">Dzodze</span>
                               </p>
                             </div>
                           </div>
