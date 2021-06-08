@@ -1479,10 +1479,11 @@ class Invoice extends CI_Controller {
 	}
 
 	// view invoice
-	public function print_invoice2($id){
+	public function print_invoice2($id,$template){
 
 		$data = array(
-			'result' => json_decode($this->TaxModel->get_invoice_detail($id))
+			'result' => json_decode($this->TaxModel->get_invoice_detail($id)),
+			'template' => $template
 		);
 
 		$this->load->view('invoices/print_invoice3',$data);
@@ -2071,16 +2072,20 @@ class Invoice extends CI_Controller {
 		$product = $_POST['product'];
 		$category1 = $_POST['category1'];
 		$year = $_POST['year'];
+		$spool = $_POST['spool'];
+		$template = $_POST['template'];
 		$electoral_area = $_POST['electoral_area'];
 		$town = $_POST['town'];
 		$offset = $_POST['offset'];
 		$number = $_POST['invoice_number'];
 
 		$data = array(
-			'result' => json_decode($this->TaxModel->get_batch_invoices($product,$category1,$year,$electoral_area,$town,$offset)),
+			'result' => json_decode($this->TaxModel->get_batch_invoices($product,$category1,$year,$electoral_area,$town,$offset,$spool)),
 			'product' => $product,
 			'category1' => $category1,
 			'year' => $year,
+			'spool' => $spool,
+			'template' => $template,
 			'electoral_area' => $electoral_area,
 			'town' => $town,
 			'offset' => $offset,
@@ -2089,6 +2094,7 @@ class Invoice extends CI_Controller {
 
 		$this->load->view('invoices/print_batch',$data);
 	}
+
 
 	// accessed property form
 	public function accessed_property(){

@@ -238,7 +238,7 @@ class TaxModel extends CI_Model
     }
 
     //    get all invoices to be printed
-    public function get_batch_invoices($product, $category1, $year, $electoral_area, $town,$offset)
+    public function get_batch_invoices($product, $category1, $year, $electoral_area, $town,$offset,$spool)
     {
         $this->db->select('i.*,t.town');
         $this->db->from('vw_invoice as i');
@@ -248,11 +248,12 @@ class TaxModel extends CI_Model
         ($year) ? $this->db->where('i.invoice_year', $year) : null;
         ($electoral_area) ? $this->db->where('i.area_council_id', $electoral_area) : null;
         ($town) ? $this->db->where('i.town_id', $town) : null;
-        $this->db->limit(500,$offset);
+        $this->db->limit($spool,$offset);
 
         $invoices = $this->db->get()->result_array();
         return json_encode($invoices);
     }
+
 
 	//    get all agents details
     public function get_agents()

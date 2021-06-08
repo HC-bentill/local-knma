@@ -65,7 +65,8 @@
                         <th class="text-center">ELECTORAL</th>
                         <th class="text-center">TOWN</th>
                         <th class="text-center">DATETIME CREATED</th>
-                        <th class="text-center">ACTION</th>
+                        <th class="text-center" colspan="2">ACTION</th>
+                        <th class="text-center" style="display: none"></th> 
                     </tr>
                 </thead>
                 <tbody>
@@ -78,7 +79,7 @@
                             <td><?= $value->area ?></td>
                             <td><?= $value->town ?></td>
                             <td><?= date("Y-m-d H:i:s",strtotime($value->datetime_created)) ?></td>
-                            <td class="text-center">
+                            <td>
                                 <?php $invoice_number = 0;?>
                                 <form method="post" target="_blank" action="<?=base_url()?>Invoice/print_batch_invoice">
                                     <input type="hidden" name="product" value="<?= $value->product_id ?>">
@@ -87,10 +88,27 @@
                                     <input type="hidden" name="electoral_area" value="<?=$value->area_id?>">
                                     <input type="hidden" name="town" value="<?=$value->town_id?>">
                                     <input type="hidden" name="offset" value="0">
+                                    <input type="hidden" name="spool" value="500">
+                                    <input type="hidden" name="template" value="wtemplate">
+                                    <input type="hidden" name="invoice_number" value="<?=$invoice_number?>">
+                                    <button type="submit" class="btn btn-info"><span class="fa fa-print"></span></button>
+                                </form>
+                            </td>
+                            <td>
+                                <form method="post" target="_blank" action="<?=base_url()?>Invoice/print_batch_invoice">
+                                    <input type="hidden" name="product" value="<?= $value->product_id ?>">
+                                    <input type="hidden" name="category1" value="<?= $value->category1_id ?>">
+                                    <input type="hidden" name="year" value="<?=$value->year?>">
+                                    <input type="hidden" name="electoral_area" value="<?=$value->area_id?>">
+                                    <input type="hidden" name="town" value="<?=$value->town_id?>">
+                                    <input type="hidden" name="offset" value="0">
+                                    <input type="hidden" name="spool" value="50">
+                                    <input type="hidden" name="template" value="template">
                                     <input type="hidden" name="invoice_number" value="<?=$invoice_number?>">
                                     <button type="submit" class="btn btn-success"><span class="fa fa-print"></span></button>
                                 </form>
                             </td>
+                            <td style="display: none"></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

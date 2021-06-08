@@ -65,7 +65,7 @@
         #watermark.print img {
             width: 200%;
             height: 80%;
-            opacity: 0.1;
+            opacity: 0.5;
         }
 
         @media print
@@ -80,7 +80,7 @@
                 border-top: solid grey 1px;
             }
 
-            #watermark img {
+            /* #watermark img {
                 width: 250%;
                 height: 100%;
                 opacity: 0.1;
@@ -90,7 +90,7 @@
                 width: 200%;
                 height: 80%;
                 opacity: 0.1;
-            }
+            } */
             .no-print
             {
                 display: none !important;
@@ -101,30 +101,40 @@
 
 <body>
 	<div class="invoice receipt_preview">
-		<!-- <header class="clearfix"> -->
+		<?php if($template == "template"){ ?>
+			<header class="clearfix">
+		<?php }else{ ?>
+		<?php } ?>
 			<div class="row">
 				<div class="col-sm-6 mt-3" style="margin-bottom:4em;padding-top:2em;">
 					<h2 class="h2 mt-0 mb-1 text-dark font-weight-bold"></h2>
 					<h6 class="h4 m-0 text-dark font-weight-bold" style="font-size:90%;">#<?= $result->invoice_no ?></h6>
 				</div>
 				<div class="col-sm-6 text-right mt-3 mb-3">
-					<!-- <address class="ib mr-2">
-						<?php echo SYSTEM_NAME; ?> 
-						<br/>
-						<?php echo SYSTEM_POST_BOX; ?> 
-						<br/>
-						<?php echo SYSTEM_ADDRESS; ?> 
-						<br/>
-						<?php echo SYSTEM_PHONE; ?> 
-						<br/>
-						<?php echo SYSTEM_MAIL; ?> 
-                    </address>
-					<div class="ib">
-						<img src="<?=base_url().SYSTEM_LOGO?>" alt="Ga-north logo" style="width:9em;height:9em;"/>
-					</div> -->
+					<?php if($template == "template"){ ?>
+						<address class="ib mr-2">
+							<?php echo SYSTEM_NAME; ?> 
+							<br/>
+							<?php echo SYSTEM_POST_BOX; ?> 
+							<br/>
+							<?php echo SYSTEM_ADDRESS; ?> 
+							<br/>
+							<?php echo SYSTEM_PHONE; ?> 
+							<br/>
+							<?php echo SYSTEM_MAIL; ?> 
+							
+						</address>
+						<div class="ib">
+							<img src="<?=base_url().SYSTEM_LOGO?>" alt="Ga-north logo" style="width:9em;height:9em;"/>
+						</div>
+					<?php }else{ ?>
+					<?php } ?>
 				</div>
 			</div>
-		<!-- </header> -->
+		<?php if($template == "template"){ ?>
+			</header>
+		<?php }else{ ?>
+		<?php } ?>
 		<div class="bill-info">
 			<div class="row">
 				<div class="col-md-6">
@@ -156,7 +166,7 @@
 					  <br>
 					  <p class="mb-0">
 						<span class="text-dark"><b>Mobile Money No:</b></span>
-						<span class="value">0541214224</span>
+						<span class="value">-</span>
 					  </p>
 					  <p class="mb-0">
 						<span class="text-dark"><b>Bank Name:</b></span>
@@ -164,11 +174,11 @@
 					  </p>
 					  <p class="mb-0">
 						<span class="text-dark"><b>Account No:</b></span>
-						<span class="value">2091130001396</span>
+						<span class="value">5031130001417</span>
 					  </p>
 					  <p class="mb-0">
 						<span class="text-dark"><b>Bank Branch:</b></span>
-						<span class="value">AKROPONG AKUAPEM</span>
+						<span class="value">Dzodze</span>
 					  </p>
 					</div>
 				</div>
@@ -280,18 +290,33 @@
 						</tbody>
 					</table>
 					<div class="text-right">
-						<!-- <img src="<?=base_url().MCE_SIGNATURE?>" alt="Signature" style="width:12em;height:8em;margin-right:0.5em"/> -->
-						<img src="<?=base_url().MCD_SIGNATURE?>" alt="Signature" style="width:12em;height:8em;"/>
-					</div>
-					<div class="text-right">
-						<!-- <img src="<?=base_url().MCE_STAMP?>" alt="Signature" style="width:12em;height:8em;margin-right:0.5em"/> -->
-						<img src="<?=base_url().MCD_STAMP?>" alt="Signature" style="width:12em;height:8em;"/>
+						<div style="position: relative; left: 0; top: 0;">
+							<img src="<?=base_url().MCD_SIGNATURE?>" alt="Signature" style="width:12em;height:8em;margin-right:0.5em;position:relative;top:0;left:0;"/>
+							<img src="<?=base_url().MCD_STAMP?>" alt="Signature" style="width:12em;height:8em;margin-right:0.5em;opacity:0.5;position: absolute;top: 30px;left: 500px;"/>
+
+							<!-- <img src="<?=base_url().MCD_SIGNATURE?>" alt="Signature" style="width:12em;height:8em;"/>
+							<img src="<?=base_url().MCD_STAMP?>" alt="Signature" style="width:12em;height:8em;margin-right:0.5em;opacity:0.5;position: absolute;top: 30px;left: 350px;"/> -->
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<!-- <div style="display:none;" id="watermark" class="print"><img src="<?= base_url() ?>assets/img/Coat_of_arms_of_Ghana.png" alt="Watermark" /></div> -->
+		<?php if($template == "template"){ ?>
+			<div id="watermark" class="print"><img src="<?= base_url() ?>assets/img/Coat_of_arms_of_Ghana.png" alt="Watermark" /></div>
+		<?php }else{ ?>
+		<?php } ?>
 	</div>
+
+	<?php if($template == "template"){ ?>
+		<div class="footer">
+			<p>
+				Payment should be made at the revenue office or to assembly’s revenue collector or to the bank or mobile money details on the bill. 
+				Failure to do so, will attract proceedings taken for the purpose of exacting sale or entry possession and the expense incurred.<br>
+				All property bills are based on unassessed rates in the fee fixing.<br>
+			</p>
+		</div>
+	<?php }else{ ?>
+	<?php } ?>
 	
 </body>
 
