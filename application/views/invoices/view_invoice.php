@@ -76,8 +76,8 @@
                               </p>
                               <br>
                               <p class="mb-0">
-                                <span class="text-dark"><b>Mobile Money No:</b></span>
-                                <span class="value">-</span>
+                                <span class="text-dark"><b>Office Contact:</b></span>
+                                <span class="value">0551511511</span>
                               </p>
                               <p class="mb-0">
                                 <span class="text-dark"><b>Bank Name:</b></span>
