@@ -100,7 +100,8 @@ define('SYSTEM_PHONE',"030 290 7239");
 define('SYSTEM_MAIL',"info@anma.gov.gh");
 define('SYSTEM_GHPOSTGPS',"GhanaPostGPS: VY-0103-8490");
 define('SYSTEM_LOGO',"assets/img/elem.png");
-define('MCE_SIGNATURE',"assets/img/MCD_signature.png");
-define('MCE_STAMP',"assets/img/STAMP1.png");
+define('MFO_SIGNATURE',"assets/img/MFO_signature.png");
+define('MFO_STAMP',"assets/img/MFO_stamp.png");
 define('MCD_SIGNATURE',"assets/img/director_signature.png");
 define('MCD_STAMP',"assets/img/director_stamp.png");
+ 
