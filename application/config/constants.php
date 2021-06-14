@@ -97,7 +97,7 @@ define('SYSTEM_POST_BOX',"PMB 2");
 define('SYSTEM_ADDRESS',"Dzodze");
 define('SYSTEM_TOWN',",Volta Region, Ghana");
 define('SYSTEM_PHONE',"030 290 7239");
-define('SYSTEM_MAIL',"info@anma.gov.gh");
+define('SYSTEM_MAIL',"ketunorthmunicipalassembly@gmail.com");
 define('SYSTEM_GHPOSTGPS',"GhanaPostGPS: VY-0103-8490");
 define('SYSTEM_LOGO',"assets/img/elem.png");
 define('MFO_SIGNATURE',"assets/img/MFO_signature.png");

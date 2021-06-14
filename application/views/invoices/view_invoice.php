@@ -77,7 +77,7 @@
                               <br>
                               <p class="mb-0">
                                 <span class="text-dark"><b>Office Contact:</b></span>
-                                <span class="value">0551511511</span>
+                                <span class="value">0551511511/0503038555</span>
                               </p>
                               <p class="mb-0">
                                 <span class="text-dark"><b>Bank Name:</b></span>
