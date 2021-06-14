@@ -165,8 +165,8 @@
 					  </p>
 					  <br>
 					  <p class="mb-0">
-						<span class="text-dark"><b>Mobile Money No:</b></span>
-						<span class="value">-</span>
+						<span class="text-dark"><b>Office Contact:</b></span>
+						<span class="value">0551511511/0503038555</span>
 					  </p>
 					  <p class="mb-0">
 						<span class="text-dark"><b>Bank Name:</b></span>
@@ -294,8 +294,8 @@
 							<img src="<?=base_url().MCD_SIGNATURE?>" alt="Signature" style="width:12em;height:8em;margin-right:0.5em;position:relative;top:0;left:0;"/>
 							<img src="<?=base_url().MCD_STAMP?>" alt="Signature" style="width:12em;height:8em;margin-right:0.5em;opacity:0.5;position: absolute;top: 30px;left: 500px;"/>
 
-							<!-- <img src="<?=base_url().MCD_SIGNATURE?>" alt="Signature" style="width:12em;height:8em;"/>
-							<img src="<?=base_url().MCD_STAMP?>" alt="Signature" style="width:12em;height:8em;margin-right:0.5em;opacity:0.5;position: absolute;top: 30px;left: 350px;"/> -->
+							<img src="<?=base_url().MFO_SIGNATURE?>" alt="Signature" style="width:12em;height:8em;"/>
+							<img src="<?=base_url().MFO_STAMP?>" alt="Signature" style="width:12em;height:8em;margin-right:0.5em;opacity:0.5;position: absolute;top: 30px;left: 350px;"/> 
 						</div>
 					</div>
 				</div>
