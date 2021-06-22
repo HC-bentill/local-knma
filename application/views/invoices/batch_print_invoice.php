@@ -91,7 +91,7 @@
                                     <input type="hidden" name="spool" value="500">
                                     <input type="hidden" name="template" value="wtemplate">
                                     <input type="hidden" name="invoice_number" value="<?=$invoice_number?>">
-                                    <button type="submit" class="btn btn-info"><span class="fa fa-print"></span></button>
+                                    <button type="submit" class="btn btn-info" data-container="body" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Save to PDF/Print without Template"><span class="fa fa-print"></span></button>
                                 </form>
                             </td>
                             <td>
@@ -105,7 +105,7 @@
                                     <input type="hidden" name="spool" value="50">
                                     <input type="hidden" name="template" value="template">
                                     <input type="hidden" name="invoice_number" value="<?=$invoice_number?>">
-                                    <button type="submit" class="btn btn-success"><span class="fa fa-print"></span></button>
+                                    <button type="submit" class="btn btn-success" data-container="body" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Save to PDF/Print with Template"><span class="fa fa-print"></span></button>
                                 </form>
                             </td>
                             <td style="display: none"></td>

@@ -225,8 +225,10 @@
                   </div>
                   <div class="text-right mr-4">
                     <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-default btn-warning">Submit Invoice</button>
-                    <a href="<?=base_url()?>print_invoice2/<?=$result->id ?>/wtemplate" target="_blank" class="btn btn-primary ml-3"><i class="fa fa-print"></i> Save to PDF/Print without template</a>
-                    <a href="<?=base_url()?>print_invoice2/<?=$result->id ?>/template" target="_blank" class="btn btn-primary ml-3"><i class="fa fa-print"></i> Save to PDF/Print with template</a>
+                    <!-- <a href="<?=base_url()?>print_invoice2/<?=$result->id ?>/wtemplate" target="_blank" class="btn btn-primary ml-3"><i class="fa fa-print"></i> Save to PDF/Print without template</a>
+                    <a href="<?=base_url()?>print_invoice2/<?=$result->id ?>/template" target="_blank" class="btn btn-primary ml-3"><i class="fa fa-print"></i> Save to PDF/Print with template</a> -->
+                    <a href="<?=base_url()?>print_invoice2/<?=$result->id ?>/wtemplate" target="_blank" class="btn btn-primary ml-2" data-container="body" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Save to PDF/Print without Template"><i class="fa fa-print"></i></a>
+                    <a href="<?=base_url()?>print_invoice2/<?=$result->id ?>/template" target="_blank" class="btn btn-success ml-2" data-container="body" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Save to PDF/Print with Template"><i class="fa fa-print"></i></a>
                   </div>
                   <div id="watermark"><img src="<?=base_url()?>assets/img/Coat_of_arms_of_Ghana.png" alt="Watermark"/></div>
                 </div>
