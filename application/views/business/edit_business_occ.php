@@ -157,7 +157,7 @@
 								<input type="text" class="form-control"  id="other_religion" value="<?=$owner['other_religion']?>" name="other_religion" required="">
 							</div> -->
 							<div class="col-sm-4">
-								<label class="control-label text-sm-right pt-2"><strong>Owner PWD:</strong></label>
+								<label class="control-label text-sm-right pt-2"><strong>Is Owner Person With Disability:</strong></label>
 								<select class="form-control" id="owner_pwd" name="owner_pwd" required="">
 										<option value="">SELECT OPTION</option>
 										<option <?= $owner['owner_pwd'] == "no"?'selected==selected':''?> value="no">No</option>
@@ -381,13 +381,13 @@
 					<table class="table table-responsive-md mb-0" id="datatable-default">
 						<thead>
 							<tr>
-								<th>INVOICE NO</th>
+								<th>BILL NO</th>
 								<th>PRODUCT</th>
-								<th>INVOICE AMOUNT</th>
-								<th>DISCOUNT</th>
+								<th>BILL AMOUNT</th>
+								<th>ADJUSTMENT</th>
 								<th>AMOUNT PAID</th>
 								<th>OUTSTANDING AMOUNT</th>
-								<th>ASSESSED</th>
+								<th>VALUATION STATUS</th>
 								<th>CATEGORY 1</th>
 								<th>CATEGORY 2</th>
 								<th>CATEGORY 3</th>

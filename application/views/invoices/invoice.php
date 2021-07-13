@@ -97,13 +97,13 @@
           <table class="table table-bordered table-striped mb-0" id="datatable-tabletools-invoices">
               <thead>
                 <tr>
-                  <th class="text-center">INVOICE NO</th>
+                  <th class="text-center">BILL NO</th>
                   <th class="text-center">PROPERTY CODE</th>
                   <th class="text-center">IDENTIFIER</th>
-                  <th class="text-center">PRODUCT</th>
-                  <th class="text-center">INVOICE AMOUNT</th>
-                  <th class="text-center">DISCOUNT</th>
-                  <th class="text-center">AMOUNT PAID</th>
+                  <th class="text-center">BILL TYPE</th>
+                  <th class="text-center">BILL AMOUNT</th>
+                  <th class="text-center">ADJUSTMENT</th>
+                  <th class="text-center">PAID AMOUNT</th>
                   <th class="text-center">OUTSTANDING AMOUNT</th>
                   <th class="text-center">VALUATION STATUS</th>
                   <th class="text-center">CATEGORY 1</th>

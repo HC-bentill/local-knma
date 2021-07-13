@@ -1055,7 +1055,7 @@ class Business_model extends CI_Model
             }
 
             #category
-            $cat = ($record->category == 12)? "Business": "Residential";
+            $cat = ($record->category == 12)? "Commercial": "Residential";
 
             // form id
             $form_id = ($record->category == 12)? 2: 1;

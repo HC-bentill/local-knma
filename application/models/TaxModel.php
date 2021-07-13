@@ -78,6 +78,14 @@ class TaxModel extends CI_Model
         return ($batch_no);
     }
 
+    //delete a batch invoice record
+    public function deleterecords($id)
+    {
+      $this->db->where("id", $id);
+      $this->db->delete("batch_print_invoice");
+      return true;
+    }
+
     //get batch bill count
     public function get_batch_bill_count()
     {
@@ -91,12 +99,13 @@ class TaxModel extends CI_Model
 	//get all print invoices batches
     public function get_batches()
     {
-        $this->db->select('b.batch_no,b.property_category,b.product as product_id,b.category1 as category1_id,b.year,b.electoral_area as area_id,b.town as town_id,t.town as town ,a.name as area,r.name, r.target,c.name as category1,b.datetime_created');
+        $this->db->select('b.batch_no,b.property_category,b.product as product_id,b.category1 as category1_id,b.year,b.electoral_area as area_id,b.town as town_id,t.town as town ,a.name as area,r.name, r.target,c.name as category1,b.datetime_created, b.id as bi_id');
         $this->db->from('batch_print_invoice as b');
         $this->db->join('town as t', 'b.town = t.id', 'left');
         $this->db->join('area_council as a', 'b.electoral_area = a.id', 'left');
         $this->db->join('revenue_product as r', 'r.id = b.product', 'left');
         $this->db->join('product_category1 as c', 'c.id = b.category1', 'left');
+        $this->db->order_by('1','desc');
 
         $batch = $this->db->get()->result();
         return ($batch);
@@ -408,7 +417,9 @@ class TaxModel extends CI_Model
     {
         $this->db->select(
             'i.invoice_no, i.id, i.invoice_amount, i.adjustment_amount,
-            i.amount_paid, i.property_id, i.target, i.name, i.owner_phoneno'
+            i.amount_paid, i.property_id, i.target, i.name, i.owner_phoneno,
+            i.product_id, i.invoice_year, i.penalty_amount,
+            ',           
         );
         $this->db->from('vw_invoice as i');
         $this->db->where('i.id', $id);

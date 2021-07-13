@@ -231,6 +231,7 @@ $route['business_map'] = 'Business/map';
 
 //delete record routes
 $route['delete_record'] = 'Data/delete_record';
+$route['deletedata'] = 'Invoice/deletedata';
 
 // ticket routes
 $route['view_ticket'] = 'Ticket/view_ticket';

@@ -43,8 +43,19 @@
                               <input type="text" class="form-control hidden" id="product" value="<?=$result['name'];?>" name="product">
                             </div>
                             <div class="col-sm-4">
-                              <label class="control-label text-sm-right pt-2"><strong>Outstanding Amount:</strong></label>
-                              <input type="text" class="form-control <?php if($amount_left <= 0){echo 'no-outstanding';}else {echo 'outstanding';} ?>" id="invoice_amountt" value="<?=number_format((float)$amount_left , 2, '.', '');?>" name="invoice_amountt" disabled required>
+                            <?php
+                              $arrears_paid = get_invoice_arrears($result['property_id'],$result['product_id'],$result['invoice_year'],$result['penalty_amount']);
+                              $actual_arrears = $arrears_paid['invoice_amount'] - $arrears_paid['amount_paid'];
+                              $invoice_amount = $result['invoice_amount'];
+                              $penalty_amount = $result['penalty_amount'];
+                              $discount_amount = $result['adjustment_amount'];
+                              $amount_paid = $result['amount_paid'];
+                              $total_amount = $invoice_amount + $penalty_amount + $actual_arrears - $amount_paid;
+                              // $outstanding_amount = $invoice_amount + $actual_arrears;
+                              
+                            ?>
+                              <label class="control-label text-sm-right pt-2"><strong>Outstanding Amount:</strong></label>           
+                              <input type="text" class="form-control <?php if($total_amount <= 0){echo 'no-outstanding';}else {echo 'outstanding';} ?>" id="invoice_amountt" value="<?=number_format((float)$total_amount , 2, '.', '');?>" name="invoice_amountt" disabled required>
                             </div>
                           </div>
                           <div class="form-group row pay-invoice">

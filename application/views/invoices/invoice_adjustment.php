@@ -25,7 +25,7 @@
                             <form  autocomplete="off" id="basicform" method="POST" enctype="multipart/form-data" action="<?=base_url()?>Invoice/adjustment" id="submitForm">
                                 <div class="form-group row">
                                     <div class="col-sm-4">
-                                        <label class="control-label text-sm-right pt-2"><strong>Invoice No:</strong></label>
+                                        <label class="control-label text-sm-right pt-2"><strong>Bill No:</strong></label>
                                         <input type="text" class="form-control" value="<?=$result['invoice_no']?>" readonly>
                                         <input type="text" class="form-control hidden" value="2" name="invoice_type">
                                         <input type="text" class="form-control hidden" value="<?=$result['invoice_no']?>" name="invoice_no">

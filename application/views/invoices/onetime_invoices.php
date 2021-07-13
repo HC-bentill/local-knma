@@ -13,7 +13,7 @@
             <table class="table table-bordered table-striped mb-0" id="datatable-tabletools">
               <thead>
                 <tr>
-                  <th class="text-center">INVOICE ID</th>
+                  <th class="text-center">BILL ID</th>
                   <th class="text-center">OWNERSHIP TYPE</th>
                   <th class="text-center">TYPE OF INVOICE</th>
                   <th class="text-center">FIRST NAME</th>
@@ -23,7 +23,7 @@
                   <th class="text-center">AREA COUNCIL</th>
                   <th class="text-center">TOWN</th>
                   <th class="text-center">INVOICE AMOUNT</th>
-                  <th class="text-center">AMOUNT PAID</th>
+                  <th class="text-center">PAID AMOUNT</th>
                   <th class="text-center">OUTSTANDING AMOUNT</th>
                   <th class="text-center">CREATED ON</th>
                 </tr>

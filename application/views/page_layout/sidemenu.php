@@ -1,4 +1,3 @@
-
 <div class="inner-wrapper">
     <!-- start: sidebar -->
     <aside id="sidebar-left" class="sidebar-left">
@@ -7,7 +6,8 @@
             <div class="sidebar-title">
                 Navigation
             </div>
-            <div class="sidebar-toggle hidden-xs" data-toggle-class="sidebar-left-collapsed" data-target="html" data-fire-event="sidebar-left-toggle">
+            <div class="sidebar-toggle hidden-xs" data-toggle-class="sidebar-left-collapsed" data-target="html"
+                data-fire-event="sidebar-left-toggle">
                 <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
             </div>
         </div>
@@ -23,9 +23,10 @@
                                 <span>Dashboard</span>
                             </a>
                         </li> -->
-                        <li class="nav-parent <?php echo is_active('dashboard'); ?><?php echo is_active('dashboard'); ?>">
+                        <li
+                            class="nav-parent <?php echo is_active('dashboard'); ?><?php echo is_active('dashboard'); ?>">
                             <a class="nav-link" href="#">
-                            <i class="fa fa-tachometer" aria-hidden="true"></i>
+                                <i class="fa fa-tachometer" aria-hidden="true"></i>
                                 <span>Dashboards</span>
                             </a>
                             <ul class="nav nav-children">
@@ -61,7 +62,8 @@
 
                             </ul>
                         </li> -->
-                        <li class="nav-parent <?php echo is_active('add_busprop'); ?><?php echo is_active('view_busprop'); ?>">
+                        <li
+                            class="nav-parent <?php echo is_active('add_busprop'); ?><?php echo is_active('view_busprop'); ?>">
                             <a class="nav-link" href="#">
                                 <i class="fa fa-building" aria-hidden="true"></i>
                                 <span>Property</span>
@@ -80,11 +82,12 @@
 
                             </ul>
                         </li>
-                        
-                        <li class="nav-parent <?php echo is_active('add_busocc'); ?><?php echo is_active('view_busocc'); ?>">
+
+                        <li
+                            class="nav-parent <?php echo is_active('add_busocc'); ?><?php echo is_active('view_busocc'); ?>">
                             <a class="nav-link" href="#">
                                 <i class="fa fa-btc" aria-hidden="true"></i>
-                                <span>Business Occupant</span>
+                                <span>Business</span>
                             </a>
                             <ul class="nav nav-children">
                                 <li class="<?php echo is_active('add_busocc'); ?>">
@@ -93,14 +96,15 @@
                                     </a>
                                 </li>
                                 <li class="<?php echo is_active('view_busocc'); ?>">
-                                        <a class="nav-link" href="<?=base_url()?>business_occupant">
-                                            View
-                                        </a>
+                                    <a class="nav-link" href="<?=base_url()?>business_occupant">
+                                        View
+                                    </a>
                                 </li>
                             </ul>
                         </li>
 
-                        <li class="nav-parent <?php echo is_active('add_signage'); ?><?php echo is_active('view_signage'); ?>">
+                        <li
+                            class="nav-parent <?php echo is_active('add_signage'); ?><?php echo is_active('view_signage'); ?>">
                             <a class="nav-link" href="#">
                                 <i class="fa fa-map-signs" aria-hidden="true"></i>
                                 <span>Signage Post</span>
@@ -118,7 +122,7 @@
                                 </li>
                             </ul>
                         </li>
-                        
+
                         <li class="<?php echo is_active('property_owner'); ?>">
                             <a class="nav-link" href="<?=base_url()?>property_owner">
                                 <i class="fa fa-user" aria-hidden="true"></i>
@@ -126,7 +130,8 @@
                             </a>
                         </li>
 
-                        <li class="nav-parent <?php echo is_active('add_mess'); ?><?php echo is_active('view_mess'); ?>">
+                        <li
+                            class="nav-parent <?php echo is_active('add_mess'); ?><?php echo is_active('view_mess'); ?>">
                             <a class="nav-link" href="#">
                                 <i class="fa fa-envelope" aria-hidden="true"></i>
                                 <span>Messages</span>
@@ -145,7 +150,8 @@
                             </ul>
                         </li>
 
-                        <li class="nav-parent <?php echo is_active('add_product'); ?><?php echo is_active('view_product'); ?><?php echo is_active('access_property'); ?>">
+                        <li
+                            class="nav-parent <?php echo is_active('add_product'); ?><?php echo is_active('view_product'); ?><?php echo is_active('access_property'); ?>">
                             <a class="nav-link" href="#">
                                 <i class="fa fa-th-large" aria-hidden="true"></i>
                                 <span>Product</span>
@@ -169,7 +175,8 @@
                             </ul>
                         </li>
 
-                        <li class="nav-parent <?php echo is_active('add_penalty'); ?><?php echo is_active('view_penalty'); ?>">
+                        <li
+                            class="nav-parent <?php echo is_active('add_penalty'); ?><?php echo is_active('view_penalty'); ?>">
                             <a class="nav-link" href="#">
                                 <i class="fa fa-ban" aria-hidden="true"></i>
                                 <span>Penalty</span>
@@ -259,7 +266,8 @@
                             </ul>
                         </li>
 
-                        <li class="nav-parent <?php echo is_active('data_report'); ?><?php echo is_active('finance_report'); ?>">
+                        <li
+                            class="nav-parent <?php echo is_active('data_report'); ?><?php echo is_active('finance_report'); ?>">
                             <a class="nav-link" href="#">
                                 <i class="fa fa-bar-chart-o" aria-hidden="true"></i>
                                 <span>Report</span>
@@ -305,7 +313,8 @@
                             </a>
                         </li>
                         <?php endif; ?>
-                        <li class="nav-parent <?php echo is_active('add_user'); ?><?php echo is_active('view_user'); ?>">
+                        <li
+                            class="nav-parent <?php echo is_active('add_user'); ?><?php echo is_active('view_user'); ?>">
                             <a class="nav-link" href="#">
                                 <i class="fa fa-user-o" aria-hidden="true"></i>
                                 <span>User Management</span>
@@ -331,15 +340,15 @@
             </div>
 
             <script>
-                // Maintain Scroll Position
-                if (typeof localStorage !== 'undefined') {
-                    if (localStorage.getItem('sidebar-left-position') !== null) {
-                        var initialPosition = localStorage.getItem('sidebar-left-position'),
-                            sidebarLeft = document.querySelector('#sidebar-left .nano-content');
+            // Maintain Scroll Position
+            if (typeof localStorage !== 'undefined') {
+                if (localStorage.getItem('sidebar-left-position') !== null) {
+                    var initialPosition = localStorage.getItem('sidebar-left-position'),
+                        sidebarLeft = document.querySelector('#sidebar-left .nano-content');
 
-                        sidebarLeft.scrollTop = initialPosition;
-                    }
+                    sidebarLeft.scrollTop = initialPosition;
                 }
+            }
             </script>
 
 
@@ -350,15 +359,15 @@
 
     <section role="main" class="content-body">
 
-    <header class="page-header">
-        <h2><?php echo $title; ?></h2>
+        <header class="page-header">
+            <h2><?php echo $title; ?></h2>
 
-        <div class="right-wrapper text-right">
-            <ol class="breadcrumbs">
-            <?=displayBreadCrumbs()?>
-            </ol>
+            <div class="right-wrapper text-right">
+                <ol class="breadcrumbs">
+                    <?=displayBreadCrumbs()?>
+                </ol>
 
-            <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
-        </div>
+                <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+            </div>
 
-    </header>
+        </header>

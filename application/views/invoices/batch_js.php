@@ -108,3 +108,18 @@
 		}
 	});
 </script>
+
+
+<script>
+  function delete_modal(id, batch_no) {
+    // alert(id);
+    // document.getElementById("#code").textContent=id;
+    $('#code').html(batch_no);
+    $('#batch_no').val(batch_no);
+    $('#bi_id').val(id);
+    jQuery('#delete_batch_invoice_modal').modal('show', {
+      backdrop: 'static'
+    });
+
+  }
+</script>

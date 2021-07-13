@@ -3129,6 +3129,73 @@ class Invoice extends CI_Controller {
 		echo json_encode($result);
 	}
 
+			/*Delete Bactch record*/
+    public function deletedata()
+	{
+		//get post data
+       $id=$this->input->post('bi_id');
+	   $batch_no=$this->input->post('batch_no');
+
+	   //check if user has permission to delete
+	   if(!has_permission($this->session->userdata('user_info')['id'],'delete_property_business')){
+		$alert_type = "alert-danger";
+		$alert_msg = "Sorry";
+		$msg = "Tried To Delete for record with code: $batch_no failed because user doesn't have the right.";
+		// insert into audit tray
+		$info = array(
+			'user_id' => $this->session->userdata('user_info')['id'],
+			'activity' => "Delete Record",
+			'status' => false,
+			'user_category' => "Admin",
+			'description' => "Tried To Delete for record with code: $batch_no failed because user doesn't have the right.",
+			'channel' => "Web",
+		);
+		$audit_tray = audit_tray($info);
+         //end of insert
+
+	   }else {
+		   //if user has permission, allow to delete
+		$response=$this->TaxModel->deleterecords($id);
+	   }
+
+		if($response==true){
+			$response = "success";
+			$alert_type = "alert-success";
+			$alert_msg = "Success";
+			$msg = "Batch invoice record with batch no: $batch_no deleted";
+		// insert into audit tray
+		$info = array(
+			'user_id' => $this->session->userdata('user_info')['id'],
+			'activity' => "Delete Record",
+			'status' => true,
+			'user_category' => "Admin",
+			'description' => "Deleted batch invoice record with batch no: $batch_no",
+			'channel' => "Web",
+		);
+		$audit_tray = audit_tray($info);
+		}else{
+			// insert into audit tray
+		$info = array(
+			'user_id' => $this->session->userdata('user_info')['id'],
+			'activity' => "Delete Record",
+			'status' => false,
+			'user_category' => "Admin",
+			'description' => "Delete for batch invoice record with code: $batch_no failed",
+			'channel' => "Web",
+			);
+			$audit_tray = audit_tray($info);
+			//end of insert
+		}
+		
+		$this->session->set_flashdata(
+			'message', "<div class='alert $alert_type'>
+				<strong>$alert_msg! </strong> $msg
+			</div>"
+		);
+		redirect($_SERVER['HTTP_REFERER']);
+
+	}
+
 	// batch print invoice
 	public function batch_print_invoice(){
 		//set last page session

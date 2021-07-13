@@ -113,7 +113,7 @@
 								<input type="text" class="form-control"  id="other_religion" value="<?=$owner['other_religion']?>" name="other_religion" required="">
 							</div> -->
 							<div class="col-sm-4">
-								<label class="control-label text-sm-right pt-2"><strong>Owner PWD:</strong></label>
+								<label class="control-label text-sm-right pt-2"><strong>Is Owner Person With Disability:</strong></label>
 								<select class="form-control" id="owner_pwd" name="owner_pwd" required="">
 										<option value="">SELECT OPTION</option>
 										<option <?= $owner['owner_pwd'] == "no"?'selected==selected':''?> value="no">No</option>
@@ -512,7 +512,7 @@
 								</select>
 							</div>
 							<div class="col-sm-4" style="display: none;" id="avail_of_telcom_network_yes">
-								<label class="control-label text-sm-right pt-2"><strong>Telcom Network:</strong></label>
+								<label class="control-label text-sm-right pt-2"><strong>Telecom Network:</strong></label>
 								<select data-plugin-selecttwo="" data-plugin-options="{ &quot;minimumResultsForSearch&quot;: 5 }" id="telcom_network" name="telcom_network" class="form-control" required>
 									<option value="">SELECT OPTION</option>
 									<option value="MTN" <?=$residence['avail_of_telcom_network_yes']=='MTN'?'selected == selected':''; ?>>MTN</option>
@@ -569,7 +569,7 @@
 				        </div>
 						<div class="form-group row">
 							<div class="col-sm-4 residential_property" style="display: none;"> 
-								<label class="control-label text-sm-right pt-2"><strong>No of Residents 18 & Above:</strong></label>
+								<label class="control-label text-sm-right pt-2"><strong>No of Residents 18years & Above:</strong></label>
 								<input type="text" class="form-control" name="resident_greater_18" value="<?=$residence['resident_greater_18']?>" required/>
 							</div>
 							<div class="col-sm-4">
@@ -626,7 +626,7 @@
 								</select>
 							</div>
                             <div class="col-sm-4">
-                                <label class="control-label text-sm-right pt-2"><strong>No Of PWD:</strong></label>
+                                <label class="control-label text-sm-right pt-2"><strong>No of Person with Disability:</strong></label>
                                 <input type="number" value="<?=$residence['no_of_pwd']?>" class="form-control" name="no_of_pwd"/>
                             </div>
                             <div class="col-sm-4">
@@ -708,13 +708,13 @@
 					<table class="table table-responsive-md mb-0" id="datatable-default">
 						<thead>
 							<tr>
-								<th>INVOICE NO</th>
+								<th>BILL NO</th>
 								<th>PRODUCT</th>
-								<th>INVOICE AMOUNT</th>
-								<th>DISCOUNT</th>
-								<th>AMOUNT PAID</th>
+								<th>BILL AMOUNT</th>
+								<th>ADJUSTMENT</th>
+								<th>PAID AMOUNT</th>
 								<th>OUTSTANDING AMOUNT</th>
-								<th>ASSESSED</th>
+								<th>VALUATION STATUS</th>
 								<th>CATEGORY 1</th>
 								<th>CATEGORY 2</th>
 								<th>CATEGORY 3</th>

@@ -59,7 +59,7 @@
                   <th class="text-center">CATEGORY</th>
                   <th class="text-center">STATUS</th>
                   <th class="text-center">VALUATION STATUS</th>
-                  <th class="text-center">INVOICE STATUS</th>
+                  <th class="text-center">BILL STATUS</th>
                   <th class="text-center">OWNER</th>
                   <th class="text-center">PRIMARY CONTACT</th>
                   <th class="text-center">CREATED BY</th>

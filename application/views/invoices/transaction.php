@@ -162,7 +162,7 @@
         <table class="table table-bordered table-striped mb-0" id="datatable-tabletools-transactions">
           <thead>
             <tr>
-              <th class="text-center">INVOICE ID</th>
+              <th class="text-center">BILL ID</th>
               <th class="text-center">TRANSACTION ID</th>
               <th class="text-center">GCR NO</th>
               <th class="text-center">TRANSACTION TYPE</th>

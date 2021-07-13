@@ -58,7 +58,7 @@
                   <th class="text-center">BUSINESS NAME</th>
                   <th class="text-center">BUSINESS PRIMARY CONTACT</th>
                   <th class="text-center">E-MAIL</th>
-                  <th class="text-center">INVOICE STATUS</th>
+                  <th class="text-center">BILL STATUS</th>
                   <th class="text-center">OWNER</th>
                   <th class="text-center">PRIMARY CONTACT</th>
                   <th class="text-center">CREATED BY</th>

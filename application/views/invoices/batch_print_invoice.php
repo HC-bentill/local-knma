@@ -55,17 +55,18 @@
                 </div>
               </div>
             </form>
-            <table class="table table-bordered table-striped mb-0" id="datatable-tabletools">
+            <table class="table table-bordered table-striped mb-0" id="datatable-tabletools" >
                 <thead>
                     <tr>
                         <th class="text-center">BATCH NO</th>
                         <th class="text-center">BILL TYPE</th>
+                        <th class="text-center">NO OF BILLS</th>
                         <th class="text-center">CATEGORY 1</th>
                         <th class="text-center">YEAR</th>
                         <th class="text-center">ELECTORAL</th>
                         <th class="text-center">TOWN</th>
                         <th class="text-center">DATETIME CREATED</th>
-                        <th class="text-center" colspan="2">ACTION</th>
+                        <th class="text-center" colspan="3">ACTION</th>
                         <th class="text-center" style="display: none"></th> 
                     </tr>
                 </thead>
@@ -74,6 +75,8 @@
                         <tr>
                             <td><?= $value->batch_no ?></td>
                             <td><?= $value->name ?></td>
+                            <?php $number = get_batch_print_invoice($value->product_id,$value->category1_id,$value->year,$value->area_id,$value->town_id);?>
+                            <td class="text-center"><?php echo $number?></td>
                             <td><?= $value->category1 ?></td>
                             <td><?= $value->year ?></td>
                             <td><?= $value->area ?></td>
@@ -108,6 +111,9 @@
                                     <button type="submit" class="btn btn-success" data-container="body" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Save to PDF/Print with Template"><span class="fa fa-print"></span></button>
                                 </form>
                             </td>
+                            <td>
+                                <button type="submit" class="btn btn-danger" data-container="body" data-toggle="modal" data-target="#delete_batch_invoice_modal" onclick="delete_modal('<?=$value->bi_id?>','<?=$value->batch_no?>')"><span class="fa fa-trash"></span></button>
+                            </td>
                             <td style="display: none"></td>
                         </tr>
                     <?php endforeach; ?>
@@ -119,3 +125,42 @@
   </div>
 
 <!-- end: page -->
+
+ <!-- Modal Form -->
+<!--begin::Modal-->
+<div class="modal fade" id="delete_batch_invoice_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="basicFormm" action="<?=base_url('Invoice/deletedata')?>" method="Post">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                      <b>Delete Confirmation</b>
+                  </h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">
+                          &times;
+                      </span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group row">
+                  <div class="col-sm-12" style="font-size:150%">
+                    Confirm you want to delete batch invoice with code: <span id="code">  </span>
+                    <input type="hidden" name="bi_id" id="bi_id" value="">
+                    <input type="hidden" name="batch_no" id="batch_no" value="">
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">
+                      Close
+                  </button>
+                  <button type="submit" class="btn btn-success">
+                      Submit
+                  </button>
+              </div>
+          </div>
+        <!-- </form> -->
+    </div>
+</div>
+<!--end::Modal-->
