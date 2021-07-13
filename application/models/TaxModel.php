@@ -418,8 +418,7 @@ class TaxModel extends CI_Model
         $this->db->select(
             'i.invoice_no, i.id, i.invoice_amount, i.adjustment_amount,
             i.amount_paid, i.property_id, i.target, i.name, i.owner_phoneno,
-            i.product_id, i.invoice_year, i.penalty_amount,
-            ',           
+             i.product_id, i.invoice_year, i.penalty_amount'
         );
         $this->db->from('vw_invoice as i');
         $this->db->where('i.id', $id);
