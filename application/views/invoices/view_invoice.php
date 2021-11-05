@@ -254,7 +254,7 @@
                                     </div>
                                 </div>
                                 <div class="text-right mr-4">
-                                    <button type="button" data-toggle="modal" data-target="#myModal"
+                                    <button type="button" data-toggle="modal" data-target="#m_modal_1"
                                         class="btn btn-default btn-warning"><i class="fa fa-envelope-open"></i></button>
                                     <!-- <a href="<?=base_url()?>print_invoice2/<?=$result->id ?>/wtemplate" target="_blank" class="btn btn-primary ml-3"><i class="fa fa-print"></i> Save to PDF/Print without template</a>
                     <a href="<?=base_url()?>print_invoice2/<?=$result->id ?>/template" target="_blank" class="btn btn-primary ml-3"><i class="fa fa-print"></i> Save to PDF/Print with template</a> -->
@@ -279,110 +279,74 @@
     </div>
 </div>
 
-<div class="modal" tabindex="-1" role="dialog" id="myModal">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Send Invoice</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <div class="modal-body">
+<!-- MESSAGE MODAL -->
+<!--begin::Modal-->
+<div class="modal fade" id="m_modal_1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="basicFormm" action="<?=base_url("Business/send_invoice_message")?>" method="Post">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                      Invoice
+                  </h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">
+                          &times;
+                      </span>
+                  </button>
+              </div>
+              <div class="modal-body">
 
                 <div id="tab-alert-container">
-                    <div id='tab-alert' class="alert alert-dismissible fade hidden" role='alert'>
-                        <strong id='alert-msg-container'>Test</strong>
-                        <button type="button" id='close-sms-alert' class='close' aria-label='Close'>
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                  <div id='tab-alert' class="alert alert-dismissible fade hidden" role='alert'>
+                    <strong id='alert-msg-container'>Test</strong>
+                    <button type="button" id='close-sms-alert' class='close' aria-label='Close'>
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                </div>
+                
+                <?= $this->session->flashdata('message');?>
+              
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label class="control-label text-sm-right pt-2"><strong>Message Type:</strong></label>
+                        <select data-plugin-selecttwo="" data-plugin-options="{ &quot;minimumResultsForSearch&quot;: 5 }" id="message_type" name="message_type" class="form-control" autocomplete="off" required>
+                        <option value="">SELECT OPTION</option>
+                            <option value="SMS">SMS</option>
+                            <option value="EMAIL">E-MAIL</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6" style="display:none;" id="primary_contact">
+                        <label class="control-label text-sm-right pt-2"><strong>Phone Number:</strong></label>
+                        <input type="text" value="" class="form-control" id="primary_contact" name="primary_contact"  >
+                        <input type="hidden" value="<?=$result->id ?>" name="inv_id">
                     </div>
                 </div>
 
-                <ul class="nav nav-tabs" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" id="sms-tab-btn" href="#sms-tab-content" role="tab"
-                            aria-controls="sms-tab-content" aria-selected="true">Sms</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" id="email-tab-btn" href="#email-tab-content" role="tab"
-                            aria-controls="email-tab-content" aria-selected="false">Email</a>
-                    </li>
-                </ul>
-
-                <div class="tab-content" id="myTabContent">
-
-                    <!-- SMS TAB -->
-                    <div class="tab-pane fade show active" id="sms-tab-content" role="tabpanel"
-                        aria-labelledby="sms-tab-btn">
-
-                        <form id="sms_form">
-                            <?php
-                $primary_contact = "";
-                $secondary_contact = "";
-                if (!is_null($result->owner_phoneno) && !(strcmp(trim($result->owner_phoneno), "") == 0)) {
-                  $primary_contact = $result->owner_phoneno;
-                }
-              ?>
-                            <div class="form-group row">
-                                <label for="primary_contact" class="col-form-label col-sm-3">Primary Contact</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="primary_contact" id="primary_contact"
-                                        value="<?=$primary_contact?>" />
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="secondary_contact" class="col-form-label col-sm-3">Secondary Contact</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="secondary_contact"
-                                        id="secondary_contact" value="<?=$secondary_contact?>" />
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-sm-2 offset-10">
-                                    <button class="btn btn-md btn-primary" type="button" role="button" id="send-sms"
-                                        name="send-sms">Send</button>
-                                </div>
-                            </div>
-
-                        </form>
-                    </div>
-
-                    <!-- EMAIL TAB -->
-                    <div class="tab-pane fade" id="email-tab-content" role="tabpanel" aria-labelledby="email-tab-btn">
-                        <form id="email_form">
-                            <?php
-                $email = "";
-                // if (!is_null($result->email) && !(strcmp(trim($result->email), "") == 0)) {
-                //   $email = $result->email;
-                // }
-              ?>
-                            <div class="form-group row">
-                                <label for="email" class="col-form-label col-sm-3">Email</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="email" id="email" value="<?=$email?>" />
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <div class="col-sm-2 offset-10">
-                                    <button class="btn btn-md btn-primary" type="button" id="send-email"
-                                        name="send-email" role="button">Send</button>
-                                </div>
-                            </div>
-
+                <div class="form-group row" style="display:none;" id="email">
+                    <div class="col-sm-6" >
+                        <label class="control-label text-sm-right pt-2"><strong>Email:</strong></label>
+                        <input type="text" value="" class="form-control" id="email" name="email" >
                     </div>
                 </div>
-
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-            </div>
-        </div>
+                
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">
+                      Close
+                  </button>
+                  <button type="btn" class="btn btn-success" id='btnn' name="btnn">
+                      Submit
+                    </button>
+              </div>
+          </div>
+        </form>
     </div>
 </div>
+<!--end::Modal-->
+
+
 <style type="text/css">
 .nav-tabs li .nav-link,
 .nav-tabs li .nav-link:hover {

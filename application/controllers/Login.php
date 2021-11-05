@@ -7,6 +7,14 @@ class Login  extends CI_Controller {
     {
         parent::__construct();
         $this->load->model('LoginModel');
+		$this->load->model('Channelmodel');
+
+
+		if($this->Channelmodel->inactive_channel()){
+			$this->load->view('permission/error');
+			$this->session->unset_userdata('user_info');
+			$this->session->sess_destroy();
+		}
 
     }
 

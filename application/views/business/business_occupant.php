@@ -77,7 +77,7 @@
 <!--begin::Modal-->
 <div class="modal fade" id="m_modal_1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form id="basicFormm" action="<?=base_url("Business/send_business_occ_message")?>" method="Post">
+        <form id="basicFormm" action="<?=base_url("Business/send_message")?>" method="Post">
           <div class="modal-content">
               <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">
@@ -91,7 +91,7 @@
               </div>
               <div class="modal-body">
 
-              <div id="tab-alert-container">
+                <div id="tab-alert-container">
                   <div id='tab-alert' class="alert alert-dismissible fade hidden" role='alert'>
                     <strong id='alert-msg-container'>Test</strong>
                     <button type="button" id='close-sms-alert' class='close' aria-label='Close'>
@@ -113,14 +113,14 @@
                         </select>
                     </div>
                 </div>
-                
+
                 <div class="form-group row">
                     <div class="col-sm-6">
                         <label class="control-label text-sm-right pt-2"><strong>Email:</strong></label>
-                        <input type="text" class="form-control" id="email" name="email" readonly>
+                        <input type="text" class="form-control" id="email" name="email" >
                     </div>
                 </div>
-
+                
                 <div class="form-group row">
                     <div class="col-sm-12">
                         <label class="control-label text-sm-right pt-2" id="reason_text"><strong>Message:</strong></label>
@@ -132,7 +132,7 @@
                   <button type="button" class="btn btn-default" data-dismiss="modal">
                       Close
                   </button>
-                  <button type="button" class="btn btn-success" id="btnn">
+                  <button type="btn" class="btn btn-success" id='btnn' name="btnn">
                       Submit
                     </button>
               </div>

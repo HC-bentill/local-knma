@@ -13,6 +13,11 @@ class Invoice extends CI_Controller {
 		$this->load->helper('url');
 		$this->load->helper('html');
 		$this->load->helper('mixins');
+		$this->load->model('Channelmodel');
+
+		if($this->Channelmodel->inactive_channel()){
+			redirect(base_url('Permission/error'));
+		}
 
 
 		if($this->session->userdata('user_info')['id'] == ''){
@@ -660,6 +665,15 @@ class Invoice extends CI_Controller {
 			);
 			$this->load_page($data);
 		}
+	}
+	//resend otp
+	public function get_otp() {
+		$invoice_no = $this->input->post('invoice_no');		
+		$result = $this->TaxModel->get_otp_code($invoice_no);
+		// echo $result['code'];
+		echo json_encode(array('code' => $result['code']));
+
+		
 	}
 
 	// process payment

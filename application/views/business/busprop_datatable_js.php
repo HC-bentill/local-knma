@@ -71,7 +71,9 @@
 
 	}).apply(this, [jQuery]);
 </script>
-<script type="text/javascript">
+
+
+<!-- <script type="text/javascript">
 //used for handling sending of messages
 $(function() {
 	var alertCtrlObj = $('#tab-alert'),
@@ -136,4 +138,4 @@ $(function() {
 	});
 
 });
-</script>
+</script> -->

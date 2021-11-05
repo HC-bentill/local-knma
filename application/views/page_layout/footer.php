@@ -381,6 +381,12 @@
     <?php if ($title == "Edit Food Vendor") { ?>
       <?php $this->load->view("food_vendor/foodload_js.php"); ?>
     <?php } ?>
+    <?php if (isset($title) & $title == "Add Signage Post" || $title == "Edit Signage Post" || $title == "Signage") { ?>
+      <?php $this->load->view("food_vendor/signage_js.php"); ?>
+    <?php } ?>
+    <?php if (isset($title) & $title == "Add Telecom Mast" || $title == "Edit Telecom Mast" || $title == "Telecom") { ?>
+      <?php $this->load->view("telecom/telecom_js.php"); ?>
+    <?php } ?>
     <?php if (isset($title) & $title == "View Product") { ?>
       <?php $this->load->view('product/product_datatable_js.php') ?>
     <?php } ?>

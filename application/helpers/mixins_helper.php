@@ -198,6 +198,7 @@ function send_sms($phone, $message) {
     $url .= $phone . "&source=".SYSTEM_ID."&message=" . rawurlencode($message);
 
     return file_get_contents($url);
+    return true; 
 }
 
 // area councils
@@ -321,6 +322,66 @@ function get_towncode($id) {
     return $query = $CI->db->get()->row()->code;
 
 }
+
+function get_outdoor_type_letter($id){
+    // $CI = & get_instance();
+    // $data = array(
+    //     'outdoor_type' => $id
+    // );
+    // $CI->db->select('UPPER(LEFT(outdoor_type, 1)) AS outdoor_type');
+    // $CI->db->from('signage');
+    // $CI->db->where($data);
+    // $CI->db->limit('1');
+    // return $query = $CI->db->get()->row()->outdoor_type;
+    if ($id == "single" ){
+        return "S";
+    }elseif ($id == "double"){
+        return "D";
+    }else{
+       return "T";
+    }
+}
+
+
+// get outdoor owner code
+function get_ownercode($id) {
+    $CI = & get_instance();
+    $data = array(
+        'id' => $id
+    );
+    $CI->db->select('code');
+    $CI->db->from('outdoorvendors');
+    $CI->db->where($data);
+    return $query = $CI->db->get()->row()->code;
+
+}
+
+// get telecomvendor code
+function get_vendor($id) {
+    $CI = & get_instance();
+    $data = array(
+        'id' => $id
+    );
+    $CI->db->select('code');
+    $CI->db->from('telecomvendors');
+    $CI->db->where($data);
+    return $query = $CI->db->get()->row()->code;
+
+}
+
+// get network code
+function get_network($id) {
+    $CI = & get_instance();
+    $data = array(
+        'id' => $id
+    );
+    $CI->db->select('code');
+    $CI->db->from('telecom');
+    $CI->db->where($data);
+    return $query = $CI->db->get()->row()->code;
+
+}
+
 
 // get town code
 function get_town_name($id) {

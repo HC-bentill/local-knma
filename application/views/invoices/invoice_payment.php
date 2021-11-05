@@ -150,6 +150,11 @@
                             <div class="col-sm-4 otp" style="display:none;">
                               <label class="control-label text-sm-right pt-2"><strong>Enter OTP:</strong></label>
                               <input type="text" class="form-control" id="otp" name="otp" required>
+                              <!-- <input style="font-size:1.0rem" class="btn btn-primary form-control resend-payment-btn" value="Resend OTP" id="resend_btn" type="button"> -->
+                              <button style="font-size:1.0rem;position:absolute;margin-top:18px;width:50%;margin-left:20%;" 
+                              class="btn btn-primary" data-container="body" data-toggle="modal" data-target="#resend_otp_modal" id="resend_otp_modal_toggle">Resend OTP</button>
+                              <button style="font-size:1.0rem;position:absolute;margin-top:18px;width:50%;margin-left:20%;" 
+                              class="btn btn-warning hidden" data-container="body" data-toggle="modal" data-target="#retrieve_otp_modal" id="retrieve_otp_modal_toggle">Retrieve OTP</button>
                             </div>
                             <div class="col-sm-4 cheque" style="display:none;">
                               <label class="control-label text-sm-right pt-2"><strong>Photo:</strong></label>
@@ -168,11 +173,13 @@
                           <div class="form-group row">
                              <label class="col-sm-4 control-label text-sm-right pt-2">&nbsp;</label>
                              <div class="col-sm-4">
-                                 <input style="font-size:1.0rem" class="btn btn-primary form-control inv-payment-btn" value="Process Payment" id="btn" type="button">
+                                 <input style="font-size:1.0rem;" class="btn btn-success form-control inv-payment-btn" value="Process Payment" id="btn" type="button">
                              </div>
                              
                            </div>
                         </form>
+                        <!-- <button type="submit" class="btn btn-danger" data-container="body" data-toggle="modal" data-target="#resend_otp" onclick="resend_otp('<?=$result['invoice_no']?>')"><span class="fa fa-repeat"></span>  Resend OTP</button> -->
+
   						</div>
   					</section>
                   </div>
@@ -181,3 +188,66 @@
         </section>
     </div>
 </div>
+
+
+<!-- resend otp -->
+<!--begin::Modal-->
+<div class="modal fade" id="resend_otp_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">
+                          &times;
+                      </span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group row">
+                  <div class="col-sm-12" style="font-size:150%">
+                    <b id="confirm_otp_text"></b>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                  <button id="resend_btn" type="button" class="btn btn-primary resend-payment-btn">
+                      Confirm
+                  </button>
+              </div>
+          </div>
+       
+    </div>
+</div>
+<!--end::Modal-->
+
+
+<!-- retrieve modal -->
+
+<div class="modal fade" id="retrieve_otp_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">
+                          &times;
+                      </span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group row">
+                  <div class="col-sm-12" style="font-size:150%">
+                    <b id="retrieve_otp_text"></b>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                  <button id="retrieve_btn" type="button" class="btn btn-warning">
+                      Use OTP code
+                  </button>
+              </div>
+          </div>
+       
+    </div>
+</div>
+<!--end::Modal-->
+

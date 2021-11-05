@@ -264,3 +264,13 @@ $route['streams_month_revenue'] = 'Dashboard/streams_month_revenue';
 $route['streams_lastmonth_revenue'] = 'Dashboard/streams_lastmonth_revenue';
 $route['streams_last_3_month_revenue'] = 'Dashboard/streams_last_3_month_revenue';
 $route['streams_last_6_month_revenue'] = 'Dashboard/streams_last_6_month_revenue';
+
+//telecom routes
+$route['telecom'] = 'Telecom/telecom';
+$route['add_telecom'] = 'Telecom/add_telecom';
+
+//invoice email
+$route['invoice_email'] = 'Business/invoice_email';
+
+
+

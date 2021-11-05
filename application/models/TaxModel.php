@@ -1001,6 +1001,16 @@ class TaxModel extends CI_Model
         return $this->db->insert_id();
     }
 
+    public function get_otp_code ($id) {
+        $this->db->select('code');
+        $this->db->from('otp');
+        $this->db->where('invoice_no', $id);
+        $this->db->order_by('id','desc');
+        $this->db->limit('1');
+        $otp_data = $this->db->get()->row_array();
+        return ($otp_data);
+    }
+
     public function update_otp($status, $id)
     {
         $where = array('id' => $id);

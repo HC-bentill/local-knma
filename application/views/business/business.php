@@ -79,7 +79,7 @@
 <!--begin::Modal-->
 <div class="modal fade" id="m_modal_1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form id="basicFormm" action="<?=base_url("Business/send_business_message")?>" method="Post">
+        <form id="basicFormm" action="<?=base_url("Business/send_message")?>" method="Post">
           <div class="modal-content">
               <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">
@@ -119,7 +119,7 @@
                 <div class="form-group row">
                     <div class="col-sm-6">
                         <label class="control-label text-sm-right pt-2"><strong>Email:</strong></label>
-                        <input type="text" class="form-control" id="email" name="email" readonly>
+                        <input type="text" class="form-control" id="email" name="email" >
                     </div>
                 </div>
                 

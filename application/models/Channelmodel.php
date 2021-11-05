@@ -35,4 +35,11 @@ class Channelmodel extends CI_Model
 		$status = $this->db->query("SELECT active FROM channels WHERE channelid = $a")->row_array()['active'];
 		return($status);
 	}	
+
+//	check inactive channel status
+	public function inactive_channel(){
+		 $channel = $this->db->query("select active from channels where active = 0 and channelname = 'WEB'")->result();
+		 return($channel);
+
+	}	
 }

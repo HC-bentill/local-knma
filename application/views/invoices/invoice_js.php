@@ -328,10 +328,11 @@
 
   function displayFinishPaymentButton(){
     $('#basicform input.inv-payment-btn').val('Finish Payment');
+    $('#basicform input.resend-payment-btn').val('Resend OTP');
+    $('#basicform input.inv-payment-btn').val('Finish Payment');
     $("#basicform input.inv-payment-btn").attr("disabled", false);  
     $('#momo-status').text('Mobile Money payment has been completed. Click ok "Finish Payment to complete transaction."'); 
-    $('#momo-instructions').text('');
-           
+    $('#momo-instructions').text('');         
   }
 
   function checktxstatus(clienttransid){
@@ -360,6 +361,7 @@
       }, 5000)
   }
 
+  //send otp
 	$('#basicform input.inv-payment-btn').click(function(e){
 		e.preventDefault();
 		let validated = $('#basicform').valid();
@@ -380,6 +382,7 @@
 				}	else {
 					phone_no = $('.pay-invoice input[name=phone_no]').val();
 				}
+        
 				ajaxHandler(null, "<?php echo base_url().'Invoice/send_otp';?>", "POST",
 					{'phone_no': phone_no,'invoice_no': $('#invoice_no').val(), 'amount': amount},
 					function(result){
@@ -461,6 +464,103 @@
       }
     };
   });
+
+  $(document).ready(function(){
+    localStorage.setItem('otp_reset_count',0);
+  });
+
+  
+  $('#resend_otp_modal_toggle').click(function(){
+    $('#confirm_otp_text').html('Are you sure you want to Resend OTP ?');
+  });
+
+
+
+
+  //resend otp
+  $('#resend_btn').click(function(e){
+		e.preventDefault();
+
+    
+		let otp_reset_count = localStorage.getItem('otp_reset_count');
+
+		if(otp_reset_count < 2){
+    jQuery('#resend_otp_modal').modal('show', {
+      backdrop: 'static'
+    });
+	
+		let paymode = $('#basicform select[name=payment_mode]').val();
+		let buttonval = $('#basicform input.inv-payment-btn').val();
+
+
+			if(paymode !== 'Mobile Money'){
+				let amount=0;
+				if($('#amount_paid').closest('.pp').css('display') === 'block'){
+					amount = 'GHS ' + $('#amount_paid').val() + ' as part payment of GHS ' + $('#invoice_amountt').val();
+				} else {
+					amount = 'GHS ' + $('#invoice_amountt').val();
+				}
+				let target = $('input[name=target]').val() || 0;
+				let phone_no;
+				if($('select[name=paid_by]').val() === "registered"){
+          phone_no = $('input[name=contactno]').val();
+				}	else {
+					phone_no = $('.pay-invoice input[name=phone_no]').val();
+				}
+
+				ajaxHandler(null, "<?php echo base_url().'Invoice/send_otp';?>", "POST",
+					{'phone_no': phone_no,'invoice_no': $('#invoice_no').val(), 'amount': amount},
+					function(result){
+						if(result.status === "success" && result.data.code == '1701'){
+              $('#confirm_otp_text').html('OTP has been Resent Successfully');                
+							$('.pay-invoice .otp').css('display', 'inline');
+						}else{
+              $('#confirm_otp_text').html('An error occured');
+							$('#error_notif').css('display', 'block');
+						  $('#error_notif').html(result.data.message);
+						}
+					}
+				);
+        
+          
+
+			}
+			otp_reset_count = otp_reset_count + 1;
+			
+			localStorage.setItem('otp_reset_count',otp_reset_count);
+		}
+		else{
+      
+
+      ajaxHandler(null, "<?php echo base_url().'Invoice/get_otp';?>", "POST",
+					{'invoice_no': $('#invoice_no').val()},
+					function(result){
+						if(result.status === "success"){
+              $('#resend_otp_modal_toggle').css('display', 'none');
+              $('#resend_otp_modal').modal('hide')  
+              $('#retrieve_otp_modal_toggle').removeClass("hidden");                  
+              $('#retrieve_otp_text').html('OTP code: ' + result.data.code);             
+              $('#retrieve_btn').html('Use OTP code');
+              $('#retrieve_btn').click(function () { 
+               $('#otp').val(result.data.code);
+               $('#retrieve_otp_text').html('OTP used Successfully');
+               $('#retrieve_btn').prop("disabled", true);
+               $('#retrieve_otp_modal_toggle').addClass("hidden");
+               })
+			        localStorage.setItem('otp_reset_count',0);
+						}else{
+              $('#confirm_otp_text').html('An error occured');
+						}
+      });;
+          jQuery('#resend_otp_modal').modal('show', {
+	            backdrop: 'static'
+	          });
+
+		
+		}
+
+});
+  
 </script>
 <script type="text/javascript">
 	$('#adj_btn').click(function(e){
@@ -738,3 +838,19 @@
     });
 });
 </script>
+
+
+<script>
+  function resend_otp(invoice_id) {
+    alert(invoice_id);
+    // document.getElementById("#code").textContent=id;
+    $('#inv').html(invoice_id);
+    // $('#batch_no').val(batch_no);
+    // $('#bi_id').val(id);
+    jQuery('#resend_otp').modal('show', {
+      backdrop: 'static'
+    });
+
+  }
+</script>
+

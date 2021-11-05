@@ -104,3 +104,25 @@
 
     });
 </script>
+
+<script type="text/javascript">
+   $('#message_type').on('change',function(){
+        if( $(this).val()==="EMAIL"){
+        $("#email").show()
+        }
+        else{
+        $("#email").hide()
+        }
+    });
+</script>
+
+<script type="text/javascript">
+   $('#message_type').on('change',function(){
+        if( $(this).val()==="SMS"){
+        $("#primary_contact").show()
+        }
+        else{
+        $("#primary_contact").hide()
+        }
+    });
+</script>

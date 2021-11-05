@@ -5,7 +5,7 @@
       <section class="card card-featured-bottom card-featured-primary">
         <div class="card-body">
           <div class="alert alert-danger">
-            <strong>Sorry! </strong> You don't have the permision to access this page. Contact the system administrator for further info.
+           <h6 class="text-danger"> <strong>Sorry! </strong> You don't have the permision to access this page. Contact the system administrator for further info.</h6>
           </div>
         </div>
       </section>

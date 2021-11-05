@@ -122,6 +122,26 @@
                                 </li>
                             </ul>
                         </li>
+                        
+                        <li class="nav-parent <?php echo is_active('add_telecom'); ?><?php echo is_active('view_telecom'); ?>">
+                            <a class="nav-link" href="#">
+                                <i class="fa fa-rss" aria-hidden="true"></i>
+                                <span>Telecommunication</span>
+                            </a>
+                            <ul class="nav nav-children">
+                                <li class="<?php echo is_active('add_telecom'); ?>">
+                                    <a class="nav-link" href="<?=base_url()?>add_telecom">
+                                        Create
+                                    </a>
+                                </li>
+                                <li class="<?php echo is_active('view_telecom'); ?>">
+                                    <a class="nav-link" href="<?=base_url()?>telecom">
+                                        View
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
 
                         <li class="<?php echo is_active('property_owner'); ?>">
                             <a class="nav-link" href="<?=base_url()?>property_owner">
