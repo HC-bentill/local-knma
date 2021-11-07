@@ -181,6 +181,14 @@ $("#sel_area").change(function(){
                     });
                 }
 
+<<<<<<< HEAD
+=======
+             var options = {
+                 center: new google.maps.LatLng(5.62526083, -0.23407540),
+                 zoom: 12,
+                 mapTypeId: google.maps.MapTypeId.ROADMAP, // ROADMAP HYBRID
+                 //styles: []
+>>>>>>> 10327c51320015d28a09468b58fb2a94495770b6
 
         console.log(locations);
 
@@ -293,11 +301,19 @@ $("#sel_area").change(function(){
 
         console.log(locations);
 
+<<<<<<< HEAD
          var options = {
              center: new google.maps.LatLng(5.62526083, -0.23407540),
              zoom: 12,
              mapTypeId: google.maps.MapTypeId.ROADMAP, // ROADMAP HYBRID
              //styles: []
+=======
+             var options = {
+                 center: new google.maps.LatLng(5.62526083, -0.23407540),
+                 zoom: 12,
+                 mapTypeId: google.maps.MapTypeId.ROADMAP, // ROADMAP HYBRID
+                 //styles: []
+>>>>>>> 10327c51320015d28a09468b58fb2a94495770b6
 
 
 
