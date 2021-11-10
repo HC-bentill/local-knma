@@ -762,7 +762,270 @@ class Invoice extends CI_Controller {
 		}
 	}
 
+	//process payment code from awma
 	public function process_payment(){
+		$invoice_id = $this->input->post('invoice_id');
+		$invoice_no = $this->input->post('invoice_number');
+		$target = !empty($this->input->post('target')) ? $this->input->post('target') : 0;
+		$payment_mode = $dat->{'paymentMode'};
+		$actual_invoice_amount = (float)$this->input->post('actual_invoice_amount');
+		$valid = $this->validateOTP();
+
+		$invoice_amount_paid = (float)$this->input->post('amount_paid_so_far');
+		// check if its a part payment or full payment
+		if($dat->{'paymentType'} == "Full Payment"){
+			$amount_paid = $actual_invoice_amount - $invoice_amount_paid;
+		}else{
+			$amount_paid = (float)$dat->{'amountPaid'};//part payment
+		}
+
+		if( $valid == 'success' ){
+			$product = $this->input->post('product');
+			$property_id = !empty($this->input->post('property_id')) ? $this->input->post('property_id') : 0;
+			$actual_invoice_amount = (float)$this->input->post('actual_invoice_amount');
+			$transaction_id = random_string('numeric',10);
+			$datetime = date("Y-m-d H:i:s");
+			$payment_mode = $this->input->post('payment_mode');
+
+			if($payment_mode == "Cheque"){
+				//property image upload
+				//configure upload
+				$config['upload_path'] = './upload/cheque/';
+				$config['allowed_types'] = 'gif|jpg|png|jpeg';
+				$config['max_size'] = '1000';
+
+				$this->load->library('upload', $config);
+
+				if (!$this->upload->do_upload('userfile')) {
+					
+				} else {
+					$file_data = $this->upload->data();
+
+					$tran['image_path'] = '/upload/cheque/';
+					$tran['cheque_image'] = $file_data['file_name'];
+				}
+			}else {
+				$new_amount_paid = $invoice_amount_paid + $amount_paid;
+			}
+
+			// get amount already paid //target == 0 is for onetime invoice
+			//$invoice_amount_paid = ($target == 0) ? $this->input->post('amount_paid_so_far') : $this->TaxModel->get_invoice_amount_paid($invoice_id);
+			$invoice_amount_paid = (float)$this->input->post('amount_paid_so_far');
+			//update amount paid in db
+
+			// check if its a part payment or full payment
+			if($this->input->post('payment_type') == "Full Payment"){
+				$amount_paid = $actual_invoice_amount - $invoice_amount_paid;
+			}else{
+				$amount_paid = (float)$this->input->post('amount_paid');//part payment
+			}
+
+			if($payment_mode == "Cheque"){
+				$new_amount_paid = $invoice_amount_paid;
+			}else {
+				$new_amount_paid = $invoice_amount_paid + $amount_paid;
+			}
+			// where
+			$where = array('id' => $invoice_id);
+
+			// data to be updated
+			$data = array('amount_paid' => number_format((float)$new_amount_paid , 2, '.', '') );
+
+			// pass data and where clause to the model
+			if($target == 0){
+				$update_invoice_amount_paid = $this->TaxModel->update_invoice_options($data,$where);
+			}else{
+				$update_invoice_amount_paid = $this->TaxModel->update_invoice($data,$where);
+			}
+
+			// update invoice status if $new_amount_paid <= $actual_invoice_amount or not
+			//if(number_format((float)$actual_invoice_amount , 2, '.', '') <= number_format((float)$new_amount_paid , 2, '.', '') ){
+
+			if($new_amount_paid > $invoice_amount_paid){
+				$tran['status'] = 1;
+			}else {
+				$tran['status'] = 0;
+			}
+
+		// get transaction data and insert in transactions table
+			$tran['invoice_id'] = $this->input->post('invoice_id');
+			$tran['transaction_id'] = $transaction_id;
+			$tran['payment_mode'] = $this->input->post('payment_mode');
+			$tran['gcr_no'] = $this->input->post('gcr_no');
+			$tran['valuation_no'] = $this->input->post('valuation_no');
+			// check payment mode type
+			if($this->input->post('payment_mode') == "Mobile Money"){
+				$tran['mobile_operator'] = $this->input->post('mobile_operator');
+				$tran['momo_number'] = $this->input->post('momo_number');
+				$tran['momo_transaction_id'] = $this->input->post('momo_transaction_id');
+			}else if($this->input->post('payment_mode') == "Cheque"){
+				$tran['bank_name'] = $this->input->post('bank_name');
+				$tran['bank_branch'] = $this->input->post('bank_branch');
+				$tran['cheque_name'] = $this->input->post('cheque_name');
+				$tran['cheque_no'] = $this->input->post('cheque_no');
+			}else if($this->input->post('payment_mode') == "Mobile Money Number"){
+				$tran['sender_momo_number'] = $this->input->post('sender_momo_number');
+				$tran['sender_transaction_id'] = $this->input->post('sender_transaction_id');
+			}else{
+
+			}
+			$tran['payment_type'] = $this->input->post('payment_type');
+
+			// check if its a part payment or full payment
+			if($this->input->post('payment_type') == "Full Payment"){
+				$tran['amount'] = $actual_invoice_amount - $invoice_amount_paid;
+			}else{
+				$tran['amount'] = $this->input->post('amount_paid');
+			}
+			$tran['paid_by'] = $this->input->post('paid_by');
+			// check who is making the payment
+			if($this->input->post('paid_by') == "others"){
+				$primary_contact = $this->input->post('phone_no');
+				$tran['payer_name'] = $this->input->post('name');
+				$tran['payer_phone'] =  $this->input->post('phone_no');
+			}else{
+				if($target == 1){
+					$owner = business_owner_details($property_id);
+					$primary_contact = $owner['primary_contact'];
+					$tran['payer_name'] = $owner['firstname'].' '.$owner['lastname'];
+					$tran['payer_phone'] =  $owner['primary_contact'];
+				}else if($target == 2){
+					$owner = business_owner_details($property_id);
+					$primary_contact = $owner['primary_contact'];
+					$tran['payer_name'] = $owner['firstname'].' '.$owner['lastname'];
+					$tran['payer_phone'] =  $owner['primary_contact'];
+
+				}else if($target == 3){
+					$owner = business_occ_owner_details($property_id);
+					$primary_contact = $owner['primary_contact'];
+					$tran['payer_name'] = $owner['firstname'].' '.$owner['lastname'];
+					$tran['payer_phone'] =  $owner['primary_contact'];
+				}else if($target == 0){
+					$primary_contact = $this->input->post('phone_no');
+					$tran['payer_name'] =  $this->input->post('fullname');
+					$tran['payer_phone'] =  $this->input->post('phonenumber');
+				}
+			}
+
+			// get owner phone no
+			$tran['fromIO'] = ($target == 0) ? 1 : 0;
+			$tran['channel'] = "Web";
+			$tran['created_by'] = $this->session->userdata('user_info')['id'];
+			$tran['collected_by'] = "admin";
+
+			//insert into transactions table
+			$insert_transaction = $this->TaxModel->insert_transaction($tran);
+
+			if($insert_transaction){
+				// insert into audit tray
+				$info = array(
+					'user_id' => $this->session->userdata('user_info')['id'],
+					'activity' => "Made a payment",
+					'status' => true,
+					'description' => "Made a $payment_mode payment of GHs $amount_paid for $invoice_no",
+					'user_category' => "admin",
+					'channel' => "Web"
+				);
+				$audit_tray = audit_tray($info);
+				//end of insert
+
+				//send sms after successful payment
+				if($this->input->post('paid_by') == "others"){
+					$primary_contact = $this->input->post('phone_no');
+					
+					if($target == 1){
+						$owner = business_owner_details($property_id);
+						$owner_contact = $owner['primary_contact'];
+					}else if($target == 2){
+						$owner = business_owner_details($property_id);
+						$owner_contact = $owner['primary_contact'];
+	
+					}else if($target == 3){
+						$owner = business_occ_owner_details($property_id);
+						$owner_contact = $owner['primary_contact'];
+					}else if($target == 0){
+						$owner_contact = $this->input->post('phone_no');
+					}
+
+					// send sms to rate payer
+					$balance = number_format((float)$actual_invoice_amount - $new_amount_paid , 2, '.', ',');
+					$sms_message = "Your $payment_mode payment of GHS $amount_paid to ". SYSTEM_ID ." for $product has been completed at $datetime";
+					$sms_message .= ($payment_mode == "Cheque") ? " with Pending status." : ". Your outstanding amount is $balance.";
+					$sms_message .= "\nTransaction ID: $transaction_id";
+					$phone_formatted = ((strlen($owner_contact) > 10) && substr($owner_contact, 0, 3) == '233') ? $owner_contact : '233' . substr($owner_contact, 1, strlen($owner_contact));
+					send_sms($phone_formatted, $sms_message);
+
+					//send sms to owner/caretaker
+					$balance = number_format((float)$actual_invoice_amount - $new_amount_paid , 2, '.', ',');
+					$sms_message = "Your $payment_mode payment of GHS $amount_paid to ". SYSTEM_ID ." for $product has been completed at $datetime";
+					$sms_message .= ($payment_mode == "Cheque") ? " with Pending status." : ". Your outstanding amount is $balance.";
+					$sms_message .= "\nTransaction ID: $transaction_id";
+					$phone_formatted = ((strlen($primary_contact) > 10) && substr($primary_contact, 0, 3) == '233') ? $primary_contact : '233' . substr($primary_contact, 1, strlen($primary_contact));
+					send_sms($phone_formatted, $sms_message);
+
+				}else{
+					$balance = number_format((float)$actual_invoice_amount - $new_amount_paid , 2, '.', ',');
+					$sms_message = "Your $payment_mode payment of GHS $amount_paid to ". SYSTEM_ID ." for $product has been completed at $datetime";
+					$sms_message .= ($payment_mode == "Cheque") ? " with Pending status." : ". Your outstanding amount is $balance.";
+					$sms_message .= "\nTransaction ID: $transaction_id";
+					$phone_formatted = ((strlen($primary_contact) > 10) && substr($primary_contact, 0, 3) == '233') ? $primary_contact : '233' . substr($primary_contact, 1, strlen($primary_contact));
+					send_sms($phone_formatted, $sms_message);
+				}
+				
+				
+				$this->session->set_flashdata('message', "<div class='alert alert-success'>
+						<strong>Success! </strong> Your Form Was Submitted.
+				</div>");
+			}else{
+				$this->session->set_flashdata('message', "<div class='alert alert-danger'>
+							 <strong>Sorry! </strong>Business Occupant Already Accessed.
+						 </div>");
+			}
+		}
+		else if( $valid == 'expired' ){
+			// insert into audit tray
+			$info = array(
+				'user_id' => $this->session->userdata('user_info')['id'],
+				'activity' => "Made a payment",
+				'status' => true,
+				'description' => "Made a $payment_mode payment of GHs $amount_paid for $invoice_no but OTP is expired",
+				'user_category' => "admin",
+				'channel' => "Web"
+			);
+			$audit_tray = audit_tray($info);
+			//end of insert
+			$this->session->set_flashdata(
+				'message', "<div class='alert alert-danger'>
+					<strong>Sorry! </strong>Payment unsuccessful due to expired OTP code.Please try again
+				</div>");
+		}
+		else if( $valid == 'invalid' ){
+			// insert into audit tray
+			$info = array(
+				'user_id' => $this->session->userdata('user_info')['id'],
+				'activity' => "Made a payment",
+				'status' => true,
+				'description' => "Made a $payment_mode payment of GHs $amount_paid for $invoice_no but OTP is invalid",
+				'user_category' => "admin",
+				'channel' => "Web"
+			);
+			$audit_tray = audit_tray($info);
+			//end of insert
+			$this->session->set_flashdata('message', "<div class='alert alert-danger'>
+						 <strong>Sorry! </strong>Payment unsuccessful due to invalid OTP code.Please try again
+					 </div>");
+		}
+		if($target == 0){
+			redirect(base_url('onetime_invoice_payment/'.$invoice_no));
+		}
+		else {
+			redirect(base_url('invoice_payment/'.$invoice_id));
+		}
+
+	}
+
+	//original code replaced with awma from above
+	public function process_payment_old(){
 		$invoice_id = $this->input->post('invoice_id');
 		$invoice_no = $this->input->post('invoice_number');
 		$target = !empty($this->input->post('target')) ? $this->input->post('target') : 0;
