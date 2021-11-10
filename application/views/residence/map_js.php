@@ -83,6 +83,7 @@ $("#sel_area").change(function(){
             dataType: 'json',
             success: function (result) {
                 // display total records
+                console.log(result.length)
                if(isNaN(result.length)){
                     $('#totalCount').html("<b style='font-size: 25px; color: red'> Record not Found</<b>");
                 }else{

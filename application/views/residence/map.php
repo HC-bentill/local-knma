@@ -32,10 +32,15 @@
                 <b class="textColor">Year</b>
                 <div class="">
                   <select name="year" id="year" class="form-control">
-                    <option><?= -1 + (int)date('Y') ?></option>
+                    <!-- <option><?= -1 + (int)date('Y') ?></option>
                     <?php for ($i = 0; $i < 6; $i++): ?>
                       <option><?php echo $i + (int)date('Y') ?></option>
-                    <?php endfor; ?>
+                    <?php endfor; ?> -->
+                    <option value="">Select Year</option> 
+                        <?php $current_year = date("Y");?>
+                        <?php for($i=2017; $i<=$current_year; $i++): ?>
+                          <option value="<?=$i?>"><?=$i?></option>
+                        <?php endfor; ?> 
                   </select>
                 </div>
                 <hr>
