@@ -11,6 +11,8 @@
 				processing: true,
 				serverSide: true,
 				serverMethod: 'post',
+				dom: 'Bfrtip',
+				buttons: ['copy', 'csv', 'excel', 'pdf', 'print' ],
 				ajax: {
 					'url':'<?=base_url()?>Business/businessPropertyList',
 					"data": function ( d ) {

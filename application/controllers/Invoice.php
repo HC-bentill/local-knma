@@ -223,6 +223,7 @@ class Invoice extends CI_Controller {
         $category6 = $this->input->post('category6');
         $category5s = $this->input->post('category5');
         $category6s = $this->input->post('category6');
+		$payment_type = $this->input->post('payment_type');
         $keyword = $this->input->post('keyword');
 
         $data = array(
@@ -239,6 +240,7 @@ class Invoice extends CI_Controller {
             'category6' => $category6,
             'category5s' => $category5s,
             'category6s' => $category6s,
+			'payment_type' => $payment_type,
             'keyword' => $keyword,
             'products' => $this->TaxModel->get_all_products()
         );
@@ -2447,6 +2449,7 @@ class Invoice extends CI_Controller {
 		// Set post parameters;
 		$year = "";
 		$product = "";
+		$payment_type = "";
 		$category1 = 0;
 		$category2 = 0;
 		$category3 = 0;
@@ -2468,6 +2471,7 @@ class Invoice extends CI_Controller {
 			'category6' => 0,
 			'category5s' => 0,
 			'category6s' => 0,
+			'payment_type' => "",
 			'keyword' => "",
 			'products' => $this->TaxModel->get_all_products()
 		);

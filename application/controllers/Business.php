@@ -9,6 +9,7 @@ class Business extends CI_Controller {
 		$this->load->model('Business_model','res');
 		$this->load->model('Channelmodel');
 		$this->load->model('TaxModel');
+		$this->load->model('Residence_model');
 		$this->load->helper('url');
 		$this->load->helper('html');
 		$this->load->helper('mixins');
@@ -204,7 +205,7 @@ class Business extends CI_Controller {
 				'residence' => $property_details,
 				'construction' => $this->res->get_cons(),
 				'roof' => $this->res->get_roof(),
-				'invoices' => $this->res->get_property_invoice($id,$target),
+				'invoices' => $this->Residence_model->get_property_invoice($id,$target),
 				'invoices_sum' => $this->res->get_property_invoice_sum($id,$target),
 				'com' => $this->res->get_community_needs(),
 				'needs' => rtrim($needs,','),

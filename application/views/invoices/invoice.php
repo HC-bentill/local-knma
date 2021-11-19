@@ -76,6 +76,18 @@
                         </select> 
                     </div>
                   </div>
+
+                  <div class="form-group m-form__group row">
+                     <div class="col-lg-3 criteria" id="#">
+                        <select class="form-control" data-plugin-selecttwo="" data-plugin-options="{ &quot;minimumResultsForSearch&quot;: 5 }" class="form-control" id="payment_type" name="payment_type">
+                             <option value="">Select Payment Type</option>           
+                              <option value="defaulters">Defaulters</option>
+                              <option value="part_payment">Part Payment</option> 
+                              <option value="full_payment">Full Payment</option>
+                        </select>
+                      </div>
+                  </div>
+
                   <div class="form-group m-form__group row">
                     
                     <div class="col-lg-3">
@@ -105,6 +117,7 @@
                   <th class="text-center">ADJUSTMENT</th>
                   <th class="text-center">PAID AMOUNT</th>
                   <th class="text-center">OUTSTANDING AMOUNT</th>
+                  <th class="text-center">PAYMENT STATUS</th>
                   <th class="text-center">VALUATION STATUS</th>
                   <th class="text-center">CATEGORY 1</th>
                   <th class="text-center">CATEGORY 2</th>

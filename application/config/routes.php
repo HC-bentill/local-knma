@@ -178,6 +178,7 @@ $route['finance_report'] = 'Report/finance_report';
 $route['finance_report/(:any)'] = 'Report/download_finance_report/$1';
 $route['finance_report2'] = 'Report/finance_report2';
 $route['finance_report3'] = 'Report/finance_report3';
+$route['invoice_report'] = 'Invoice/invoice_report';
 
 // report routes
 $route['add_transport'] = 'Transport/add_transport_form';

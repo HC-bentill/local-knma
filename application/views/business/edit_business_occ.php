@@ -411,10 +411,16 @@
 									<td><?=number_format((float) $inv->adjustment_amount, 2, '.', ',')?></td>
 									<td><?php echo "<a href='$url'>" . number_format((float) $inv->amount_paid, 2, '.', ',') . "</a>"?></td>
 									<td><?=number_format((float) $inv->invoice_amount - $inv->amount_paid, 2, '.', ',')?></td>
-									<?php if ($inv->accessed == 1) { ?>
+									<!-- <?php if ($inv->accessed == 1) { ?>
 										<td><span class="badge badge-success">Assessed</span></td>
 									<?php } else { ?>
 										<td><span class="badge badge-danger">Unassessed</span></td>
+									<?php } ?> -->
+									<?php $empty = ''?>
+									<?php if ($inv->accessed == 1) { ?>
+										<td><?php $empty?></td>
+									<?php } else { ?>
+										<td><?php $empty?></td>
 									<?php } ?>
 									<td><?=$inv->category1?></td>
 									<td><?=$inv->category2?></td>

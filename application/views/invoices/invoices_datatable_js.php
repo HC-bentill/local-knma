@@ -6,12 +6,12 @@
 		var $table = $('#datatable-tabletools-invoices');
 
 			var table = $table.dataTable({
-				// sDom: '<"text-right mb-md"T><"row"<"col-lg-6"l><"col-lg-6"f>><"table-responsive"t>p',
-				// buttons: [ 'print', 'excel', 'pdf' ],
 				scrollX: true,
 				processing: true,
 				serverSide: true,
 				serverMethod: 'post',
+				dom: 'Bfrtip',
+				buttons: ['copy', 'csv', 'excel', 'pdf', 'print' ],
 				ajax: {
 				'url':'<?=base_url()?>Invoice/invoiceList',
 				"data": function ( d ) {
@@ -22,6 +22,7 @@
 						d.category4 = '<?=$category4?>',
 						d.category5 = '<?=$category5?>',
 						d.category6 = '<?=$category6?>',
+						d.payment_type = '<?=$payment_type?>',
 						d.year = '<?=$year?>'
 					}
 				},
@@ -48,6 +49,11 @@
 					{ "data": null,
 						"render": function(data, type, full, meta){
 							return full["outstanding_amount"];
+						}
+					},
+					{ "data": null,
+						"render": function(data, type, full, meta){
+							return full["payment_status"];
 						}
 					},
 					{ "data": null,

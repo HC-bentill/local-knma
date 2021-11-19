@@ -1776,6 +1776,9 @@ class TaxModel extends CI_Model
             if ($postData['category6'] != 0) {
                 $this->db->where('i.category6_id', $postData['category6']);
             }
+            if ($postData['payment_type'] != 0) {
+                $this->db->where('i.payment_status', $postData['payment_type']);
+            }
         }
         $records = $this->db->get()->result();
         $totalRecords = $records[0]->allcount;
@@ -1808,6 +1811,9 @@ class TaxModel extends CI_Model
             }
             if ($postData['category6'] != 0) {
                 $this->db->where('i.category6_id', $postData['category6']);
+            }
+            if ($postData['payment_type'] != 0) {
+                $this->db->where('i.payment_status', $postData['payment_type']);
             }
         }
 
@@ -1855,6 +1861,9 @@ class TaxModel extends CI_Model
             if ($postData['category6'] != 0) {
                 $this->db->where('i.category6_id', $postData['category6']);
             }
+            if ($postData['payment_type'] != 0) {
+                $this->db->where('i.payment_status', $postData['payment_type']);
+            }
         }
 
         if ($searchQuery != '') {
@@ -1883,12 +1892,28 @@ class TaxModel extends CI_Model
             $id = $record->id;
             //check if invoice is assessed
             $assessed = $record->accessed;
+            //get product
+            $product_id = $record->product_id;
 
-            if ($assessed == 1) {
+
+            if ($product_id == 1) {
+                $badge = '';
+            } else if($assessed == 1 && $product_id !== 1){
                 $badge = '<span class="badge badge-success">Assessed</span>';
             } else {
-                $badge = '<span class="badge badge-danger">Unassessed</span>';
+                $badge = '<span class="badge badge-danger">Unassessed</span>';  
             }
+            
+            //payment type
+
+            if($record->payment_status == "FULLY_PAID" ){
+                $payment_type = '<span class="badge badge-success">Fully Paid</span>';
+            }else if ($record->payment_status == "PARTLY_PAID"){
+                $payment_type = '<span class="badge badge-warning">Partly Paid</span>';
+            }else{
+                $payment_type = '<span class="badge badge-danger">No Payment</span>';
+            }
+
 
             $switch = "";
             if ($record->print == 1) {
@@ -1912,6 +1937,7 @@ class TaxModel extends CI_Model
                 "adjustment_amount" => number_format((float) $record->adjustment_amount, 2, '.', ','),
                 "amount_paid" => $amount_paid,
                 "assessed" => $badge,
+                "payment_status" => $payment_type,
                 "outstanding_amount" => number_format((float) $record->invoice_amount - $record->amount_paid, 2, '.', ','),
                 "category1" => $record->category1,
                 "category2" => $record->category2,
