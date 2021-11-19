@@ -1776,7 +1776,7 @@ class TaxModel extends CI_Model
             if ($postData['category6'] != 0) {
                 $this->db->where('i.category6_id', $postData['category6']);
             }
-            if ($postData['payment_type'] != 0) {
+            if ($postData['payment_type']) {
                 $this->db->where('i.payment_status', $postData['payment_type']);
             }
         }
@@ -1812,7 +1812,7 @@ class TaxModel extends CI_Model
             if ($postData['category6'] != 0) {
                 $this->db->where('i.category6_id', $postData['category6']);
             }
-            if ($postData['payment_type'] != 0) {
+            if ($postData['payment_type']) {
                 $this->db->where('i.payment_status', $postData['payment_type']);
             }
         }
@@ -1861,7 +1861,7 @@ class TaxModel extends CI_Model
             if ($postData['category6'] != 0) {
                 $this->db->where('i.category6_id', $postData['category6']);
             }
-            if ($postData['payment_type'] != 0) {
+            if ($postData['payment_type']) {
                 $this->db->where('i.payment_status', $postData['payment_type']);
             }
         }

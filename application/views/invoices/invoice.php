@@ -81,9 +81,9 @@
                      <div class="col-lg-3 criteria" id="#">
                         <select class="form-control" data-plugin-selecttwo="" data-plugin-options="{ &quot;minimumResultsForSearch&quot;: 5 }" class="form-control" id="payment_type" name="payment_type">
                              <option value="">Select Payment Type</option>           
-                              <option value="defaulters">Defaulters</option>
-                              <option value="part_payment">Part Payment</option> 
-                              <option value="full_payment">Full Payment</option>
+                              <option <?=$payment_type == 'NO_PAYMENT'?'selected == selected':''; ?>  value="NO_PAYMENT">Defaulters</option>
+                              <option <?=$payment_type == 'PARTLY_PAID'?'selected == selected':''; ?>  value="PARTLY_PAID">Part Payment</option> 
+                              <option <?=$payment_type == 'FULLY_PAID'?'selected == selected':''; ?>  value="FULLY_PAID">Full Payment</option>
                         </select>
                       </div>
                   </div>
