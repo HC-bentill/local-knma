@@ -1907,9 +1907,9 @@ class TaxModel extends CI_Model
             //payment type
 
             if($record->payment_status == "FULLY_PAID" ){
-                $payment_type = '<span class="badge badge-success">Fully Paid</span>';
+                $payment_type = '<span class="badge badge-success">Full Payment</span>';
             }else if ($record->payment_status == "PARTLY_PAID"){
-                $payment_type = '<span class="badge badge-warning">Partly Paid</span>';
+                $payment_type = '<span class="badge badge-warning">Part Payment</span>';
             }else{
                 $payment_type = '<span class="badge badge-danger">No Payment</span>';
             }

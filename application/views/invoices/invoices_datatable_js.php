@@ -11,7 +11,7 @@
 				serverSide: true,
 				serverMethod: 'post',
 				dom: 'Bfrtip',
-				buttons: ['copy', 'csv', 'excel', 'pdf', 'print' ],
+				buttons: ['copy', 'csv', 'excel' ],
 				ajax: {
 				'url':'<?=base_url()?>Invoice/invoiceList',
 				"data": function ( d ) {
