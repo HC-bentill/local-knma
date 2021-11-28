@@ -650,7 +650,7 @@
 								<label class="control-label text-sm-right pt-2"><strong>Photo:</strong></label>
 								<input class="form-control hidden" type="text" value="<?=$residence['property_image']?>" name="old_image"/>
 								<input class="form-control hidden" type="text" value="<?=$residence['image_path']?>" name="image_path"/>
-								<input class="form-control" type="file" name="userfile"/>
+								<input class="form-control" type="file" name="prop_image"/>
 
 								<a class="example-image-link" href="<?= ($residence['property_image'] == '')? base_url().'upload/property/residence/no-image.png': base_url().$residence['image_path'].$residence['property_image']?>" data-lightbox="example-1">
 									<img class="example-image" src="<?= ($residence['property_image'] == '')? base_url().'upload/property/residence/no-image.png': base_url().$residence['image_path'].$residence['property_image']?>" style="max-width:20em;max-height:20em;margin-top:0.5em;" alt="">

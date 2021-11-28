@@ -158,7 +158,7 @@
                             </div>
                             <div class="col-sm-4 cheque" style="display:none;">
                               <label class="control-label text-sm-right pt-2"><strong>Photo:</strong></label>
-                              <input class="form-control" type="file" name="userfile"/>
+                              <input class="form-control" type="file" name="cheque_image"/>
                             </div>
                           </div>
                           <div class="form-group row momo" style="display:none;">

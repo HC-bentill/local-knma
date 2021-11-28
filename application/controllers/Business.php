@@ -382,23 +382,22 @@ class Business extends CI_Controller {
 			$gen_rescode = SYSTEM_PREFIX.$areacode .$towncode.SYSTEM_RESIDENTIAL_PROPERTY_PER_PREFIX. str_pad($code, 4, '0', STR_PAD_LEFT);
 		}
 		
-		//property image upload
-		//configure upload
-		$config['upload_path'] = './upload/property/business_property';
-		$config['allowed_types'] = 'gif|jpg|png|jpeg';
-		$config['max_size'] = '1000';
-
+	
+		$config['upload_path'] = 'upload/property/business_property/';
+		$config['allowed_types'] = 'jpg|png|jpeg';
 		$this->load->library('upload', $config);
 
-		if (!$this->upload->do_upload('userfile')) {
-			$file_path = '';
-			$image = "";
-		} else {
-			$file_data = $this->upload->data();
-
+		if ($this->upload->do_upload('prop_image')) {
 			$file_path = '/upload/property/business_property/';
-			$image = $file_data['file_name'];
-		}
+			$file_name = $this->upload->data('file_name');
+			
+		} else {
+			$file_path = 'image did not upload';
+			$file_name = 'image did not upload';
+			echo $this->upload->display_errors(); die();
+			
+		};
+
 		
 		$owner['firstname'] = ucfirst(trim($this->input->post('firstname')));
         $owner['person_category'] = ucfirst(trim($this->input->post('personal_category')));
@@ -412,6 +411,8 @@ class Business extends CI_Controller {
 		$owner['owner_pwd'] = trim($this->input->post('owner_pwd'));
 		$owner['postal_address'] = trim($this->input->post('postal_address'));
 		$owner['ghpostgps_code'] = trim($this->input->post('owner_ghpost_gps'));
+		$data['property_image'] = $file_name;
+		$data['image_path'] = $file_path;
 		$data['buis_prop_code'] = $gen_rescode;
 		$data['town'] = trim($this->input->post('town'));
 		$data['area_council'] = trim($this->input->post('area_council'));
@@ -449,8 +450,6 @@ class Business extends CI_Controller {
 		$data['no_of_pwd'] = trim($this->input->post('no_of_pwd'));
 		$data['assessable_status'] = trim($this->input->post('property_assessment'));
 		$data['accessed'] = trim($this->input->post('accessed_status'));
-		$data['image_path'] = $file_path;
-		$data['property_image'] = $image;
 		$data['agent_id'] = $this->session->userdata('user_info')['id'];
 		$data['agent_category'] = "admin";
 		$rateable_amount = trim($this->input->post('rateable_amount'));
@@ -1290,22 +1289,36 @@ class Business extends CI_Controller {
 
 		//property image upload
 		//configure upload
-		$config['upload_path'] = './upload/property/business_property';
-		$config['allowed_types'] = 'gif|jpg|png|jpeg';
-		$config['max_size'] = '1000';
+		// $config['upload_path'] = './upload/property/business_property';
+		// $config['allowed_types'] = 'gif|jpg|png|jpeg';
+		// $config['max_size'] = '1000';
 
+		// $this->load->library('upload', $config);
+
+		// if (!$this->upload->do_upload('userfile')) {
+		// 	$image = $this->input->post('old_image');
+		// 	$file_path = $this->input->post('image_path');
+		// } else {
+		// 	$file_data = $this->upload->data();
+
+		// 	$file_path = '/upload/property/business_property/';
+		// 	$image = $file_data['file_name'];
+		// }
+		$config['upload_path'] = 'upload/property/business_property/';
+		$config['allowed_types'] = 'jpg|png|jpeg';
 		$this->load->library('upload', $config);
 
-		if (!$this->upload->do_upload('userfile')) {
-			$image = $this->input->post('old_image');
-			$file_path = $this->input->post('image_path');
-		} else {
-			$file_data = $this->upload->data();
-
+		if ($this->upload->do_upload('prop_image')) {
 			$file_path = '/upload/property/business_property/';
-			$image = $file_data['file_name'];
+			$file_name = $this->upload->data('file_name');
+			
+		} else {
+			$file_path = 'image did not upload';
+			$file_name = 'image did not upload';
+			echo $this->upload->display_errors(); die();
+			
 		}
-		
+
 		if($category == 12){
 			$cat = "Business";
 		}else{
@@ -1328,7 +1341,7 @@ class Business extends CI_Controller {
 		$data['no_of_pwd'] = trim($this->input->post('no_of_pwd'));
 		$data['assessable_status'] = trim($this->input->post('property_assessment'));
 		$data['image_path'] = $file_path;
-		$data['property_image'] = $image;
+		$data['property_image'] = $file_name;
 		$rateable_amount = trim($this->input->post('rateable_amount'));
 		$rate = trim($this->input->post('rate'));
 		$apid= $this->input->post('apid');

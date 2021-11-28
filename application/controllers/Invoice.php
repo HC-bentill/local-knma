@@ -769,16 +769,20 @@ class Invoice extends CI_Controller {
 		$invoice_id = $this->input->post('invoice_id');
 		$invoice_no = $this->input->post('invoice_number');
 		$target = !empty($this->input->post('target')) ? $this->input->post('target') : 0;
-		$payment_mode = $dat->{'paymentMode'};
+		// $payment_mode = $dat->{'paymentMode'};
+		$payment_mode = $this->input->post('payment_mode');
 		$actual_invoice_amount = (float)$this->input->post('actual_invoice_amount');
 		$valid = $this->validateOTP();
 
 		$invoice_amount_paid = (float)$this->input->post('amount_paid_so_far');
 		// check if its a part payment or full payment
-		if($dat->{'paymentType'} == "Full Payment"){
+		// if($dat->{'paymentType'} == "Full Payment"){
+		if($payment_mode == "Full Payment"){
+
 			$amount_paid = $actual_invoice_amount - $invoice_amount_paid;
 		}else{
-			$amount_paid = (float)$dat->{'amountPaid'};//part payment
+			// $amount_paid = (float)$dat->{'amountPaid'};//part payment
+			$amount_paid = (float)$this->input->post('amount_paid');//part payment
 		}
 
 		if( $valid == 'success' ){
@@ -790,22 +794,30 @@ class Invoice extends CI_Controller {
 			$payment_mode = $this->input->post('payment_mode');
 
 			if($payment_mode == "Cheque"){
-				//property image upload
+				//cheque image upload
 				//configure upload
-				$config['upload_path'] = './upload/cheque/';
-				$config['allowed_types'] = 'gif|jpg|png|jpeg';
-				$config['max_size'] = '1000';
-
+				$config['upload_path'] = 'upload/cheque/';
+				$config['allowed_types'] = 'jpg|png|jpeg';
 				$this->load->library('upload', $config);
-
-				if (!$this->upload->do_upload('userfile')) {
+							
+				if ($this->upload->do_upload('cheque_image')) {
+					$tran['image_path'] = '/upload/cheque/';
+					$tran['cheque_image']= $this->upload->data('file_name');
 					
 				} else {
-					$file_data = $this->upload->data();
+					$tran['image_path'] = 'image did not upload';
+					$tran['cheque_image']= 'image did not upload';
+					echo $this->upload->display_errors(); die();
+					
+				};
+				// if (!$this->upload->do_upload('userfile')) {
+					
+				// } else {
+				// 	$file_data = $this->upload->data();
 
-					$tran['image_path'] = '/upload/cheque/';
-					$tran['cheque_image'] = $file_data['file_name'];
-				}
+				// 	$tran['image_path'] = '/upload/cheque/';
+				// 	$tran['cheque_image'] = $file_data['file_name'];
+				// }
 			}else {
 				$new_amount_paid = $invoice_amount_paid + $amount_paid;
 			}

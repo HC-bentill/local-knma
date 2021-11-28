@@ -557,7 +557,7 @@
                 </div>
                 <div class="col-sm-4 assessed" id="photo" style="display:none">
                   <label class="control-label text-sm-right pt-2"><strong>Photo:</strong></label>
-                  <input class="form-control" type="file" name="userfile"/>
+                  <input class="form-control" type="file" name="prop_image"/>
                 </div>
                 <div class="col-sm-4">
                   <label class="control-label text-sm-right pt-2"><strong>No Of PWD:</strong></label>
