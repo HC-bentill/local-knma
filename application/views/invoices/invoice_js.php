@@ -367,6 +367,11 @@
 		let validated = $('#basicform').valid();
 		let paymode = $('#basicform select[name=payment_mode]').val();
 		let buttonval = $('#basicform input.inv-payment-btn').val();
+
+    $(this).prop('disabled', true);
+    $(this).html("Adding &nbsp;&nbsp;<i class='icon-spinner9 spin'></i>");
+    // alert("Please wait until the process finishes");
+
 		if( validated ) {
 			if(buttonval !== "Finish Payment" && paymode !== 'Mobile Money'){
 				let amount=0;
@@ -389,6 +394,7 @@
 						if(result.status === "success" && result.data.code == '1701'){
 							$('.pay-invoice .otp').css('display', 'inline');
 							$('#basicform input.inv-payment-btn').val('Finish Payment');
+              $('#basicform input.inv-payment-btn').removeAttr('disabled');
 						}else{
 							$('#error_notif').css('display', 'block');
 						  $('#error_notif').html(result.data.message);
@@ -465,6 +471,12 @@
     };
   });
 
+
+ 
+  $('#otp').keypress('change',function(){
+    $('#basicform input.inv-payment-btn').removeAttr('disabled');
+  });
+
   $(document).ready(function(){
     localStorage.setItem('otp_reset_count',0);
   });
@@ -481,7 +493,6 @@
   $('#resend_btn').click(function(e){
 		e.preventDefault();
 
-    
 		let otp_reset_count = localStorage.getItem('otp_reset_count');
 
 		if(otp_reset_count < 2){

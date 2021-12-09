@@ -116,6 +116,9 @@
     <script src="<?php echo base_url(); ?>assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/vendor/lightbox/js/lightbox.js"></script>
 
+    <!-- QR code Library CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    
     <script type="text/javascript">
       jQuery(document).ready(function($) {
         // ------------- Pre-loader--------------
@@ -414,9 +417,11 @@
     }
     ?>
     <script type="text/javascript">
-      $(function() {
+      const qrcode = document.getElementById("qrcode");
+      const textInput = document.getElementById("qrtext");
 
-      });
+      const qr = new QRCode(qrcode);
+      qr.makeCode(textInput.value.trim());
     </script>
     </body>
 

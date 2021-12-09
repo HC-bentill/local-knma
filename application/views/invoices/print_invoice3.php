@@ -68,6 +68,12 @@
             opacity: 0.5;
         }
 
+		#qrcode > img{
+			width : 15%;
+			position: absolute;
+		}
+
+
         @media print
         {
             .footer {
@@ -289,13 +295,38 @@
 							</tr>
 						</tbody>
 					</table>
-					<div class="text-right">
-						<div style="position: relative; left: 0; top: 0;">
-							<img src="<?=base_url().MCD_SIGNATURE?>" alt="Signature" style="width:12em;height:8em;margin-right:0.5em;position:relative;top:0;left:0;"/>
-							<img src="<?=base_url().MCD_STAMP?>" alt="Signature" style="width:12em;height:8em;margin-right:0.5em;opacity:0.5;position: absolute;top: 30px;left: 500px;"/>
+					<div class="row">
+						<div class="col-md-6 pt-3">
 
-							<img src="<?=base_url().MFO_SIGNATURE?>" alt="Signature" style="width:12em;height:8em;"/>
-							<img src="<?=base_url().MFO_STAMP?>" alt="Signature" style="width:12em;height:8em;margin-right:0.5em;opacity:0.5;position: absolute;top: 30px;left: 350px;"/> 
+						<?php 
+							($result->busocc_property_code)? $busocc = $result->busocc_property_code : $buscocc = ""; ?>
+
+						<input 
+							type="hidden"
+							spellcheck="false"
+							id="qrtext"
+							value="
+								Invoice# : <?=$result->invoice_no ?>
+								Property# :  <?=$result->property_code ?>
+								Business# : <?= $busocc ?>
+								Phone# : <?=$result->owner_phoneno ?>
+								"
+						/>
+						<div id="qrcode"></div>
+						</div>
+						<div class="col-md-6">
+							<div class="text-right">
+								<img src="<?=base_url().MFO_SIGNATURE?>" alt="Signature"
+									style="width:12em;height:8em;margin-right:0.5em" />
+								<img src="<?=base_url().MCD_SIGNATURE?>" alt="Signature"
+									style="width:12em;height:8em;" />
+							</div>
+							<div class="text-right">
+								<img src="<?=base_url().MCD_STAMP?>" alt="Signature"
+									style="width:12em;height:8em;margin-right:0.5em" />
+								<img src="<?=base_url().MFO_STAMP?>" alt="Signature"
+									style="width:12em;height:8em;" />
+							</div>
 						</div>
 					</div>
 				</div>
@@ -317,6 +348,17 @@
 		</div>
 	<?php }else{ ?>
 	<?php } ?>
+
+	    <!-- QR code Library CDN -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+	<script type="text/javascript">
+      const qrcode = document.getElementById("qrcode");
+      const textInput = document.getElementById("qrtext");
+
+      const qr = new QRCode(qrcode);
+      qr.makeCode(textInput.value.trim());
+    </script>
 	
 </body>
 

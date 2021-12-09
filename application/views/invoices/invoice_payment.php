@@ -51,7 +51,7 @@
                               $discount_amount = $result['adjustment_amount'];
                               $amount_paid = $result['amount_paid'];
                               $total_amount = $invoice_amount + $penalty_amount + $actual_arrears - $amount_paid;
-                              // $outstanding_amount = $invoice_amount + $actual_arrears;
+                              $outstanding_amount = $invoice_amount - $amount_paid;
                               
                             ?>
                               <label class="control-label text-sm-right pt-2"><strong>Outstanding Amount:</strong></label>           

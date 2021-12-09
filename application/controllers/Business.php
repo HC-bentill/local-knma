@@ -392,10 +392,8 @@ class Business extends CI_Controller {
 			$file_name = $this->upload->data('file_name');
 			
 		} else {
-			$file_path = 'image did not upload';
-			$file_name = 'image did not upload';
-			echo $this->upload->display_errors(); die();
-			
+			$file_path = '';
+			$file_name = '';			
 		};
 
 		
@@ -1313,9 +1311,9 @@ class Business extends CI_Controller {
 			$file_name = $this->upload->data('file_name');
 			
 		} else {
-			$file_path = 'image did not upload';
-			$file_name = 'image did not upload';
-			echo $this->upload->display_errors(); die();
+			$file_path = '';
+			$file_name = '';
+			// echo $this->upload->display_errors(); die();
 			
 		}
 
@@ -1685,248 +1683,255 @@ class Business extends CI_Controller {
 		$message = $this->input->post("message");
 		$message_type = $this->input->post("message_type");
 		$file_path = "base_url()?>invoices/invoice.pdf";
-		if($message_type == "SMS"){
-			$echannelid = 1;
-			$echannel = $this->Channelmodel->channelstatus($echannelid);
-			if($echannel != 0){
-				$sms_message = "$message";
-				$phone_formatted = formatPhonenumber($primary_contact);
-				send_sms($phone_formatted, $sms_message);
-				if (send_sms($phone_formatted, $sms_message)) {
-					$this->session->set_flashdata('message', "<div class='alert alert-success'>
-					 Your Form Was Submitted Successfully.
-				  </div>");
-			}else{
-				$this->session->set_flashdata('message', "<div class='alert alert-danger'>
-				<strong>There was an Error ! </strong> Your Form Was Not Submitted. 
-			  </div>");
-				}
-			}
-			else{
-				return $this->output->set_content_type('application/json')
-					->set_status_header(503)
-					->set_output(
-						json_encode(array("result" => "SMS not sent because the channel is blocked")));
-			}
-			
-		}else if($message_type == "EMAIL"){
-			$email = $this->input->post('email');
-			# NB i configured email setting in application/config/email.php
-			$this->load->library('email');
-			$this->email->from("deksol_bills@deksolconsult.com");
-			$this->email->to($email);
-			$this->email->subject('Personal message');
-			$this->email->attach('http://192.168.64.3/knma_erms/assets/img/card.pdf');
-			$this->email->message($message);
-			
-			if ($this->email->send()) {
-				$this->session->set_flashdata('message', "<div class='alert alert-success'>
-            	 Your Form Was Submitted Successfully.
-          	</div>");
-		}else{
-			$this->session->set_flashdata('message', "<div class='alert alert-danger'>
-			<strong>Oh Snap! </strong> Your Form Was Not Submitted.
-		  </div>");
-			}
-		}else{
-			return $this->output->set_content_type('application/json')
-				->set_status_header(400)
-				->set_output(
-					json_encode(
-						array(
-							"result" => (
-								"Process of this kind of message is currently ".
-								"unsupported"
-							)
-						)
-					)
-				);
+ if($message_type == "SMS"){
+ $echannelid = 1;
+ $echannel = $this->Channelmodel->channelstatus($echannelid);
+ if($echannel != 0){
+ $sms_message = "$message";
+ $phone_formatted = formatPhonenumber($primary_contact);
+ send_sms($phone_formatted, $sms_message);
+ if (send_sms($phone_formatted, $sms_message)) {
+ $this->session->set_flashdata('message', "<div class='alert alert-success'>
+     Your Form Was Submitted Successfully.
+ </div>");
+ }else{
+ $this->session->set_flashdata('message', "<div class='alert alert-danger'>
+     <strong>There was an Error ! </strong> Your Form Was Not Submitted.
+ </div>");
+ }
+ }
+ else{
+ return $this->output->set_content_type('application/json')
+ ->set_status_header(503)
+ ->set_output(
+ json_encode(array("result" => "SMS not sent because the channel is blocked")));
+ }
+
+ }else if($message_type == "EMAIL"){
+ $email = $this->input->post('email');
+ # NB i configured email setting in application/config/email.php
+ $this->load->library('email');
+ $this->email->from("deksol_bills@deksolconsult.com");
+ $this->email->to($email);
+ $this->email->subject('Personal message');
+ $this->email->attach('http://192.168.64.3/knma_erms/assets/img/card.pdf');
+ $this->email->message($message);
+
+ if ($this->email->send()) {
+ $this->session->set_flashdata('message', "<div class='alert alert-success'>
+     Your Form Was Submitted Successfully.
+ </div>");
+ }else{
+ $this->session->set_flashdata('message', "<div class='alert alert-danger'>
+     <strong>Oh Snap! </strong> Your Form Was Not Submitted.
+ </div>");
+ }
+ }else{
+ return $this->output->set_content_type('application/json')
+ ->set_status_header(400)
+ ->set_output(
+ json_encode(
+ array(
+ "result" => (
+ "Process of this kind of message is currently ".
+ "unsupported"
+ )
+ )
+ )
+ );
+ }
+ // insert into audit tray
+ // $info = array(
+ // 'user_id' => $this->session->userdata('user_info')['id'],
+ // 'activity' => "Reset user password",
+ // 'status' => true,
+ // 'description' => "Resetted password of user: $username",
+ // 'user_category' => "admin",
+ // 'channel' => "Web"
+ // );
+ // $audit_tray = audit_tray($info);
+ //end of insert
+
+ redirect($_SERVER['HTTP_REFERER']);
+ }
+
+ // get business property properties ajax call
+ public function businessPropertyList(){
+ // POST data
+ $postData = $this->input->post();
+
+ // Get data
+ $data = $this->res->getBusinessProperties($postData);
+
+ echo json_encode($data);
+ }
+
+ // get business occupants ajax call
+ public function businessOccupantList(){
+ // POST data
+ $postData = $this->input->post();
+
+ // Get data
+ $data = $this->res->getBusinessOccupant($postData);
+
+ echo json_encode($data);
+ }
+
+ public function invoice_email (){
+ $this->load->view('invoices/invoice_email');
+ }
+
+ public function send_invoice_message(){
+ //post data
+ $primary_contact = $this->input->post("primary_contact");
+ $message = $this->input->post("message");
+ $message_type = $this->input->post("message_type");
+ $id = $this->input->post("inv_id");
+
+ //load dompdf library
+ $this->load->library('pdf');
+ $result = json_decode($this->TaxModel->get_invoice_detail($id));
+ $template = "template";
+ $date_created = date('Y-m-d',strtotime($result->date_created));
+ $due_date = date("Y-m-d",$result->payment_due_date );
+ $accessedBadge = "";
+ if ($result->accessed == 1) {
+ $accessedBadge = "<span class='badge badge-success'>Assessed</span>";
+ } else {
+ $accessedBadge = "<span class='badge badge-danger'>Unassessed</span>";
+ }
+ $arrears_paid = get_invoice_arrears(
+ $result->property_id, $result->product_id, $result->invoice_year);
+ $actual_arrears = (
+ $arrears_paid['invoice_amount'] - $arrears_paid['amount_paid']
+ );
+ $invoice_amount = $result->invoice_amount;
+ $penalty_amount = $result->penalty_amount;
+ $discount_amount = $result->adjustment_amount;
+ $total_amount = $invoice_amount + $penalty_amount + $actual_arrears;
+ $amount_paid = $result->amount_paid;
+ $invoiceDiscountAmount = (
+ 'GHS ' . number_format(
+ (float) $invoice_amount + $discount_amount, 2, '.', ','
+ )
+ );
+ $invoiceAdjustedAmount = (
+ 'GHS ' . number_format(
+ (float) $invoice_amount + $result->adjustment_amount, 2,
+ '.', ','
+ )
+ );
+ $discountAmount = (
+ 'GHS ' . number_format((float) $discount_amount, 2, '.', ',')
+ );
+ $invoiceAmount = (
+ 'GHS ' . number_format((float)$invoice_amount, 2, '.', '')
+ );
+ $penaltyAmount = (
+ 'GHS ' . number_format((float)$penalty_amount, 2, '.', '')
+ );
+ $actualArrearsAmount = (
+ 'GHS ' . number_format((float)$actual_arrears, 2, '.', ',')
+ );
+ $totalAmount = (
+ 'GHS ' . number_format((float)$total_amount, 2, '.', ',')
+ );
+ $total_amount = (
+ 'GHS ' . number_format((float)($invoice_amount + $penalty_amount),
+ 2, '.', '')
+ );
+ $amount_paid_text = 'GHS '.number_format((float)$amount_paid, 2, '.', ',');
+ $html = "
+ <html>
+
+     <head>
+         <title>REVENUE MANAGEMENT SYSTEM</title>
+         <!-- Web Fonts  -->
+         <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800' rel='stylesheet'
+             type='text/css'>
+
+         <!-- Vendor CSS -->
+         <link rel='stylesheet' href='assets/vendor/bootstrap/css/bootstrap.css' />
+         <link rel='stylesheet' href='<?= base_url() ?>assets/css/theme.css' />
+
+         <!-- Invoice Print Style -->
+         <link rel='stylesheet' href='assets/css/invoice-print.css' />
+         <script src='assets/vendor/jquery/jquery.js'></script>
+         <script src='assets/js/custom.js'></script>
+         <style type='text/css'>
+         .invoice-summary table.wordify>tbody tr:last-child>td {
+             background-color: #F8F8F8;
+             border-bottom: 1px solid #DADADA;
+             border-top: 1px solid #DADADA;
+         }
+
+         .invoice-summary table.wordify>tbody tr:last-child>td {
+             font-size: 1.3rem !important
+         }
+
+         footer {
+             display: block;
+         }
+
+         .footer {
+             margin: auto;
+             position: absolute;
+             left: 4%;
+             bottom: 4%;
+             right: 4%;
+             border-top:
+                 solid grey 1px
+         }
+
+         .footer p {
+             margin-top: 1%;
+             font-size: 9%;
+             color: red;
+             font-weight: bold;
+             line-height: 140%;
+             text-align: justify
+         }
+
+         #watermark {
+             position: fixed;
+             top: 25%;
+             left: 32%;
+             z-index: 99;
+         }
+
+         #watermark.print {
+             top: 20%;
+             left: 19%;
+         }
+
+         #watermark img {
+             width: 250%;
+             height: 100%;
+             opacity: 0.1;
+         }
+
+         #watermark.print img {
+             width: 200%;
+             height: 80%;
+             opacity: 0.5;
+         }
+
+		 #qrcode > img{
+			width : 40%;
 		}
-        // insert into audit tray
-		// $info = array(
-		// 	'user_id' => $this->session->userdata('user_info')['id'],
-		// 	'activity' => "Reset user password",
-		// 	'status' => true,
-		// 	'description' => "Resetted password of user: $username",
-		// 	'user_category' => "admin",
-		// 	'channel' => "Web"
-		// );
-		// $audit_tray = audit_tray($info);
-        //end of insert
 
-		redirect($_SERVER['HTTP_REFERER']);
-	}
-	
-	// get business property properties ajax call
-	public function businessPropertyList(){
-		// POST data
-		$postData = $this->input->post();
+         @media print {
+             .footer {
+                 position: fixed;
+                 display: block;
+                 margin: auto;
+                 left: 4%;
+                 bottom: 4%;
+                 right: 4%;
+                 border-top: solid grey 1px;
+             }
 
-		// Get data
-		$data = $this->res->getBusinessProperties($postData);
-
-		echo json_encode($data);
-	}
-
-	// get business occupants ajax call
-	public function businessOccupantList(){
-		// POST data
-		$postData = $this->input->post();
-
-		// Get data
-		$data = $this->res->getBusinessOccupant($postData);
-
-		echo json_encode($data);
-	}
-
-	public function invoice_email (){
-		$this->load->view('invoices/invoice_email');
-	}
-
-	public function send_invoice_message(){
-		//post data
-		$primary_contact = $this->input->post("primary_contact");
-		$message = $this->input->post("message");
-		$message_type = $this->input->post("message_type");
-		$id = $this->input->post("inv_id");
-		
-		//load dompdf library
-		$this->load->library('pdf');
-		$result = json_decode($this->TaxModel->get_invoice_detail($id));
-		$template = "template";
-		$date_created = date('Y-m-d',strtotime($result->date_created));
-		$due_date = date("Y-m-d",$result->payment_due_date );
-		$accessedBadge = "";
-		if ($result->accessed == 1) {
-			$accessedBadge = "<span class='badge badge-success'>Assessed</span>";
-		} else {
-			$accessedBadge = "<span class='badge badge-danger'>Unassessed</span>";
-		}
-		$arrears_paid = get_invoice_arrears(
-			$result->property_id, $result->product_id, $result->invoice_year);
-		$actual_arrears = (
-			$arrears_paid['invoice_amount'] - $arrears_paid['amount_paid']
-		);
-		$invoice_amount = $result->invoice_amount;
-		$penalty_amount = $result->penalty_amount;
-		$discount_amount = $result->adjustment_amount;
-		$total_amount = $invoice_amount + $penalty_amount + $actual_arrears;
-		$amount_paid = $result->amount_paid;
-		$invoiceDiscountAmount = (
-			'GHS ' . number_format(
-				(float) $invoice_amount + $discount_amount, 2, '.', ','
-			)
-		);
-		$invoiceAdjustedAmount = (
-			'GHS ' . number_format(
-				(float) $invoice_amount + $result->adjustment_amount, 2,
-				'.', ','
-			)
-		);
-		$discountAmount = (
-			'GHS ' . number_format((float) $discount_amount, 2, '.', ',')
-		);
-		$invoiceAmount = (
-			'GHS ' . number_format((float)$invoice_amount, 2, '.', '')
-		);
-		$penaltyAmount = (
-			'GHS ' . number_format((float)$penalty_amount, 2, '.', '')
-		);
-		$actualArrearsAmount = (
-			'GHS ' . number_format((float)$actual_arrears, 2, '.', ',')
-		);
-		$totalAmount = (
-			'GHS ' . number_format((float)$total_amount, 2, '.', ',')
-		);
-		$total_amount = (
-			'GHS ' . number_format((float)($invoice_amount + $penalty_amount),
-			2, '.', '')
-		);
-		$amount_paid_text = 'GHS '.number_format((float)$amount_paid, 2, '.', ',');
-		$html = "
-		<html>
-
-		<head>
-			<title>REVENUE MANAGEMENT SYSTEM</title>
-			<!-- Web Fonts  -->
-			<link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800' rel='stylesheet' type='text/css'>
-		
-			<!-- Vendor CSS -->
-			<link rel='stylesheet' href='assets/vendor/bootstrap/css/bootstrap.css' />
-			<link rel='stylesheet' href='<?= base_url() ?>assets/css/theme.css' />
-		
-			<!-- Invoice Print Style -->
-			<link rel='stylesheet' href='assets/css/invoice-print.css' />
-			<script src='assets/vendor/jquery/jquery.js'></script>
-			<script src='assets/js/custom.js'></script>
-			<style type='text/css'>
-				.invoice-summary table.wordify > tbody tr:last-child > td {
-				  background-color: #F8F8F8;
-				  border-bottom: 1px solid #DADADA;
-				  border-top: 1px solid #DADADA;
-				}
-				.invoice-summary table.wordify > tbody tr:last-child > td {
-				  font-size: 1.3rem !important
-				}
-				footer {
-					display: block;
-				}
-				.footer{
-					margin:auto;
-					position:absolute;
-					left:4%;
-					bottom:4%;
-					right:4%;
-					border-top:
-					solid grey 1px
-				}
-		
-				.footer p{
-					margin-top:1%;
-					font-size:9%;
-					color: red;
-					font-weight:bold;
-					line-height:140%;
-					text-align:justify
-				}
-				
-				#watermark {
-					position: fixed;
-					top: 25%;
-					left: 32%;
-					z-index: 99;
-				}
-		
-				#watermark.print {
-					top: 20%;
-					left: 19%;
-				}
-		
-				#watermark img {
-					width: 250%;
-					height: 100%;
-					opacity: 0.1;
-				}
-		
-				#watermark.print img {
-					width: 200%;
-					height: 80%;
-					opacity: 0.5;
-				}
-		
-				@media print
-				{
-					.footer {
-						position: fixed;
-						display: block;
-						margin:auto;
-						left:4%;
-						bottom:4%;
-						right:4%;
-						border-top: solid grey 1px;
-					}
-		
-					/* #watermark img {
+             /* #watermark img {
 						width: 250%;
 						height: 100%;
 						opacity: 0.1;
@@ -1937,250 +1942,281 @@ class Business extends CI_Controller {
 						height: 80%;
 						opacity: 0.1;
 					} */
-					.no-print
-					{
-						display: none !important;
-					}
-				}
-			</style>
-		</head>
-		<body>
-			<div class='row'>
-				<div class='col-sm-6 mt-3' style='margin-bottom:4em;padding-top:2em;'>
-					<h6 class='h4 m-0 text-dark font-weight-bold' style='font-size:90%;'>#$result->invoice_no</h6>
-				</div>
-				<div class='col-sm-6 text-right mt-5 mb-3' style='position:absolute;left:420px;'>
-					<div class='row'>
-						<div class='col-md-6 mt-3' style='padding-right:130px;'>
-							<p style='font-size:12px;'>Ketu North Municipal Assembly<br>
-							PMB 2<br>
-							Dzodze<br>
-							030 290 7239<br>
-							ketunorthmunicipalassembly@gmail.com</p>
-						</div>
-						<div class='col-md-6 mt-4'>
-							<img src='assets/img/elem.png' alt='Ga-north logo' style='width:7em;height:7em;'/>				
-						</div>
-					<div>
-				</div>
-			</div>
-			</div>
-			<div class='row'>
-				<div class='col-md-12' style='position:absolute;top:120px;'>
-					<hr>
-				</div>
-			</div>
-			<div class='row'>
-				<div class='col-md-6' style='position:absolute;top:150px;'>
-					<p style='font-size:14px;'><b>To:</b></p>
-					<p style='font-size:12px;'>
-						$result->customer_name<br>
-						$result->property_code<br>
-						$result->busocc_property_code<br>
-						$result->town<br>
-						<b>Streetname:</b>$result->streetname<br>
-						<b>Landmark:</b> $result->landmark<br>
-						$result->sectorial_code<br>
-					</p>
-				</div
-				<div class='col-md-6' style='position:absolute;left:480px;top:150px;'>
-					<p style='font-size:12px;'>
-						<b>Invoice Date:$date_created</b><br>
-						<b>Due Date:</b> $due_date<br>
-						<br><br>
-						<b>Office Contact: </b>0551511511/0503038555<br>
-						<b>Bank Name: </b>GCB BANK<br>
-						<b>Account No: </b>5031130001417<br>
-						<b>Bank Branch: </b>Dzodze<br>
+             .no-print {
+                 display: none !important;
+             }
+         }
+         </style>
+     </head>
 
-					</p>
+     <body>
+         <div class='row'>
+             <div class='col-sm-6 mt-3' style='margin-bottom:4em;padding-top:2em;'>
+                 <h6 class='h4 m-0 text-dark font-weight-bold' style='font-size:90%;'>#$result->invoice_no</h6>
+             </div>
+             <div class='col-sm-6 text-right mt-5 mb-3' style='position:absolute;left:420px;'>
+                 <div class='row'>
+                     <div class='col-md-6 mt-3' style='padding-right:130px;'>
+                         <p style='font-size:12px;'>Ketu North Municipal Assembly<br>
+                             PMB 2<br>
+                             Dzodze<br>
+                             030 290 7239<br>
+                             ketunorthmunicipalassembly@gmail.com</p>
+                     </div>
+                     <div class='col-md-6 mt-4'>
+                         <img src='assets/img/elem.png' alt='Ga-north logo' style='width:7em;height:7em;' />
+                     </div>
+                     <div>
+                     </div>
+                 </div>
+             </div>
+             <div class='row'>
+                 <div class='col-md-12' style='position:absolute;top:120px;'>
+                     <hr>
+                 </div>
+             </div>
+             <div class='row'>
+                 <div class='col-md-6' style='position:absolute;top:150px;'>
+                     <p style='font-size:14px;'><b>To:</b></p>
+                     <p style='font-size:12px;'>
+                         $result->customer_name<br>
+                         $result->property_code<br>
+                         $result->busocc_property_code<br>
+                         $result->town<br>
+                         <b>Streetname:</b>$result->streetname<br>
+                         <b>Landmark:</b> $result->landmark<br>
+                         $result->sectorial_code<br>
+                     </p>
+                 </div <div class='col-md-6' style='position:absolute;left:480px;top:150px;'>
+                 <p style='font-size:12px;'>
+                     <b>Invoice Date:$date_created</b><br>
+                     <b>Due Date:</b> $due_date<br>
+                     <br><br>
+                     <b>Office Contact: </b>0551511511/0503038555<br>
+                     <b>Bank Name: </b>GCB BANK<br>
+                     <b>Account No: </b>5031130001417<br>
+                     <b>Bank Branch: </b>Dzodze<br>
+
+                 </p>
+             </div>
+             <div class='row'>
+                 <div class='col-md-12' style='position:absolute;top:320px;'>
+                     <hr>
+                 </div>
+             </div>
+             <div class='row'>
+                 <div class='col-md-12' style='position:absolute;top:350px;'>
+                     <table border='0' cellpadding='0' cellspacing='0' width='100%'>
+                         <thead>
+                             <tr style='font-size:12px;'>
+                                 <th class='text-center'><b>Bill Type</b></th>
+                                 <th class='text-center'><b>Main Category</b></th>
+                                 <th class='text-center'><b>Service Type</b></th>
+                                 <th class='text-center'><b>Business Type</b></th>
+                                 <th class='text-center'><b>Category</b></th>
+                                 <th class='text-center'><b>Amount</b></th>
+                             </tr>
+                         </thead>
+                         <tbody>
+                             <tr style='font-size:12px;margin-top:50px>
+									<td class=' text-center'>BOP</td>
+                                 <td class='text-center'>$result->name</td>
+                                 <td class='text-center'>$result->category1</td>
+                                 <td class='text-center''>$result->category2</td>
+									<td class=' text-center'>$result->category3</td>
+                                 <td class='text-center'>$result->category4</td>
+                                 <td class='text-center'>$invoiceAdjustedAmount</td>
+                             </tr>
+                         </tbody>
+                     </table>
+                 </div>
+             </div>
+             <div class='row'>
+                 <div class='col-md-12' style='position:absolute;top:400px;'>
+                     <hr>
+                 </div>
+             </div>
+             <div class='row'>
+                 <div class='col-md-12' style='position:absolute;top:480px;left:430px'>
+                     <table border='0' cellpadding='0' cellspacing='0' width='100%'>
+                         <tr style='border-bottom:1px grey solid;'>
+                             <td style='font-size:14px; width=' 40%' class='text-right mr-4'>Subtotal</td>
+                             <td style='font-size:14px; width=' 60%' class='text-left'>$invoiceDiscountAmount</td>
+                         </tr>
+                         <tr>
+                             <td style='font-size:14px; width=' 40%' class='text-right mr-4'>Discount</td>
+                             <td style='font-size:14px; width=' 60%' class='text-left'>$discountAmount</td>
+                         </tr>
+                         <tr>
+                             <td style='font-size:14px; width=' 40%' class='text-right mr-4'>Payment</td>
+                             <td style='font-size:14px; width=' 60%' class='text-left'>$amount_paid_text</td>
+                         </tr>
+                         <tr>
+                             <td style='font-size:14px; width=' 40%' class='text-right mr-4'>Penalty</td>
+                             <td style='font-size:14px; width=' 60%' class='text-left'>$penaltyAmount</td>
+                         </tr>
+                         <tr>
+                             <td style='font-size:14px; width=' 40%' class='text-right mr-4'>Arrears</td>
+                             <td style='font-size:14px; width=' 60%' class='text-left'>$actualArrearsAmount</td>
+                         </tr>
+                         <tr>
+                             <td style='font-size:14px; width=' 40%' class='text-right mr-4'>Total</td>
+                             <td style='font-size:14px; width=' 60%' class='text-left'><b>$totalAmount</b></td>
+                         </tr>
+                     </table>
+                 </div>
+             </div>
+             <div class='row'>
+                 <div class='col-md-12' style='position:absolute;top:680px;'>
+                     <hr>
+                 </div>
+             </div>
+             <div class='row justify-content-end'>
+                 <div class='col-md-12' style='position:absolute;top:750px;left:490px;'>
+                     <table class='table wordify h6 text-dark'>
+                         <tbody>
+                             <tr>
+                                 <img src='assets/img/MFO_signature.png' alt='Signature'
+                                     style='width:7em;height:4em;' />
+                                 <img src='assets/img/director_signature.png' alt='Signature'
+                                     style='width:7em;height:4em;margin-right:0.5em;' />
+                             </tr>
+                         </tbody>
+                     </table>
+                 </div>
+             </div>
+             <div class='row justify-content-end'>
+		 		<div class='col-md-6'>
+
+				 <?php 
+				 ($result->busocc_property_code)? $busocc = $result->busocc_property_code : $buscocc = ''; ?>
+
+					// <input 
+					// 	type='hidden'
+					// 	spellcheck='false'
+					// 	id='qrtext'
+					// 	value='
+					// 		Invoice# : <?=$result->invoice_no ?>
+					// 		Property# :  <?=$result->property_code ?>
+					// 		Business# : <?= $busocc ?>
+					// 		Phone# : <?=$result->owner_phoneno ?>
+					// 		'
+					// />
+					// <div id='qrcode'></div>
 				</div>
-				<div class='row'>
-					<div class='col-md-12' style='position:absolute;top:320px;'>
-						<hr>
-					</div>
-				</div>
-				<div class='row'>
-					<div class='col-md-12' style='position:absolute;top:350px;'>
-						<table border='0' cellpadding='0' cellspacing='0' width='100%'>
-							<thead>
-								<tr style='font-size:12px;'>
-									<th class='text-center'><b>Bill Type</b></th>
-									<th class='text-center'><b>Main Category</b></th>
-									<th class='text-center'><b>Service Type</b></th>
-									<th class='text-center'><b>Business Type</b></th>
-									<th class='text-center'><b>Category</b></th>
-									<th class='text-center'><b>Amount</b></th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr style='font-size:12px;margin-top:50px>
-									<td class='text-center'>BOP</td>
-									<td class='text-center'>$result->name</td>
-									<td class='text-center'>$result->category1</td>
-									<td class='text-center''>$result->category2</td>
-									<td class='text-center'>$result->category3</td>
-									<td class='text-center'>$result->category4</td>
-									<td class='text-center'>$invoiceAdjustedAmount</td>
-								</tr>
-							</tbody>
-						</table>
-					</div> 
-				</div>
-				<div class='row'>
-					<div class='col-md-12' style='position:absolute;top:400px;'>
-						<hr>
-					</div>
-				</div>
-				<div class='row'>
-					<div class='col-md-12' style='position:absolute;top:480px;left:430px'>
-						<table border='0' cellpadding='0' cellspacing='0' width='100%'>
-						<tr style='border-bottom:1px grey solid;' >
-							<td style='font-size:14px; width='40%' class='text-right mr-4'>Subtotal</td>
-							<td style='font-size:14px; width='60%' class='text-left'>$invoiceDiscountAmount</td>
-						</tr>
-						<tr>
-							<td style='font-size:14px; width='40%' class='text-right mr-4' >Discount</td>
-							<td style='font-size:14px; width='60%' class='text-left'>$discountAmount</td>
-						</tr>
-						<tr>
-							<td style='font-size:14px; width='40%' class='text-right mr-4' >Payment</td>
-							<td style='font-size:14px; width='60%' class='text-left'>$amount_paid_text</td>
-						</tr>
-						<tr>
-							<td style='font-size:14px; width='40%' class='text-right mr-4' >Penalty</td>
-							<td style='font-size:14px; width='60%' class='text-left'>$penaltyAmount</td>
-						</tr>
-						<tr>
-							<td style='font-size:14px; width='40%' class='text-right mr-4' >Arrears</td>
-							<td style='font-size:14px; width='60%' class='text-left'>$actualArrearsAmount</td>
-						</tr>
-						<tr>
-							<td style='font-size:14px; width='40%' class='text-right mr-4' >Total</td>
-							<td style='font-size:14px; width='60%' class='text-left'><b>$totalAmount</b></td>
-						</tr>
-					</table>
-					</div> 
-				</div>
-				<div class='row'>
-					<div class='col-md-12' style='position:absolute;top:680px;'>
-						<hr>
-					</div>
-				</div>
-				<div class='row justify-content-end'>
-					<div class='col-md-12' style='position:absolute;top:750px;left:490px;'>
-						<table class='table wordify h6 text-dark'>
-							<tbody>
-								<tr>
-									<img src='assets/img/MFO_signature.png' alt='Signature' style='width:7em;height:4em;' />
-									<img src='assets/img/director_signature.png' alt='Signature' style='width:7em;height:4em;margin-right:0.5em;' />
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<div class='row justify-content-end'>
-					<div class='col-md-12' style='position:absolute;top:810px;left:490px;'>
-						<table class='table wordify h6 text-dark'>
-							<tbody>
-								<tr>
-									<img src='assets/img/MFO_stamp.png' alt='Signature' style='width:7em;height:4em;margin-right:0.5em' />
-									<img src='assets/img/director_stamp.png' alt='Signature' style='width:7em;height:4em;' />
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<div class='row'>
-					<div class='col-md-12' style='position:absolute;top:920px;'>
-						<hr>
-					</div>
-				</div>
-				<div class='row'>
-					<div class='col-md-12 text-danger' style='position:absolute;top:950px;font-size:12px;'>
-						<p >
-							Payment should be made at the revenue office or to assembly’s revenue collector or to the bank or mobile money details on the bill. 
-							Failure to do so, will attract proceedings taken for the purpose of exacting sale or entry possession and the expense incurred.<br>
-							All property bills are based on unassessed rates in the fee fixing.<br>
-						</p>
-					</div>
-				</div>
-				<div 
-				style='
+                 <div class='col-md-6' style='position:absolute;top:810px;left:490px;'>
+                     <table class='table wordify h6 text-dark'>
+                         <tbody>
+                             <tr>
+                                 <img src='assets/img/MFO_stamp.png' alt='Signature'
+                                     style='width:7em;height:4em;margin-right:0.5em' />
+                                 <img src='assets/img/director_stamp.png' alt='Signature'
+                                     style='width:7em;height:4em;' />
+                             </tr>
+                         </tbody>
+                     </table>
+                 </div>
+             </div>
+             <div class='row'>
+                 <div class='col-md-12' style='position:absolute;top:920px;'>
+                     <hr>
+                 </div>
+             </div>
+             <div class='row'>
+                 <div class='col-md-12 text-danger' style='position:absolute;top:950px;font-size:12px;'>
+                     <p>
+                         Payment should be made at the revenue office or to assembly’s revenue collector or to the bank
+                         or mobile money details on the bill.
+                         Failure to do so, will attract proceedings taken for the purpose of exacting sale or entry
+                         possession and the expense incurred.<br>
+                         All property bills are based on unassessed rates in the fee fixing.<br>
+                     </p>
+                 </div>
+             </div>
+             <div style='
 				position:absolute;
 				top: 150px;
 				left:100px;
 				opacity: 0.1;
 				'>
-					<img  
-					style='
+                 <img style='
 					width: 80%;
 					height: 80%
-					'
-					 src='assets/img/Coat_of_arms_of_Ghana.png' alt='Watermark' />
-				</div>
-		</div>
-	
-	</body>
-		";
-		$this->pdf->loadHtml($html);
-		$this->pdf->setPaper('A4', 'portrait');
-		$this->pdf->render();
-		$pdf = $this->pdf->output();
-		//1 = download 0= read
-		// $this->pdf->stream("test.pdf", array("Attachment"=> 0));		
-		// file_put_contents('temp_pdf_dir', $html);
-	
-		if($message_type == "SMS"){
-			$echannelid = 1;
-			$echannel = $this->Channelmodel->channelstatus($echannelid);
-			if($echannel != 0){
-				$sms_message = "$message";
-				$phone_formatted = formatPhonenumber($primary_contact);
-				send_sms($phone_formatted, $sms_message);
-				if (send_sms($phone_formatted, $sms_message)) {
-					$this->session->set_flashdata('message', "<div class='alert alert-success'>
-					 Your Form Was Submitted Successfully.
-				  </div>");
-			}else{
-				$this->session->set_flashdata('message', "<div class='alert alert-danger'>
-				<strong>There was an Error ! </strong> Your Form Was Not Submitted. 
-			  </div>");
-				}
-			}
-			else{
-				return $this->output->set_content_type('application/json')
-					->set_status_header(503)
-					->set_output(
-						json_encode(array("result" => "SMS not sent because the channel is blocked")));
-			}
-			
-		}else if($message_type == "EMAIL"){
-			$email = $this->input->post('email');
-			# NB i configured email setting in application/config/email.php
-			$this->load->library('email');
-			$this->email->from("deksol_bills@deksolconsult.com");
-			$this->email->to($email);
-			$this->email->subject('Personal message');
-			$this->email->attach($pdf, base_url().'/temp_pdf_dir', "PDF test" . date("m-d H-i-s") . ".pdf", false);
-			$this->email->message($message);
-			
-			if ($this->email->send()) {
-				$this->session->set_flashdata('message', "<div class='alert alert-success'>
-            	 Your Form Was Submitted Successfully.
-          	</div>");
-		}else{
-			$this->session->set_flashdata('message', "<div class='alert alert-danger'>
-			<strong>Oh Snap! </strong> Your Form Was Not Submitted.
-		  </div>");
-			}
-		}
+					' src='assets/img/Coat_of_arms_of_Ghana.png' alt='Watermark' />
+             </div>
+         </div>
 
-		redirect($_SERVER['HTTP_REFERER']);
+		 <!-- QR code Library CDN -->
+		 <script src='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js'></script>
+	 
+		 <script type='text/javascript'>
+		   const qrcode = document.getElementById('qrcode');
+		   const textInput = document.getElementById('qrtext');
+	 
+		   const qr = new QRCode(qrcode);
+		   qr.makeCode(textInput.value.trim());
+		 </script>
+		 
+     </body>
+     ";
+     $this->pdf->loadHtml($html);
+     $this->pdf->setPaper('A4', 'portrait');
+     $this->pdf->render();
+     $pdf = $this->pdf->output();
+     //1 = download 0= read
+     $this->pdf->stream("test.pdf", array("Attachment"=> 0));
+     // file_put_contents('temp_pdf_dir', $html);
 
-		
-	}
+     if($message_type == "SMS"){
+     $echannelid = 1;
+     $echannel = $this->Channelmodel->channelstatus($echannelid);
+     if($echannel != 0){
+     $sms_message = "$message";
+     $phone_formatted = formatPhonenumber($primary_contact);
+     send_sms($phone_formatted, $sms_message);
+     if (send_sms($phone_formatted, $sms_message)) {
+     $this->session->set_flashdata('message', "<div class='alert alert-success'>
+         Your Form Was Submitted Successfully.
+     </div>");
+     }else{
+     $this->session->set_flashdata('message', "<div class='alert alert-danger'>
+         <strong>There was an Error ! </strong> Your Form Was Not Submitted.
+     </div>");
+     }
+     }
+     else{
+     return $this->output->set_content_type('application/json')
+     ->set_status_header(503)
+     ->set_output(
+     json_encode(array("result" => "SMS not sent because the channel is blocked")));
+     }
+
+     }else if($message_type == "EMAIL"){
+    //  $email = $this->input->post('email');
+    //  # NB i configured email setting in application/config/email.php
+    //  $this->load->library('email');
+    //  $this->email->from("deksol_bills@deksolconsult.com");
+    //  $this->email->to($email);
+    //  $this->email->subject('Personal message');
+    //  $this->email->attach($pdf, base_url().'/temp_pdf_dir', "PDF test" . date("m-d H-i-s") . ".pdf", false);
+    //  $this->email->message($message);
+
+    //  if ($this->email->send()) {
+    //  $this->session->set_flashdata('message', "<div class='alert alert-success'>
+    //      Your Form Was Submitted Successfully.
+    //  </div>");
+    //  }else{
+    //  $this->session->set_flashdata('message', "<div class='alert alert-danger'>
+    //      <strong>Oh Snap! </strong> Your Form Was Not Submitted.
+    //  </div>");
+    //  }
+     }
+
+     redirect($_SERVER['HTTP_REFERER']);
+
+
+     }
 
 
 
-}
+     }

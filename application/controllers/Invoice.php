@@ -805,8 +805,8 @@ class Invoice extends CI_Controller {
 					$tran['cheque_image']= $this->upload->data('file_name');
 					
 				} else {
-					$tran['image_path'] = 'image did not upload';
-					$tran['cheque_image']= 'image did not upload';
+					$tran['image_path'] = '';
+					$tran['cheque_image']= '';
 					echo $this->upload->display_errors(); die();
 					
 				};

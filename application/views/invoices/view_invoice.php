@@ -237,17 +237,39 @@
                                                         </tr>
                                                     </tbody>
                                                 </table>
-                                                <div class="text-right">
-                                                    <img src="<?=base_url().MFO_SIGNATURE?>" alt="Signature"
-                                                        style="width:12em;height:8em;margin-right:0.5em" />
-                                                    <img src="<?=base_url().MCD_SIGNATURE?>" alt="Signature"
-                                                        style="width:12em;height:8em;" />
-                                                </div>
-                                                <div class="text-right">
-                                                    <img src="<?=base_url().MCD_STAMP?>" alt="Signature"
-                                                        style="width:12em;height:8em;margin-right:0.5em" />
-                                                    <img src="<?=base_url().MFO_STAMP?>" alt="Signature"
-                                                        style="width:12em;height:8em;" />
+                                                <div class="row">
+                                                    <div class="col-md-6 pt-3">
+
+                                                    <?php 
+                                                     ($result->busocc_property_code)? $busocc = $result->busocc_property_code : $buscocc = ""; ?>
+
+                                                    <input 
+                                                        type="hidden"
+                                                        spellcheck="false"
+                                                        id="qrtext"
+                                                        value="
+                                                            Invoice# : <?=$result->invoice_no ?>
+                                                            Property# :  <?=$result->property_code ?>
+                                                            Business# : <?= $busocc ?>
+                                                            Phone# : <?=$result->owner_phoneno ?>
+                                                         "
+                                                    />
+                                                    <div id="qrcode"></div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="text-right">
+                                                            <img src="<?=base_url().MFO_SIGNATURE?>" alt="Signature"
+                                                                style="width:12em;height:8em;margin-right:0.5em" />
+                                                            <img src="<?=base_url().MCD_SIGNATURE?>" alt="Signature"
+                                                                style="width:12em;height:8em;" />
+                                                        </div>
+                                                        <div class="text-right">
+                                                            <img src="<?=base_url().MCD_STAMP?>" alt="Signature"
+                                                                style="width:12em;height:8em;margin-right:0.5em" />
+                                                            <img src="<?=base_url().MFO_STAMP?>" alt="Signature"
+                                                                style="width:12em;height:8em;" />
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -371,4 +393,9 @@
     border-top: 3px solid #CCC;
     color: rebeccapurple;
 }
+
+#qrcode > img{
+    width : 30%;
+}
+
 </style>
