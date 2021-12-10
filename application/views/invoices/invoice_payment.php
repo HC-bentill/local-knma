@@ -55,7 +55,7 @@
                               
                             ?>
                               <label class="control-label text-sm-right pt-2"><strong>Outstanding Amount:</strong></label>           
-                              <input type="text" class="form-control <?php if($total_amount <= 0){echo 'no-outstanding';}else {echo 'outstanding';} ?>" id="invoice_amountt" value="<?=number_format((float)$total_amount , 2, '.', '');?>" name="invoice_amountt" disabled required>
+                              <input type="text" class="form-control <?php if($total_amount <= 0){echo 'no-outstanding';}else {echo 'outstanding';} ?>" id="invoice_amountt" value="<?=number_format((float)$outstanding_amount , 2, '.', '');?>" name="invoice_amountt" disabled required>
                             </div>
                           </div>
                           <div class="form-group row pay-invoice">

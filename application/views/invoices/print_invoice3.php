@@ -298,8 +298,7 @@
 					<div class="row">
 						<div class="col-md-6 pt-3">
 
-						<?php 
-							($result->busocc_property_code)? $busocc = $result->busocc_property_code : $buscocc = ""; ?>
+						
 
 						<input 
 							type="hidden"
@@ -308,7 +307,7 @@
 							value="
 								Invoice# : <?=$result->invoice_no ?>
 								Property# :  <?=$result->property_code ?>
-								Business# : <?= $busocc ?>
+								Business# : <?= $result->busocc_property_code ?>
 								Phone# : <?=$result->owner_phoneno ?>
 								"
 						/>
