@@ -216,7 +216,7 @@
                                                         </tr>
                                                         <tr>
                                                             <?php $total_amount_text = 'GHS '.number_format((float)$total_amount , 2, '.', ','); ?>
-                                                            <td width="60%" class="text-right">Total</td>
+                                                            <td width="60%" class="text-right">Total Outstanding</td>
                                                             <td width="40%" class="text-left">
                                                                 <b><?=$total_amount_text?></b></td>
                                                             <input type="hidden" id="total_amount_text"

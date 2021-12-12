@@ -148,7 +148,7 @@
 									<td width="40%" class="text-left"><?= 'GHS '.number_format((float)$actual_arrears , 2, '.', ',');?></td>
 								</tr>
 								<tr>
-									<td width="60%" class="text-right">Total</td>
+									<td width="60%" class="text-right">Total Outstanding</td>
 									<td width="40%" class="text-left"><?= 'GHS '.number_format((float)$total_amount , 2, '.', ',');?></td>
 								</tr>
 							</tbody>

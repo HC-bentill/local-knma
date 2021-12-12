@@ -280,7 +280,7 @@
 								<td width="40%" class="text-left"><?= 'GHS ' . number_format((float) $amount_paid, 2, '.', ','); ?></td>
 							</tr>
 							<tr>
-								<td width="60%" class="text-right">Total</td>
+								<td width="60%" class="text-right">Total Outstanding</td>
 								<td width="40%" class="text-left"><b><?= 'GHS ' . number_format((float) $total_amount, 2, '.', ','); ?></b></td>
 							</tr>
 						</tbody>
