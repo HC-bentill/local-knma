@@ -133,15 +133,33 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                            <div class="text-right">
-												<!-- <img src="<?=base_url().MCE_SIGNATURE?>" alt="Signature" style="width:12em;height:8em;margin-right:0.5em"/> -->
-												<img src="<?=base_url().MCD_SIGNATURE?>" alt="Signature" style="width:12em;height:8em;"/>
-											</div>
-											<div class="text-right">
-												<!-- <img src="<?=base_url().MCE_STAMP?>" alt="Signature" style="width:12em;height:8em;margin-right:0.5em"/> -->
-												<img src="<?=base_url().MCD_STAMP?>" alt="Signature" style="width:12em;height:8em;"/>
-											</div>
-                                        </div>
+                                                <div class="row">
+                                                    <div class="col-md-6 pt-3">
+                                                        <input 
+                                                            type="hidden"
+                                                            spellcheck="false"
+                                                            id="qrtext"
+                                                            value="
+																Full name: <?= $result->firstname . ' ' . $result->lastname. ' ' ?>
+                                                                Invoice# : <?=$result->invoice_id ?>
+                                                                House_no# :  <?=$result->house_number ?>
+                                                                Town : <?= $result->town ?>
+                                                            "
+                                                        />
+                                                    <div id="qrcode"></div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="text-right">
+                                                            <img src="<?=base_url().MFO_SIGNATURE?>" alt="Signature"
+                                                                style="width:12em;height:8em;margin-right:0.5em" />
+                                                        </div>
+                                                        <div class="text-right">
+                                                            <img src="<?=base_url().MCD_STAMP?>" alt="Signature"
+                                                                style="width:12em;height:8em;margin-right:0.5em" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+										</div>
                                     </div>
   								</div>
   							</div>
@@ -158,3 +176,34 @@
         </section>
     </div>
 </div>
+
+<style type="text/css">
+.nav-tabs li .nav-link,
+.nav-tabs li .nav-link:hover {
+    background: #F4F4F4;
+    border-bottom: none;
+    border-left: 1px solid #EEE;
+    border-right: 1px solid #EEE;
+    border-top: 3px solid #EEE;
+    color: black;
+}
+
+.nav-link .active {
+    color: red;
+}
+
+.nav-tabs li.active .nav-link,
+.nav-tabs li.active .nav-link:hover,
+.nav-tabs li.active .nav-link:focus {
+    background: #FFF;
+    border-left-color: #EEE;
+    border-right-color: #EEE;
+    border-top: 3px solid #CCC;
+    color: rebeccapurple;
+}
+
+#qrcode > img{
+    width : 30%;
+}
+
+</style>

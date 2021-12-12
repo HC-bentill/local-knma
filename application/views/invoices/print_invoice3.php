@@ -69,8 +69,9 @@
         }
 
 		#qrcode > img{
-			width : 15%;
+			width: 10%;
 			position: absolute;
+			margin-top:6%;
 		}
 
 

@@ -42,6 +42,11 @@
 				line-height:140%;
 				text-align:justify
 			}
+			#qrcode > img{
+			width : 10%;
+			position: absolute;
+			margin-top:6%;
+		}
         </style>
         <script src="<?php echo base_url(); ?>assets/vendor/jquery/jquery.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/custom.js"></script>
@@ -159,14 +164,39 @@
                                 </tr>
                             </tbody>
                         </table>
-						<div class="text-right">
-							<!-- <img src="<?=base_url().MCE_SIGNATURE?>" alt="Signature" style="width:12em;height:8em;margin-right:0.5em"/> -->
-							<img src="<?=base_url().MCD_SIGNATURE?>" alt="Signature" style="width:12em;height:8em;"/>
+						<div class="row">
+						<div class="col-md-6 pt-3">
+
+						
+
+						<input 
+							type="hidden"
+							spellcheck="false"
+							id="qrtext"
+							value="
+							Full name: <?= $result->firstname . ' ' . $result->lastname. ' ' ?>
+							Invoice# : <?=$result->invoice_id ?>
+							House_no# :  <?=$result->house_number ?>
+							Town : <?= $result->town ?>
+								"
+						/>
+						<div id="qrcode"></div>
 						</div>
-						<div class="text-right">
-							<!-- <img src="<?=base_url().MCE_STAMP?>" alt="Signature" style="width:12em;height:8em;margin-right:0.5em"/> -->
-							<img src="<?=base_url().MCD_STAMP?>" alt="Signature" style="width:12em;height:8em;"/>
+						<div class="col-md-6">
+							<div class="text-right">
+								<img src="<?=base_url().MFO_SIGNATURE?>" alt="Signature"
+									style="width:12em;height:8em;margin-right:0.5em" />
+								<img src="<?=base_url().MCD_SIGNATURE?>" alt="Signature"
+									style="width:12em;height:8em;" />
+							</div>
+							<div class="text-right">
+								<img src="<?=base_url().MCD_STAMP?>" alt="Signature"
+									style="width:12em;height:8em;margin-right:0.5em" />
+								<img src="<?=base_url().MFO_STAMP?>" alt="Signature"
+									style="width:12em;height:8em;" />
+							</div>
 						</div>
+					</div>
                     </div>
                 </div>
             </div>
@@ -178,5 +208,15 @@
 				PROCEEDINGS WILL BE TAKEN FOR THE PURPOSE OF EXACTING SALE OR ENTRY INTO POSSESSION AND THE EXPENSES INCURRED
 			</p>
 		</div>
+						<!-- QR code Library CDN -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+		<script type="text/javascript">
+		const qrcode = document.getElementById("qrcode");
+		const textInput = document.getElementById("qrtext");
+
+		const qr = new QRCode(qrcode);
+		qr.makeCode(textInput.value.trim());
+		</script>
 	</body>
 </html>
