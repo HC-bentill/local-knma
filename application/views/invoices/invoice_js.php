@@ -397,7 +397,7 @@
               $('#basicform input.inv-payment-btn').removeAttr('disabled');
 						}else{
 							$('#error_notif').css('display', 'block');
-						  $('#error_notif').html(result.data.message);
+						  $('#error_notif').html('An SMS Error occured !');
 						}
 					}
 				);

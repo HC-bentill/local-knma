@@ -56,6 +56,13 @@
                             ?>
                               <label class="control-label text-sm-right pt-2"><strong>Outstanding Amount:</strong></label>           
                               <input type="text" class="form-control <?php if($total_amount <= 0){echo 'no-outstanding';}else {echo 'outstanding';} ?>" id="invoice_amountt" value="<?=number_format((float)$outstanding_amount , 2, '.', '');?>" name="invoice_amountt" disabled required>
+                              <input type="text" class="form-control hidden" id="actual_arrears" value="<?=number_format((float)$actual_arrears , 2, '.', '');?>" name="actual_arrears" >
+                              <input type="text" class="form-control hidden" id="invoice_amt" value="<?=number_format((float)$invoice_amount , 2, '.', '');?>" name="invoice_amt" >
+                              <input type="text" class="form-control hidden" id="penalty_amount" value="<?=number_format((float)$penalty_amount , 2, '.', '');?>" name="penalty_amount" >
+                              <input type="text" class="form-control hidden" id="discount_amount" value="<?=number_format((float)$discount_amount , 2, '.', '');?>" name="discount_amount" >
+                              <input type="text" class="form-control hidden" id="amount_paid" value="<?=number_format((float)$amount_paid , 2, '.', '');?>" name="amount_paid" >
+                              <input type="text" class="form-control hidden" id="total_amount" value="<?=number_format((float)$total_amount , 2, '.', '');?>" name="total_amount" >
+
                             </div>
                           </div>
                           <div class="form-group row pay-invoice">

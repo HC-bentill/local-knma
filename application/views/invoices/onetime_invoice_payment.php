@@ -29,7 +29,7 @@
                               <input type="text" class="form-control" id="invoice_no" value="<?=$result['invoice_id']?>" name="invoice_no" disabled required>
                               <input type="text" class="form-control hidden" value="<?=$result['id']?>" name="invoice_id">
                               <input type="text" class="form-control hidden" value="<?=$result['invoice_id']?>" name="invoice_number">
-                              <input type="text" class="form-control hidden" value="<?=$result['phonenumber']?>" name="phonenumber">
+                              <input type="text" class="form-control hidden" value="<?=$result['phonenumber']?>" name="contactno">
                               <input type="text" class="form-control hidden" value="<?=$result['amount_paid']?>" name="amount_paid_so_far">
                               <input type="text" class="form-control hidden" value="<?=$result['invoice_amount']?>" name="actual_invoice_amount">
                               <input type="text" class="form-control hidden" value="<?=$result['invoice_amount']?>" name="invoice_amount">

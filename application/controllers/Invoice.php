@@ -773,16 +773,27 @@ class Invoice extends CI_Controller {
 		$payment_mode = $this->input->post('payment_mode');
 		$actual_invoice_amount = (float)$this->input->post('actual_invoice_amount');
 		$valid = $this->validateOTP();
-
 		$invoice_amount_paid = (float)$this->input->post('amount_paid_so_far');
+
+		$actual_arrears = (float)$this->input->post('actual_arrears');
+		$invoice_amount = (float)$this->input->post('invoice_amt');
+		$penalty_amount = (float)$this->input->post('penalty_amount');
+		$discount_amount = (float)$this->input->post('discount_amount');
+		$amount_paidd = (float)$this->input->post('amount_paid');
+		$total_amount = (float)$this->input->post('total_amount');
+
 		// check if its a part payment or full payment
 		// if($dat->{'paymentType'} == "Full Payment"){
 		if($payment_mode == "Full Payment"){
 
 			$amount_paid = $actual_invoice_amount - $invoice_amount_paid;
+			$total_outstanding_amount = number_format((float)$total_amount -$invoice_amount , 2, '.', ',');
+
 		}else{
 			// $amount_paid = (float)$dat->{'amountPaid'};//part payment
 			$amount_paid = (float)$this->input->post('amount_paid');//part payment
+			$total_outstanding_amount = number_format((float)$total_amount - $amount_paid , 2, '.', ',');
+
 		}
 
 		if( $valid == 'success' ){
@@ -806,9 +817,7 @@ class Invoice extends CI_Controller {
 					
 				} else {
 					$tran['image_path'] = '';
-					$tran['cheque_image']= '';
-					echo $this->upload->display_errors(); die();
-					
+					$tran['cheque_image']= '';					
 				};
 				// if (!$this->upload->do_upload('userfile')) {
 					
@@ -964,7 +973,7 @@ class Invoice extends CI_Controller {
 					// send sms to rate payer
 					$balance = number_format((float)$actual_invoice_amount - $new_amount_paid , 2, '.', ',');
 					$sms_message = "Your $payment_mode payment of GHS $amount_paid to ". SYSTEM_ID ." for $product has been completed at $datetime";
-					$sms_message .= ($payment_mode == "Cheque") ? " with Pending status." : ". Your outstanding amount is $balance.";
+					$sms_message .= ($payment_mode == "Cheque") ? " with Pending status." : ". Your outstanding amount is $total_outstanding_amount.";
 					$sms_message .= "\nTransaction ID: $transaction_id";
 					$phone_formatted = ((strlen($owner_contact) > 10) && substr($owner_contact, 0, 3) == '233') ? $owner_contact : '233' . substr($owner_contact, 1, strlen($owner_contact));
 					send_sms($phone_formatted, $sms_message);
@@ -972,7 +981,7 @@ class Invoice extends CI_Controller {
 					//send sms to owner/caretaker
 					$balance = number_format((float)$actual_invoice_amount - $new_amount_paid , 2, '.', ',');
 					$sms_message = "Your $payment_mode payment of GHS $amount_paid to ". SYSTEM_ID ." for $product has been completed at $datetime";
-					$sms_message .= ($payment_mode == "Cheque") ? " with Pending status." : ". Your outstanding amount is $balance.";
+					$sms_message .= ($payment_mode == "Cheque") ? " with Pending status." : ". Your outstanding amount is $total_outstanding_amount.";
 					$sms_message .= "\nTransaction ID: $transaction_id";
 					$phone_formatted = ((strlen($primary_contact) > 10) && substr($primary_contact, 0, 3) == '233') ? $primary_contact : '233' . substr($primary_contact, 1, strlen($primary_contact));
 					send_sms($phone_formatted, $sms_message);
@@ -980,7 +989,7 @@ class Invoice extends CI_Controller {
 				}else{
 					$balance = number_format((float)$actual_invoice_amount - $new_amount_paid , 2, '.', ',');
 					$sms_message = "Your $payment_mode payment of GHS $amount_paid to ". SYSTEM_ID ." for $product has been completed at $datetime";
-					$sms_message .= ($payment_mode == "Cheque") ? " with Pending status." : ". Your outstanding amount is $balance.";
+					$sms_message .= ($payment_mode == "Cheque") ? " with Pending status." : ". Your outstanding amount is $total_outstanding_amount.";
 					$sms_message .= "\nTransaction ID: $transaction_id";
 					$phone_formatted = ((strlen($primary_contact) > 10) && substr($primary_contact, 0, 3) == '233') ? $primary_contact : '233' . substr($primary_contact, 1, strlen($primary_contact));
 					send_sms($phone_formatted, $sms_message);
