@@ -206,7 +206,8 @@
                     <label class="control-label text-sm-right pt-2"><strong>Year:</strong></label>
                     <select data-plugin-selecttwo="" data-plugin-options="{ &quot;minimumResultsForSearch&quot;: 5 }" class="form-control" name="year" required>
                       <option value="">Select Year</option> 
-                      <?php $current_year = date("Y");?>
+                      <!-- <?php $current_year = date("Y");?> -->
+                      <?php $current_year = "2022";?>
                       <?php for($i=2017; $i<=$current_year; $i++): ?>
                           <option value="<?=$i?>"><?=$i?></option>
                       <?php endfor; ?>     
