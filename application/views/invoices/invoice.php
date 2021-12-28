@@ -17,7 +17,8 @@
                     <div class="col-lg-3">
                       <select data-plugin-selecttwo="" data-plugin-options="{ &quot;minimumResultsForSearch&quot;: 5 }" class="form-control" name="year">
                         <option value="">Select Year</option> 
-                        <?php $current_year = date("Y");?>
+                        <!-- <?php $current_year = date("Y");?> -->
+                        <?php $current_year = "2022";?>
                         <?php for($i=2017; $i<=$current_year; $i++): ?>
                           <option <?=$year == $i?'selected == selected':''; ?> value="<?=$i?>"><?=$i?></option>
                         <?php endfor; ?> 
@@ -94,13 +95,9 @@
                       <button type="submit" id="save" class="btn btn-success">
                         Search
                       </button>
-                      <?php if(has_permission($this->session->userdata('user_info')['id'],'generate invoices')){ ?>
                         <a href="<?=base_url("BillGeneration/generate_ungenerate_invoice")?>" class="btn btn-primary">
                           Generate Invoice
                         </a>
-                      <?php }else{ ?>
-
-                      <?php } ?>
                     </div>
                   </div>
                 </div>

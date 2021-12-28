@@ -548,6 +548,7 @@ class BillGeneration extends CI_Controller {
 	// run tax assignment
 	public function generate_ungenerate_invoice(){
     	$products = $this->TaxModel->get_product();
+		$invoice_year = "2022";
 
     	foreach($products as $product){
       		if($product->target == 3){
@@ -563,10 +564,10 @@ class BillGeneration extends CI_Controller {
 							'target' => 3
 						);
 						$get_accessed_amount =  $this->TaxModel->get_accessed_details($where);
-						$code = $this->TaxModel->get_code($product->id,date('Y'));
+						$code = $this->TaxModel->get_code($product->id,$invoice_year);
 						$final_code = $code + 1;
 						$number = str_pad($final_code, 5, '0', STR_PAD_LEFT);
-						$invoice_no = "INVN".$product->code.date('Y')."-".$number;
+						$invoice_no = "INVN".$product->code.$invoice_year."-".$number;
 						$today =  date('Y-m-d');
 							
 						$day = strtotime("+21 days", strtotime($today));
@@ -577,7 +578,7 @@ class BillGeneration extends CI_Controller {
 							'property_id' => $bus->busocc_id,
 							'product_id' => $product->id,
 							'invoice_amount' => $get_accessed_amount,
-							'invoice_year' => date('Y')
+							'invoice_year' => $invoice_year
 						);
 						$update = $this->TaxModel->update_business_occ(
 							$bus->busocc_id);
@@ -594,10 +595,10 @@ class BillGeneration extends CI_Controller {
 							'category6_id' => $bus->category6,
 						);
 						$compare = $this->TaxModel->get_busocc_compare($where);
-						$code = $this->TaxModel->get_code($product->id,date('Y'));
+						$code = $this->TaxModel->get_code($product->id,$invoice_year);
 						$final_code = $code + 1;
 						$number = str_pad($final_code, 5, '0', STR_PAD_LEFT);
-						$invoice_no = "INVN".$product->code.date('Y')."-".$number;
+						$invoice_no = "INVN".$product->code.$invoice_year."-".$number;
 						$today =  date('Y-m-d');
 						$day = strtotime("+21 days", strtotime($today));
 						$data = array(
@@ -613,7 +614,7 @@ class BillGeneration extends CI_Controller {
 						'category5_id' => $bus->category5,
 						'category6_id' => $bus->category6,
 						'invoice_amount' => $compare['price1'],
-						'invoice_year' => date('Y')
+						'invoice_year' => $invoice_year
 						);
 						$update = $this->TaxModel->update_business_occ($bus->busocc_id);
 						$insert = $this->TaxModel->insert_invoice_record($data);
@@ -629,10 +630,10 @@ class BillGeneration extends CI_Controller {
 							'target' => 2
 						);
 						$get_accessed_amount =  $this->TaxModel->get_accessed_details($where);
-						$code = $this->TaxModel->get_code($product->id,date('Y'));
+						$code = $this->TaxModel->get_code($product->id,$invoice_year);
 						$final_code = $code + 1;
 						$number = str_pad($final_code, 5, '0', STR_PAD_LEFT);
-						$invoice_no = "INVN".$product->code.date('Y')."-".$number;
+						$invoice_no = "INVN".$product->code.$invoice_year."-".$number;
 						$today =  date('Y-m-d');
 						$day = strtotime("+21 days", strtotime($today));
 						$data = array(
@@ -642,7 +643,7 @@ class BillGeneration extends CI_Controller {
 							'property_id' => $bus->property_id,
 							'product_id' => $product->id,
 							'invoice_amount' => $get_accessed_amount,
-							'invoice_year' => date('Y')
+							'invoice_year' => $invoice_year
 						);
 						$update = $this->TaxModel->update_business_property($bus->property_id);
 						$insert = $this->TaxModel->insert_invoice_record($data);
@@ -657,10 +658,10 @@ class BillGeneration extends CI_Controller {
 							'category6_id' => $bus->category6,
 						);
 						$compare = $this->TaxModel->get_busocc_compare($where);
-						$code = $this->TaxModel->get_code($product->id,date('Y'));
+						$code = $this->TaxModel->get_code($product->id,$invoice_year);
 						$final_code = $code + 1;
 						$number = str_pad($final_code, 5, '0', STR_PAD_LEFT);
-						$invoice_no = "INVN".$product->code.date('Y')."-".$number;
+						$invoice_no = "INVN".$product->code.$invoice_year."-".$number;
 						$today =  date('Y-m-d');
 						$day = strtotime("+21 days", strtotime($today));
 						$data = array(
@@ -676,7 +677,7 @@ class BillGeneration extends CI_Controller {
 							'category5_id' => $bus->category5,
 							'category6_id' => $bus->category6,
 							'invoice_amount' => $compare['price1'],
-							'invoice_year' => date('Y')
+							'invoice_year' => $invoice_year
 						);
 						$update = $this->TaxModel->update_business_property($bus->property_id);
 						$insert = $this->TaxModel->insert_invoice_record($data);
@@ -692,10 +693,10 @@ class BillGeneration extends CI_Controller {
 							'target' => 1
 						);
 						$get_accessed_amount =  $this->TaxModel->get_accessed_details($where);
-						$code = $this->TaxModel->get_code($product->id,date('Y'));
+						$code = $this->TaxModel->get_code($product->id,$invoice_year);
 						$final_code = $code + 1;
 						$number = str_pad($final_code, 5, '0', STR_PAD_LEFT);
-						$invoice_no = "INVN".$product->code.date('Y')."-".$number;
+						$invoice_no = "INVN".$product->code.$invoice_year."-".$number;
 						$today =  date('Y-m-d');
 						$day = strtotime("+21 days", strtotime($today));
 						$data = array(
@@ -705,7 +706,7 @@ class BillGeneration extends CI_Controller {
 							'property_id' => $bus->property_id,
 							'product_id' => $product->id,
 							'invoice_amount' => $get_accessed_amount,
-							'invoice_year' => date('Y')
+							'invoice_year' => $invoice_year
 						);
 						$update = $this->TaxModel->update_business_property($bus->property_id);
 						$insert = $this->TaxModel->insert_invoice_record($data);
@@ -720,10 +721,10 @@ class BillGeneration extends CI_Controller {
 							'category6_id' => $bus->category6,
 						);
 						$compare = $this->TaxModel->get_busocc_compare($where);
-						$code = $this->TaxModel->get_code($product->id,date('Y'));
+						$code = $this->TaxModel->get_code($product->id,$invoice_year);
 						$final_code = $code + 1;
 						$number = str_pad($final_code, 5, '0', STR_PAD_LEFT);
-						$invoice_no = "INVN".$product->code.date('Y')."-".$number;
+						$invoice_no = "INVN".$product->code.$invoice_year."-".$number;
 						$today =  date('Y-m-d');
 						$day = strtotime("+21 days", strtotime($today));
 						$data = array(
@@ -739,7 +740,7 @@ class BillGeneration extends CI_Controller {
 							'category5_id' => $bus->category5,
 							'category6_id' => $bus->category6,
 							'invoice_amount' => $compare['price1'],
-							'invoice_year' => date('Y')
+							'invoice_year' => $invoice_year
 						);
 						$update = $this->TaxModel->update_business_property($bus->property_id);
 						$insert = $this->TaxModel->insert_invoice_record($data);
@@ -755,10 +756,10 @@ class BillGeneration extends CI_Controller {
 					// 		'target' => 1
 					// 	);
 					// 	$get_accessed_amount =  $this->TaxModel->get_accessed_details($where);
-					// 	$code = $this->TaxModel->get_code($product->id,date('Y'));
+					// 	$code = $this->TaxModel->get_code($product->id,$invoice_year);
 					// 	$final_code = $code + 1;
 					// 	$number = str_pad($final_code, 5, '0', STR_PAD_LEFT);
-					// 	$invoice_no = "INVN".$product->code.date('Y')."-".$number;
+					// 	$invoice_no = "INVN".$product->code.$invoice_year."-".$number;
 					// 	$today =  date('Y-m-d');
 					// 	$day = strtotime("+21 days", strtotime($today));
 					// 	$data = array(
@@ -768,7 +769,7 @@ class BillGeneration extends CI_Controller {
 					// 		'property_id' => $bus->property_id,
 					// 		'product_id' => $product->id,
 					// 		'invoice_amount' => $get_accessed_amount,
-					// 		'invoice_year' => date('Y')
+					// 		'invoice_year' => $invoice_year
 					// 	);
 					// 	$update = $this->TaxModel->update_residence_property($bus->property_id);
 					// 	$insert = $this->TaxModel->insert_invoice_record($data);
@@ -783,10 +784,10 @@ class BillGeneration extends CI_Controller {
 						'category6_id' => $sig->category6,
 					);
 					$compare = $this->TaxModel->get_busocc_compare($where);
-					$code = $this->TaxModel->get_code($product->id,date('Y'));
+					$code = $this->TaxModel->get_code($product->id,$invoice_year);
 					$final_code = $code + 1;
 					$number = str_pad($final_code, 5, '0', STR_PAD_LEFT);
-					$invoice_no = "INVN".$product->code.date('Y')."-".$number;
+					$invoice_no = "INVN".$product->code.$invoice_year."-".$number;
 					$today =  date('Y-m-d');
 					$day = strtotime("+21 days", strtotime($today));
 					$data = array(
@@ -802,7 +803,7 @@ class BillGeneration extends CI_Controller {
 						'category5_id' => $sig->category5,
 						'category6_id' => $sig->category6,
 						'invoice_amount' => $compare['price1'],
-						'invoice_year' => date('Y')
+						'invoice_year' => $invoice_year
 					);
 					$update = $this->TaxModel->update_signage($sig->id);
 					$insert = $this->TaxModel->insert_invoice_record($data);
