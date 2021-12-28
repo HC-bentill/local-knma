@@ -548,7 +548,7 @@ class BillGeneration extends CI_Controller {
 	// run tax assignment
 	public function generate_ungenerate_invoice(){
     	$products = $this->TaxModel->get_product();
-		$invoice_year = "2022";
+		$invoice_year = CONFIG_INVOICE_YEAR;
 
     	foreach($products as $product){
       		if($product->target == 3){

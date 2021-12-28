@@ -104,4 +104,5 @@ define('MFO_SIGNATURE',"assets/img/MFO_signature.png");
 define('MFO_STAMP',"assets/img/MFO_stamp.png");
 define('MCD_SIGNATURE',"assets/img/director_signature.png");
 define('MCD_STAMP',"assets/img/director_stamp.png");
+define('CONFIG_INVOICE_YEAR',"2022");
  
