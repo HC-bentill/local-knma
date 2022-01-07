@@ -545,18 +545,21 @@ class BillGeneration extends CI_Controller {
 
 	}
 
+ 
+
 	// run tax assignment
-	public function generate_ungenerate_invoice(){
-    	$products = $this->TaxModel->get_product();
+	public function generate_ungenerate_invoice_old(){
+		$products = $this->TaxModel->get_product();
 		$invoice_year = CONFIG_INVOICE_YEAR;
 
-    	foreach($products as $product){
-      		if($product->target == 3){
+		foreach($products as $product){
+				if($product->target == 3){
 				$bus_categories = $this->TaxModel
 					->get_ungenerated_busocc_categories();
 				foreach($bus_categories as $bus){
 
 					if($bus->accessed){
+						$invoice_status_to_zero = $this->TaxModel->update_business_occ_to_zero($bus->busocc_id);
 
 						$where = array(
 							'property_id' => $bus->busocc_id,
@@ -624,6 +627,8 @@ class BillGeneration extends CI_Controller {
 				$busprop = $this->TaxModel->get_ungenerated_business_prop(12);
 				foreach($busprop as $bus){
 					if($bus->accessed == 1){
+						$invoice_status_to_zero = $this->TaxModel->update_business_property_to_zero($bus->property_id);
+
 						$where = array(
 							'property_id' => $bus->property_id,
 							'product_id' =>  $product->id,
@@ -682,11 +687,13 @@ class BillGeneration extends CI_Controller {
 						$update = $this->TaxModel->update_business_property($bus->property_id);
 						$insert = $this->TaxModel->insert_invoice_record($data);
 					}
-            	}     
+				}     
 			}else if($product->target == 1){
 				$busprop = $this->TaxModel->get_ungenerated_business_prop(13);
 				foreach($busprop as $bus){
 					if($bus->accessed == 1){
+						$invoice_status_to_zero = $this->TaxModel->update_business_property_to_zero($bus->property_id);
+
 						$where = array(
 							'property_id' => $bus->property_id,
 							'product_id' =>  $product->id,
@@ -745,10 +752,12 @@ class BillGeneration extends CI_Controller {
 						$update = $this->TaxModel->update_business_property($bus->property_id);
 						$insert = $this->TaxModel->insert_invoice_record($data);
 					}
-            	}
+				}
 			}else if($product->target == 4){
 				$signage = $this->TaxModel->get_ungenerated_signage();
 				foreach($signage as $sig){
+
+					$invoice_status_to_zero = $this->TaxModel->update_signage_to_zero($sig->id);
 					// if($bus->accessed == 1){
 					// 	$where = array(
 					// 		'property_id' => $bus->property_id,

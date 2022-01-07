@@ -1145,6 +1145,26 @@ class TaxModel extends CI_Model
          return ($signages);
      }
 
+    // update business invoice status to 0
+    public function update_business_occ_to_zero($id)
+    {
+        $data = array(
+            'invoice_status' => 0,
+        );
+        $this->db->where('id', $id);
+        return $this->db->update('buisness_occ', $data);
+    }
+
+    // update business property to 0
+    public function update_business_property_to_zero($id)
+    {
+        $data = array(
+            'invoice_status' => 0,
+        );
+        $this->db->where('id', $id);
+        return $this->db->update('buisness_property', $data);
+    }
+
 	// update business occ propety type
     public function update_business_occ($id)
     {
@@ -1173,6 +1193,16 @@ class TaxModel extends CI_Model
         );
         $this->db->where('id', $id);
         return $this->db->update('residence', $data);
+    }
+
+    // update signage invoice status
+    public function update_signage_to_zero($id)
+    {
+        $data = array(
+            'invoice_status' => 0,
+        );
+        $this->db->where('id', $id);
+        return $this->db->update('signage', $data);
     }
 
     // update signage invoice status
