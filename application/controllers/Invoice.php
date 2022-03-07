@@ -786,12 +786,13 @@ class Invoice extends CI_Controller {
 		// if($dat->{'paymentType'} == "Full Payment"){
 		if($payment_mode == "Full Payment"){
 
-			$amount_paid = $actual_invoice_amount - $invoice_amount_paid;
-			$total_outstanding_amount = number_format((float)$total_amount -$invoice_amount , 2, '.', ',');
+			// $amount_paid = $actual_invoice_amount - $invoice_amount_paid;
+			$amount_paid = $actual_invoice_amount;
+			$total_outstanding_amount = number_format((float)$total_amount -$actual_invoice_amount , 2, '.', ',');
 
 		}else{
 			// $amount_paid = (float)$dat->{'amountPaid'};//part payment
-			$amount_paid = (float)$this->input->post('amount_paid');//part payment
+			$amount_paid = (float)$this->input->post('part_amount_paid');//part payment
 			$total_outstanding_amount = number_format((float)$total_amount - $amount_paid , 2, '.', ',');
 
 		}
@@ -840,7 +841,7 @@ class Invoice extends CI_Controller {
 			if($this->input->post('payment_type') == "Full Payment"){
 				$amount_paid = $actual_invoice_amount - $invoice_amount_paid;
 			}else{
-				$amount_paid = (float)$this->input->post('amount_paid');//part payment
+				$amount_paid = (float)$this->input->post('part_amount_paid');//part payment
 			}
 
 			if($payment_mode == "Cheque"){

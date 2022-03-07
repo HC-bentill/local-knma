@@ -445,6 +445,11 @@
 								<td>Upload Business Records</td>
 								<td>This gives user the ability to bulk upload business records from a file</td>
 							</tr>
+							<tr>
+								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" <?=has_permission($id,'audit_trail_user_management')?'checked':''?> value="audit_trail_user_management"/></td>
+								<td>View Audit trail & User Management</td>
+								<td>This gives user the ability to view audit trail and user management module</td>
+							</tr>
 						</tbody>
 		          	</table>
 		        </div>

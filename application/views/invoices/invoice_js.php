@@ -374,12 +374,27 @@
 
 		if( validated ) {
 			if(buttonval !== "Finish Payment" && paymode !== 'Mobile Money'){
-				let amount=0;
-				if($('#amount_paid').closest('.pp').css('display') === 'block'){
-					amount = 'GHS ' + $('#amount_paid').val() + ' as part payment of GHS ' + $('#invoice_amountt').val();
-				} else {
-					amount = 'GHS ' + $('#invoice_amountt').val();
-				}
+       let amount=0;
+       let payment_type = $('#payment_type').val();
+      //  if(payment_type == 'Part Payment'){
+      //     amount = amount_paid;
+      //   }else{
+      //     amount = invoice_amountt;
+      //   }
+
+      if(payment_type == 'Part Payment'){
+          amount = 'GHS ' + $('#part_amount_paid').val() + ' as part payment of GHS ' + $('#invoice_amountt').val();
+        } else {
+          amount = 'GHS ' + $('#invoice_amt').val();
+        }
+      
+
+        // if($('#amount_paid').closest('.pp').css('display') === 'block'){
+        //   amount = 'GHS ' + $('#amount_paid').val() + ' as part payment of GHS ' + $('#invoice_amountt').val();
+        // } else {
+        //   amount = 'GHS ' + $('#invoice_amountt').val();
+        // }
+        
 				let target = $('input[name=target]').val() || 0;
 				let phone_no;
 				if($('select[name=paid_by]').val() === "registered"){
@@ -411,10 +426,10 @@
 
         paymentoption = $('#mobile_operator').val();
         walletnumber = $('#momo_number').val();
-        amount_paid = $('#amount_paid').val();
+        amount_paid = $('#part_amount_paid').val();
         invoice_number = $('#invoice_number').val();
         payment_type = $('#payment_type').val();
-        invoice_amountt = $('#invoice_amountt').val();
+        invoice_amountt = $('#invoice_amt').val();
         let vouchercode = null;
 
         // if(paymentoption == 'Vodafone'){
@@ -506,10 +521,10 @@
 
 			if(paymode !== 'Mobile Money'){
 				let amount=0;
-				if($('#amount_paid').closest('.pp').css('display') === 'block'){
-					amount = 'GHS ' + $('#amount_paid').val() + ' as part payment of GHS ' + $('#invoice_amountt').val();
+				if($('#part_amount_paid').closest('.pp').css('display') === 'block'){
+					amount = 'GHS ' + $('#part_amount_paid').val() + ' as part payment of GHS ' + $('#invoice_amountt').val();
 				} else {
-					amount = 'GHS ' + $('#invoice_amountt').val();
+					amount = 'GHS ' + $('#invoice_amt').val();
 				}
 				let target = $('input[name=target]').val() || 0;
 				let phone_no;

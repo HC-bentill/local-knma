@@ -274,4 +274,8 @@ $route['add_telecom'] = 'Telecom/add_telecom';
 $route['invoice_email'] = 'Business/invoice_email';
 
 
+$route['uploadapi'] = 'Upload/upload';
+
+
+
 

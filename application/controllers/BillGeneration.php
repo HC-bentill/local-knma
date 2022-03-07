@@ -548,18 +548,40 @@ class BillGeneration extends CI_Controller {
  
 
 	// run tax assignment
-	public function generate_ungenerate_invoice_old(){
+	public function generate_ungenerate_invoice(){
 		$products = $this->TaxModel->get_product();
 		$invoice_year = CONFIG_INVOICE_YEAR;
 
-		foreach($products as $product){
+		//get all record ID's from business occupant & property & signage tables
+		$bus_occ = $this->TaxModel->get_business_occ();
+		$bus_prop = $this->TaxModel->get_business_property();
+		$sig = $this->TaxModel->get_signage();
+
+
+		//make invoice_status column = 0 on property & occupant table
+		foreach($bus_occ as $occupant){
+		$bus_occ_invoice_status_to_zero = $this->TaxModel->update_business_occ_to_zero($occupant->id);
+		}
+
+		foreach($bus_prop as $property){
+		$bus_prop_invoice_status_to_zero = $this->TaxModel->update_business_property_to_zero($property->id);
+		}
+
+		foreach($sig as $signage){
+		$signage_invoice_status_to_zero = $this->TaxModel->update_signage_to_zero($signage->id);
+		}
+
+
+
+		//if the invoice_status column is changed to 0 in all 3 tables above then generate bills
+		if($bus_occ_invoice_status_to_zero && $bus_prop_invoice_status_to_zero && $signage_invoice_status_to_zero ){
+			foreach($products as $product){
 				if($product->target == 3){
 				$bus_categories = $this->TaxModel
 					->get_ungenerated_busocc_categories();
 				foreach($bus_categories as $bus){
 
 					if($bus->accessed){
-						$invoice_status_to_zero = $this->TaxModel->update_business_occ_to_zero($bus->busocc_id);
 
 						$where = array(
 							'property_id' => $bus->busocc_id,
@@ -627,7 +649,6 @@ class BillGeneration extends CI_Controller {
 				$busprop = $this->TaxModel->get_ungenerated_business_prop(12);
 				foreach($busprop as $bus){
 					if($bus->accessed == 1){
-						$invoice_status_to_zero = $this->TaxModel->update_business_property_to_zero($bus->property_id);
 
 						$where = array(
 							'property_id' => $bus->property_id,
@@ -692,7 +713,6 @@ class BillGeneration extends CI_Controller {
 				$busprop = $this->TaxModel->get_ungenerated_business_prop(13);
 				foreach($busprop as $bus){
 					if($bus->accessed == 1){
-						$invoice_status_to_zero = $this->TaxModel->update_business_property_to_zero($bus->property_id);
 
 						$where = array(
 							'property_id' => $bus->property_id,
@@ -753,91 +773,100 @@ class BillGeneration extends CI_Controller {
 						$insert = $this->TaxModel->insert_invoice_record($data);
 					}
 				}
-			}else if($product->target == 4){
-				$signage = $this->TaxModel->get_ungenerated_signage();
-				foreach($signage as $sig){
+			}
+			else if($product->target == 4){
+			$signage = $this->TaxModel->get_ungenerated_signage();
+			foreach($signage as $sig){
 
-					$invoice_status_to_zero = $this->TaxModel->update_signage_to_zero($sig->id);
-					// if($bus->accessed == 1){
-					// 	$where = array(
-					// 		'property_id' => $bus->property_id,
-					// 		'product_id' =>  $product->id,
-					// 		'target' => 1
-					// 	);
-					// 	$get_accessed_amount =  $this->TaxModel->get_accessed_details($where);
-					// 	$code = $this->TaxModel->get_code($product->id,$invoice_year);
-					// 	$final_code = $code + 1;
-					// 	$number = str_pad($final_code, 5, '0', STR_PAD_LEFT);
-					// 	$invoice_no = "INVN".$product->code.$invoice_year."-".$number;
-					// 	$today =  date('Y-m-d');
-					// 	$day = strtotime("+21 days", strtotime($today));
-					// 	$data = array(
-					// 		'invoice_no' => $invoice_no,
-					// 		'invoice_due_date' => strtotime(date("Y-m-d H:i:s")),
-					// 		'payment_due_date' => $day,
-					// 		'property_id' => $bus->property_id,
-					// 		'product_id' => $product->id,
-					// 		'invoice_amount' => $get_accessed_amount,
-					// 		'invoice_year' => $invoice_year
-					// 	);
-					// 	$update = $this->TaxModel->update_residence_property($bus->property_id);
-					// 	$insert = $this->TaxModel->insert_invoice_record($data);
-					// }else{
-					$where = array(
-						'product_id' => $product->id,
-						'category1_id' => $sig->category1,
-						'category2_id' => $sig->category2,
-						'category3_id' => $sig->category3,
-						'category4_id' => $sig->category4,
-						'category5_id' => $sig->category5,
-						'category6_id' => $sig->category6,
-					);
-					$compare = $this->TaxModel->get_busocc_compare($where);
-					$code = $this->TaxModel->get_code($product->id,$invoice_year);
-					$final_code = $code + 1;
-					$number = str_pad($final_code, 5, '0', STR_PAD_LEFT);
-					$invoice_no = "INVN".$product->code.$invoice_year."-".$number;
-					$today =  date('Y-m-d');
-					$day = strtotime("+21 days", strtotime($today));
-					$data = array(
-						'invoice_no' => $invoice_no,
-						'invoice_due_date' => strtotime(date("Y-m-d H:i:s")),
-						'payment_due_date' => $day,
-						'property_id' => $sig->id,
-						'product_id' => $product->id,
-						'category1_id' => $sig->category1,
-						'category2_id' => $sig->category2,
-						'category3_id' => $sig->category3,
-						'category4_id' => $sig->category4,
-						'category5_id' => $sig->category5,
-						'category6_id' => $sig->category6,
-						'invoice_amount' => $compare['price1'],
-						'invoice_year' => $invoice_year
-					);
-					$update = $this->TaxModel->update_signage($sig->id);
-					$insert = $this->TaxModel->insert_invoice_record($data);
+				$invoice_status_to_zero = $this->TaxModel->update_signage_to_zero($sig->id);
+				// if($bus->accessed == 1){
+				//  $where = array(
+				//      'property_id' => $bus->property_id,
+				//      'product_id' =>  $product->id,
+				//      'target' => 1
+				//  );
+				//  $get_accessed_amount =  $this->TaxModel->get_accessed_details($where);
+				//  $code = $this->TaxModel->get_code($product->id,$invoice_year);
+				//  $final_code = $code + 1;
+				//  $number = str_pad($final_code, 5, '0', STR_PAD_LEFT);
+				//  $invoice_no = "INVN".$product->code.$invoice_year."-".$number;
+				//  $today =  date('Y-m-d');
+				//  $day = strtotime("+21 days", strtotime($today));
+				//  $data = array(
+				//      'invoice_no' => $invoice_no,
+				//      'invoice_due_date' => strtotime(date("Y-m-d H:i:s")),
+				//      'payment_due_date' => $day,
+				//      'property_id' => $bus->property_id,
+				//      'product_id' => $product->id,
+				//      'invoice_amount' => $get_accessed_amount,
+				//      'invoice_year' => $invoice_year
+				//  );
+				//  $update = $this->TaxModel->update_residence_property($bus->property_id);
+				//  $insert = $this->TaxModel->insert_invoice_record($data);
+				// }else{
+				$where = array(
+					'product_id' => $product->id,
+					'category1_id' => $sig->category1,
+					'category2_id' => $sig->category2,
+					'category3_id' => $sig->category3,
+					'category4_id' => $sig->category4,
+					'category5_id' => $sig->category5,
+					'category6_id' => $sig->category6,
+				);
+				$compare = $this->TaxModel->get_busocc_compare($where);
+				$code = $this->TaxModel->get_code($product->id,$invoice_year);
+				$final_code = $code + 1;
+				$number = str_pad($final_code, 5, '0', STR_PAD_LEFT);
+				$invoice_no = "INVN".$product->code.$invoice_year."-".$number;
+				$today =  date('Y-m-d');
+				$day = strtotime("+21 days", strtotime($today));
+				$data = array(
+					'invoice_no' => $invoice_no,
+					'invoice_due_date' => strtotime(date("Y-m-d H:i:s")),
+					'payment_due_date' => $day,
+					'property_id' => $sig->id,
+					'product_id' => $product->id,
+					'category1_id' => $sig->category1,
+					'category2_id' => $sig->category2,
+					'category3_id' => $sig->category3,
+					'category4_id' => $sig->category4,
+					'category5_id' => $sig->category5,
+					'category6_id' => $sig->category6,
+					'invoice_amount' => $compare['price1'],
+					'invoice_year' => $invoice_year
+				);
+				$update = $this->TaxModel->update_signage($sig->id);
+				$insert = $this->TaxModel->insert_invoice_record($data);
 					
-				}
+			}
+			}
+
+			if($insert){
+				$this->session->set_flashdata(
+					'message', "<div class='alert alert-success'>
+						<strong>Success! </strong> Generated Invoices for the year $invoice_year.
+					</div>"
+				);
+				redirect(base_url('invoice'));
+			}else{
+				$this->session->set_flashdata(
+					'message', "<div class='alert alert-danger'>
+						<strong>Sorry! </strong>No Pending Invoice To Be Generated.
+					</div>"
+				);
+				redirect(base_url('invoice'));
 			}
 		}
-		
-		if($insert){
-			$this->session->set_flashdata(
-				'message', "<div class='alert alert-success'>
-					<strong>Success! </strong> Your Form Was Submitted.
-				</div>"
-			);
-			redirect(base_url('invoice'));
 		}else{
 			$this->session->set_flashdata(
 				'message', "<div class='alert alert-danger'>
-					<strong>Sorry! </strong>No Pending Invoice To Be Generated.
+					<strong>An Error </strong> occurred during invoice status update to 0 .
 				</div>"
 			);
 			redirect(base_url('invoice'));
 		}
-		
-	}
+
+}
     
     // generate batch bills
 	public function generate_batch_bill(){

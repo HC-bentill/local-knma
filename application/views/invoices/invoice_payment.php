@@ -136,7 +136,8 @@
                             </div>
                             <div class="col-sm-4 pp" style="display:none;">
                               <label class="control-label text-sm-right pt-2"><strong>Enter Amount Paid:</strong></label>
-                              <input type="number" step=".01" max="<?=$amount_left?>" class="form-control" id="amount_paid" name="amount_paid" required>
+                              <input type="number" step=".01" max="<?=$amount_left?>" class="form-control" id="part_amount_paid" name="part_amount_paid" required>
+                              <!-- <input type="number" step=".01" max="<?=$amount_left?>" class="form-control" id="amount_paid" name="amount_paid" required> -->
                             </div>
                             <div class="col-sm-4">
                               <label class="control-label text-sm-right pt-2"><strong>Paid By:</strong></label>

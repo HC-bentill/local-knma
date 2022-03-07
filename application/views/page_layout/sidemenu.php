@@ -319,12 +319,7 @@
                                 <span>Channels</span>
                             </a>
                         </li>
-                        <li class="<?php echo is_active('system_audit'); ?>">
-                            <a class="nav-link" href="<?=base_url()?>system_audit">
-                                <i class="fa fa-cog" aria-hidden="true"></i>
-                                <span>System Audit</span>
-                            </a>
-                        </li>
+
                         <?php if(is_active('batch_delete_record') != ""): ?>
                         <li class="<?php echo is_active('batch_delete_record'); ?>">
                             <a class="nav-link" href="<?=base_url()?>delete">
@@ -333,6 +328,18 @@
                             </a>
                         </li>
                         <?php endif; ?>
+                        
+                        <?php if(has_permission($this->session->userdata('user_info')['id'],'audit_trail_user_management')) {?>
+                            
+                            <!-- system audit -->
+                        <li class="<?php echo is_active('system_audit'); ?>">
+                        <a class="nav-link" href="<?=base_url()?>system_audit">
+                            <i class="fa fa-cog" aria-hidden="true"></i>
+                            <span>System Audit</span>
+                        </a>
+                        </li>
+                        
+                        <!-- user management -->
                         <li
                             class="nav-parent <?php echo is_active('add_user'); ?><?php echo is_active('view_user'); ?>">
                             <a class="nav-link" href="#">
@@ -353,6 +360,7 @@
 
                             </ul>
                         </li>
+                        <?php }?>
 
                     </ul>
                 </nav>
