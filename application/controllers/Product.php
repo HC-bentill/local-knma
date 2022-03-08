@@ -774,6 +774,10 @@ class Product extends CI_Controller {
 
     public function insert_category6(){
         $product_id = $this->input->post("productname");
+        $category1_id = $this->input->post("category1_name");
+        $category2_id = $this->input->post("category2_name");
+        $category3_id = $this->input->post("category3_name");
+        $category4_id = $this->input->post("category4_name");
         $category5_id = $this->input->post("category5_name");
         $category6_name = $this->input->post("category6_name");
         $frequency = $this->input->post("frequency");
@@ -785,6 +789,10 @@ class Product extends CI_Controller {
 
         $data = array(
             "product_id"=> $product_id,
+            "category1_id"=> $category1_id,
+            "category2_id"=> $category2_id,
+            "category3_id"=> $category3_id,
+            "category4_id"=> $category4_id,
             "category5_id"=> $category5_id,
             "name"=> $category6_name,
             "frequency"=> $frequency,
