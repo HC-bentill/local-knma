@@ -261,14 +261,9 @@
 								<td>This gives user the ability to delete business occupants categories</td>
 							</tr>
 							<tr>
-								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="property owner" <?=has_permission($id,'property owner')?'checked':''?>/></td>
+								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="property_owner" <?=has_permission($id,'property_owner')?'checked':''?>/></td>
 								<td>View Property Owners</td>
 								<td>This gives user the ability to acess all property owners data</td>
-							</tr>
-							<tr>
-								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="manage prop owner" <?=has_permission($id,'manage prop owner')?'checked':''?>/></td>
-								<td>Manage Property Owner</td>
-								<td>This gives user the ability to edit and view property owner data</td>
 							</tr>
 							<tr>
 								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="create message" <?=has_permission($id,'create message')?'checked':''?>/></td>
@@ -281,29 +276,14 @@
 								<td>This gives user the ability to view all broadcasted messages</td>
 							</tr>
 							<tr>
-								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="view residence map" <?=has_permission($id,'view residence map')?'checked':''?>/></td>
-								<td>Residence Map</td>
-								<td>This gives user the ability to view residence property on a map</td>
+								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="view_map" <?=has_permission($id,'view_map')?'checked':''?>/></td>
+								<td>View Map</td>
+								<td>This gives user the ability to view map module</td>
 							</tr>
 							<tr>
-								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="view business map" <?=has_permission($id,'view business map')?'checked':''?>/></td>
-								<td>Business Map</td>
-								<td>This gives user the ability to view business property on a map</td>
-							</tr>
-							<tr>
-								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="create product" <?=has_permission($id,'create product')?'checked':''?>/></td>
-								<td>Create Product</td>
-								<td>This gives user the ability to add product and sub-categories</td>
-							</tr>
-							<tr>
-								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="view product" <?=has_permission($id,'view product')?'checked':''?>/></td>
+								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="view_product" <?=has_permission($id,'view_product')?'checked':''?>/></td>
 								<td>View Product</td>
-								<td>This gives user the ability to view products and sub-categories</td>
-							</tr>
-							<tr>
-								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="manage product" <?=has_permission($id,'manage product')?'checked':''?>/></td>
-								<td>Manage Product</td>
-								<td>This gives user the ability to edit and view product</td>
+								<td>This gives user the ability to access product and sub-categories</td>
 							</tr>
 							<tr>
 								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="access property" <?=has_permission($id,'access property')?'checked':''?>/></td>
@@ -311,14 +291,9 @@
 								<td>This gives user the ability to Access properties</td>
 							</tr>
 							<tr>
-								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="add penalty" <?=has_permission($id,'add penalty')?'checked':''?>/></td>
-								<td>Add Penalty</td>
-								<td>This gives user the ability to add penalty</td>
-							</tr>
-							<tr>
-								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="view penalty" <?=has_permission($id,'view penalty')?'checked':''?>/></td>
+								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="view_penalty" <?=has_permission($id,'view_penalty')?'checked':''?>/></td>
 								<td>View Penalty</td>
-								<td>This gives user the ability to access all penalty data</td>
+								<td>This gives user the ability to view penalty module</td>
 							</tr>
 							<tr>
 								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="tax assignment" <?=has_permission($id,'tax assignment')?'checked':''?>/></td>
@@ -336,14 +311,14 @@
 								<td>This gives user the ability to reverse a transaction</td>
 							</tr>
 							<tr>
-								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="view invoices" <?=has_permission($id,'view invoices')?'checked':''?>/></td>
+								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="view_invoices" <?=has_permission($id,'view_invoices')?'checked':''?>/></td>
 								<td>View Invoices</td>
-								<td>This gives user the ability to access all invoices generated</td>
+								<td>This gives user the ability to access all invoices</td>
 							</tr>
 							<tr>
-								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="generate invoices" <?=has_permission($id,'generate invoices')?'checked':''?>/></td>
+					  		<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="generate_invoices" <?=has_permission($id,'generate_invoices')?'checked':''?> /></td>
 								<td>Generate Invoices</td>
-								<td>This gives user the ability to access all invoices generated</td>
+								<td>This gives user the ability to generate invoices</td>
 							</tr>
 							<tr>
 								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="make payment" <?=has_permission($id,'make payment')?'checked':''?>/></td>
@@ -401,6 +376,11 @@
 								<td>This gives user the ability to generate a bill for a record(properties, businesses, signages, etc)</td>
 							</tr>
 							<tr>
+								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="view_data_report" <?=has_permission($id,'view_data_report')?'checked':''?>/></td>
+								<td>View Data report and sub-categories</td>
+								<td>This gives user the ability to view data report and its sub categories</td>
+							</tr>	
+							<tr>
 								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="data report" <?=has_permission($id,'data report')?'checked':''?>/></td>
 								<td>View Data report</td>
 								<td>This gives user the ability to view data report</td>
@@ -446,9 +426,19 @@
 								<td>This gives user the ability to bulk upload business records from a file</td>
 							</tr>
 							<tr>
-								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" <?=has_permission($id,'audit_trail_user_management')?'checked':''?> value="audit_trail_user_management"/></td>
-								<td>View Audit trail & User Management</td>
-								<td>This gives user the ability to view audit trail and user management module</td>
+								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" <?=has_permission($id,'user_management')?'checked':''?> value="user_management"/></td>
+								<td>View User Management</td>
+								<td>This gives user the ability to view user management module</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" <?=has_permission($id,'view_signage')?'checked':''?> value="view_signage"/></td>
+								<td>View Signage</td>
+								<td>This gives user the ability to view Signage module</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" <?=has_permission($id,'view_telecom')?'checked':''?> value="view_telecom"/></td>
+								<td>View Telecom</td>
+								<td>This gives user the ability to view Telecom module</td>
 							</tr>
 						</tbody>
 		          	</table>

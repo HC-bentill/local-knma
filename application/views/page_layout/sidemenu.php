@@ -103,6 +103,7 @@
                             </ul>
                         </li>
 
+                        <?php if(has_permission($this->session->userdata('user_info')['id'],'view_signage')) {?>
                         <li
                             class="nav-parent <?php echo is_active('add_signage'); ?><?php echo is_active('view_signage'); ?>">
                             <a class="nav-link" href="#">
@@ -122,7 +123,9 @@
                                 </li>
                             </ul>
                         </li>
+                        <?php }?>
                         
+                        <?php if(has_permission($this->session->userdata('user_info')['id'],'view_telecom')) {?>
                         <li class="nav-parent <?php echo is_active('add_telecom'); ?><?php echo is_active('view_telecom'); ?>">
                             <a class="nav-link" href="#">
                                 <i class="fa fa-rss" aria-hidden="true"></i>
@@ -141,14 +144,16 @@
                                 </li>
                             </ul>
                         </li>
+                        <?php }?>
 
-
+                        <?php if(has_permission($this->session->userdata('user_info')['id'],'property_owner')) {?>
                         <li class="<?php echo is_active('property_owner'); ?>">
                             <a class="nav-link" href="<?=base_url()?>property_owner">
                                 <i class="fa fa-user" aria-hidden="true"></i>
                                 <span>Property Owners</span>
                             </a>
                         </li>
+                        <?php }?>
 
                         <li
                             class="nav-parent <?php echo is_active('add_mess'); ?><?php echo is_active('view_mess'); ?>">
@@ -170,6 +175,7 @@
                             </ul>
                         </li>
 
+                        <?php if(has_permission($this->session->userdata('user_info')['id'],'view_product')) {?>
                         <li
                             class="nav-parent <?php echo is_active('add_product'); ?><?php echo is_active('view_product'); ?><?php echo is_active('access_property'); ?>">
                             <a class="nav-link" href="#">
@@ -194,7 +200,9 @@
                                 </li>
                             </ul>
                         </li>
+                        <?php }?>
 
+                        <?php if(has_permission($this->session->userdata('user_info')['id'],'view_penalty')) {?>
                         <li
                             class="nav-parent <?php echo is_active('add_penalty'); ?><?php echo is_active('view_penalty'); ?>">
                             <a class="nav-link" href="#">
@@ -215,6 +223,7 @@
 
                             </ul>
                         </li>
+                        <?php }?>
                         <?php 
                             $invoiceActiveStatus = is_active('tax_assign');
                             $invoiceActiveStatus = $invoiceActiveStatus == "" ? is_active('invoice') : $invoiceActiveStatus;
@@ -238,16 +247,22 @@
                                         Tax Assignment
                                     </a>
                                 </li> -->
+                                <?php if(has_permission($this->session->userdata('user_info')['id'],'view_invoices')) {?>
                                 <li class="<?php echo is_active('invoice'); ?>">
                                     <a class="nav-link" href="<?=base_url()?>invoice">
                                         Invoice
                                     </a>
                                 </li>
+                                <?php }?>
+
+                                <?php if(has_permission($this->session->userdata('user_info')['id'],'consolidated_invoice')) {?>
                                 <li class="<?php echo is_active('consolidated_invoice'); ?>">
                                     <a href="<?=base_url()?>consolidated_invoice" class="nav-link">
                                         Consolidated Invoice
                                     </a>
                                 </li>
+                                <?php }?>
+
                                 <li class="<?php echo is_active('onetime'); ?>">
                                     <a class="nav-link" href="<?=base_url()?>onetime_invoices">
                                         Onetime Invoice
@@ -278,14 +293,19 @@
                                         Invoice Distribution
                                     </a>
                                 </li>
+
+                                <?php if(has_permission($this->session->userdata('user_info')['id'],'batch_bill_generation')) {?>
                                 <li class="<?php echo is_active('batch_bill_generation'); ?>">
                                     <a class="nav-link" href="<?=base_url()?>batch_bill_generation">
-                                        Batch Bill Generation
+                                        Batch Bill Generation  
                                     </a>
                                 </li>
+                                <?php }?>
+
                             </ul>
                         </li>
 
+                        <?php if(has_permission($this->session->userdata('user_info')['id'],'view_data_report')) {?>
                         <li
                             class="nav-parent <?php echo is_active('data_report'); ?><?php echo is_active('finance_report'); ?>">
                             <a class="nav-link" href="#">
@@ -306,19 +326,26 @@
 
                             </ul>
                         </li>
+                        <?php }?>
 
+
+                        <?php if(has_permission($this->session->userdata('user_info')['id'],'view_map')) {?>
                         <li class="<?php echo is_active('map'); ?>">
                             <a class="nav-link" href="<?=base_url()?>map">
                                 <i class="fa fa-map-marker" aria-hidden="true"></i>
                                 <span>Map</span>
                             </a>
                         </li>
+                        <?php }?>
+
+                        <?php if(has_permission($this->session->userdata('user_info')['id'],'manage channels')) {?>
                         <li class="<?php echo is_active('channel'); ?>">
                             <a class="nav-link" href="<?=base_url()?>channel">
                                 <i class="fa fa-tachometer" aria-hidden="true"></i>
                                 <span>Channels</span>
                             </a>
                         </li>
+                        <?php }?>
 
                         <?php if(is_active('batch_delete_record') != ""): ?>
                         <li class="<?php echo is_active('batch_delete_record'); ?>">
@@ -329,8 +356,7 @@
                         </li>
                         <?php endif; ?>
                         
-                        <?php if(has_permission($this->session->userdata('user_info')['id'],'audit_trail_user_management')) {?>
-                            
+                        <?php if(has_permission($this->session->userdata('user_info')['id'],'system_audit')) {?>
                             <!-- system audit -->
                         <li class="<?php echo is_active('system_audit'); ?>">
                         <a class="nav-link" href="<?=base_url()?>system_audit">
@@ -338,7 +364,10 @@
                             <span>System Audit</span>
                         </a>
                         </li>
-                        
+                        <?php }?>
+
+                        <?php if(has_permission($this->session->userdata('user_info')['id'],'user_management')) {?>
+
                         <!-- user management -->
                         <li
                             class="nav-parent <?php echo is_active('add_user'); ?><?php echo is_active('view_user'); ?>">

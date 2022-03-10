@@ -95,9 +95,13 @@
                       <button type="submit" id="save" class="btn btn-success">
                         Search
                       </button>
-                        <a href="<?=base_url("BillGeneration/generate_ungenerate_invoice")?>" class="btn btn-primary">
-                          Generate Invoice
-                        </a>
+
+                      <?php if(has_permission($this->session->userdata('user_info')['id'],'generate_invoices')) {?>
+                          <a href="<?=base_url("BillGeneration/generate_ungenerate_invoice")?>" class="btn btn-primary">
+                            Generate Invoice
+                          </a>
+                        <?php }?>
+
                     </div>
                   </div>
                 </div>

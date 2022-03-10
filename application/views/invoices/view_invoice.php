@@ -276,6 +276,8 @@
                                         class="btn btn-default btn-warning"><i class="fa fa-envelope-open"></i></button>
                                     <!-- <a href="<?=base_url()?>print_invoice2/<?=$result->id ?>/wtemplate" target="_blank" class="btn btn-primary ml-3"><i class="fa fa-print"></i> Save to PDF/Print without template</a>
                     <a href="<?=base_url()?>print_invoice2/<?=$result->id ?>/template" target="_blank" class="btn btn-primary ml-3"><i class="fa fa-print"></i> Save to PDF/Print with template</a> -->
+                                 <?php if(has_permission($this->session->userdata('user_info')['id'],'print invoice')) {?>
+
                                     <a href="<?=base_url()?>print_invoice2/<?=$result->id ?>/wtemplate" target="_blank"
                                         class="btn btn-primary ml-2" data-container="body" data-trigger="hover"
                                         data-toggle="popover" data-placement="top"
@@ -285,6 +287,8 @@
                                         class="btn btn-success ml-2" data-container="body" data-trigger="hover"
                                         data-toggle="popover" data-placement="top"
                                         data-content="Save to PDF/Print with Template"><i class="fa fa-print"></i></a>
+                                <?php }?>
+
                                 </div>
                                 <div id="watermark"><img src="<?=base_url()?>assets/img/Coat_of_arms_of_Ghana.png"
                                         alt="Watermark" /></div>
