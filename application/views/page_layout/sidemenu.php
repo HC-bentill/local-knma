@@ -62,6 +62,7 @@
 
                             </ul>
                         </li> -->
+                        <?php if(has_permission($this->session->userdata('user_info')['id'],'manage buis prop')) {?>
                         <li
                             class="nav-parent <?php echo is_active('add_busprop'); ?><?php echo is_active('view_busprop'); ?>">
                             <a class="nav-link" href="#">
@@ -69,20 +70,30 @@
                                 <span>Property</span>
                             </a>
                             <ul class="nav nav-children">
+                            <?php if(has_permission($this->session->userdata('user_info')['id'],'create buis prop')) {?>
+
                                 <li class="<?php echo is_active('add_busprop'); ?>">
                                     <a class="nav-link" href="<?=base_url()?>add_property">
                                         Create
                                     </a>
                                 </li>
+
+                            <?php }?>
+                            
+                            <?php if(has_permission($this->session->userdata('user_info')['id'],'view buis prop')) {?>
+
                                 <li class="<?php echo is_active('view_busprop'); ?>">
                                     <a class="nav-link" href="<?=base_url()?>property">
                                         View
                                     </a>
                                 </li>
 
+                            <?php }?>
                             </ul>
                         </li>
+                        <?php }?>
 
+                        <?php if(has_permission($this->session->userdata('user_info')['id'],'manage buis occ')) {?>
                         <li
                             class="nav-parent <?php echo is_active('add_busocc'); ?><?php echo is_active('view_busocc'); ?>">
                             <a class="nav-link" href="#">
@@ -90,20 +101,30 @@
                                 <span>Business</span>
                             </a>
                             <ul class="nav nav-children">
+                            <?php if(has_permission($this->session->userdata('user_info')['id'],'create buis occ')) {?>
+
                                 <li class="<?php echo is_active('add_busocc'); ?>">
                                     <a class="nav-link" href="<?=base_url()?>add_business_occupant">
                                         Create
                                     </a>
                                 </li>
+                            <?php }?>
+
+                            <?php if(has_permission($this->session->userdata('user_info')['id'],'view buis prop')) {?>
+
                                 <li class="<?php echo is_active('view_busocc'); ?>">
                                     <a class="nav-link" href="<?=base_url()?>business_occupant">
                                         View
                                     </a>
                                 </li>
+                            <?php }?>
+
                             </ul>
                         </li>
+                        <?php }?>
 
-                        <?php if(has_permission($this->session->userdata('user_info')['id'],'view_signage')) {?>
+
+                        <?php if(has_permission($this->session->userdata('user_info')['id'],'manage_signage')) {?>
                         <li
                             class="nav-parent <?php echo is_active('add_signage'); ?><?php echo is_active('view_signage'); ?>">
                             <a class="nav-link" href="#">
@@ -111,37 +132,57 @@
                                 <span>Signage Post</span>
                             </a>
                             <ul class="nav nav-children">
+                            <?php if(has_permission($this->session->userdata('user_info')['id'],'create_signage')) {?>
+
                                 <li class="<?php echo is_active('add_signage'); ?>">
                                     <a class="nav-link" href="<?=base_url()?>add_signage">
                                         Create
                                     </a>
                                 </li>
+
+                            <?php }?>
+
+                            <?php if(has_permission($this->session->userdata('user_info')['id'],'view_signage')) {?>
+
                                 <li class="<?php echo is_active('view_signage'); ?>">
                                     <a class="nav-link" href="<?=base_url()?>signage">
                                         View
                                     </a>
                                 </li>
+
+                            <?php }?>
+
                             </ul>
                         </li>
                         <?php }?>
                         
-                        <?php if(has_permission($this->session->userdata('user_info')['id'],'view_telecom')) {?>
+                        <?php if(has_permission($this->session->userdata('user_info')['id'],'manage_telecom')) {?>
                         <li class="nav-parent <?php echo is_active('add_telecom'); ?><?php echo is_active('view_telecom'); ?>">
                             <a class="nav-link" href="#">
                                 <i class="fa fa-rss" aria-hidden="true"></i>
                                 <span>Telecommunication</span>
                             </a>
                             <ul class="nav nav-children">
-                                <li class="<?php echo is_active('add_telecom'); ?>">
+                            <?php if(has_permission($this->session->userdata('user_info')['id'],'create_telecom')) {?>
+
+                                <li class="<?php echo is_active('create_telecom'); ?>">
                                     <a class="nav-link" href="<?=base_url()?>add_telecom">
                                         Create
                                     </a>
                                 </li>
+
+                            <?php }?>
+
+                            <?php if(has_permission($this->session->userdata('user_info')['id'],'view_telecom')) {?>
+
                                 <li class="<?php echo is_active('view_telecom'); ?>">
                                     <a class="nav-link" href="<?=base_url()?>telecom">
                                         View
                                     </a>
                                 </li>
+
+                            <?php }?>
+
                             </ul>
                         </li>
                         <?php }?>
@@ -155,6 +196,8 @@
                         </li>
                         <?php }?>
 
+                        <?php if(has_permission($this->session->userdata('user_info')['id'],'manage_message')) {?>
+
                         <li
                             class="nav-parent <?php echo is_active('add_mess'); ?><?php echo is_active('view_mess'); ?>">
                             <a class="nav-link" href="#">
@@ -162,20 +205,35 @@
                                 <span>Messages</span>
                             </a>
                             <ul class="nav nav-children">
+
+                            <?php if(has_permission($this->session->userdata('user_info')['id'],'create_message')) {?>
+
                                 <li class="<?php echo is_active('add_mess'); ?>">
                                     <a class="nav-link" href="<?=base_url()?>message">
                                         Create
                                     </a>
                                 </li>
+
+                            <?php }?>
+
+                            <?php if(has_permission($this->session->userdata('user_info')['id'],'view_message')) {?>
+
+
                                 <li class="<?php echo is_active('view_mess'); ?>">
                                     <a class="nav-link" href="<?=base_url()?>view_message">
                                         View
                                     </a>
                                 </li>
+
+                            <?php }?>
+
                             </ul>
                         </li>
 
-                        <?php if(has_permission($this->session->userdata('user_info')['id'],'view_product')) {?>
+                        <?php }?>
+
+
+                        <?php if(has_permission($this->session->userdata('user_info')['id'],'manage_product')) {?>
                         <li
                             class="nav-parent <?php echo is_active('add_product'); ?><?php echo is_active('view_product'); ?><?php echo is_active('access_property'); ?>">
                             <a class="nav-link" href="#">
@@ -183,21 +241,35 @@
                                 <span>Product</span>
                             </a>
                             <ul class="nav nav-children">
+                            <?php if(has_permission($this->session->userdata('user_info')['id'],'create_product')) {?>
                                 <li class="<?php echo is_active('add_product'); ?>">
                                     <a class="nav-link" href="<?=base_url()?>add_product">
                                         Create
                                     </a>
                                 </li>
+                            <?php }?>
+
+                            <?php if(has_permission($this->session->userdata('user_info')['id'],'view_product')) {?>
+
                                 <li class="<?php echo is_active('view_product'); ?>">
                                     <a class="nav-link" href="<?=base_url()?>view_all_products">
                                         View
                                     </a>
                                 </li>
+
+                            <?php }?>
+
+                            <?php if(has_permission($this->session->userdata('user_info')['id'],'access property')) {?>
+
+
                                 <li class="<?php echo is_active('access_property'); ?>">
                                     <a class="nav-link" href="<?=base_url()?>accessed_property">
                                         Access Property
                                     </a>
                                 </li>
+
+                            <?php }?>
+
                             </ul>
                         </li>
                         <?php }?>

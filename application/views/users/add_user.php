@@ -114,18 +114,18 @@
 					  	<tr>
 					  		<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="create buis prop"/></td>
 					  		<td>Create Property</td>
-					  		<td>This gives user the ability to create business and residential properties</td>
+					  		<td>This gives user the ability to create properties</td>
 					  	</tr>
 					  	<tr>
 					  		<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="view buis prop"/></td>
 					  		<td>View Property</td>
-					  		<td>This gives user the ability to acess all business and residential properties data</td>
+					  		<td>This gives user the ability to view all properties data</td>
 					  	</tr>
-					  	<tr>
-					  		<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="manage buis prop"/></td>
-					  		<td>Manage Property</td>
-					  		<td>This gives user the ability to edit and view business and residential properties</td>
-					  	</tr>
+						<tr>
+							<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="manage buis prop" <?=has_permission($id,'manage buis prop')?'checked':''?>/></td>
+							<td>Access Property Module</td>
+							<td>This gives user the ability to access the property module</td> 
+						</tr>
 					  	<tr>
 					  		<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="create buis occ"/></td>
 					  		<td>Create Business Occupants</td>
@@ -138,8 +138,8 @@
 					  	</tr>
 					  	<tr>
 					  		<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="manage buis occ"/></td>
-					  		<td>Manage Business Occupants</td>
-					  		<td>This gives user the ability to edit and view business occupants</td>
+					  		<td>Access Business Occupant Module</td>
+					  		<td>This gives user the ability to access the business occupant module</td>
 						</tr>
 						<tr>
 					  		<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="edit busocc cat"/></td>
@@ -157,14 +157,19 @@
 					  		<td>This gives user the ability to acess all property owners data</td>
 					  	</tr>
 						<tr>
-					  		<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="create message"/></td>
-					  		<td>Create Messages</td>
-					  		<td>This gives user the ability to create a message to be broadcast</td>
-					  	</tr>
-					  	<tr>
-					  		<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="view message"/></td>
-					  		<td>View Messages</td>
-					  		<td>This gives user the ability to view all broadcasted messages</td>
+							<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="manage_message"/></td>
+							<td>Access Messages Module</td>
+							<td>This gives user the ability to access message module</td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="create_message"/></td>
+							<td>Create Messages</td>
+							<td>This gives user the ability to create a message to be broadcast</td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="view_message"/></td>
+							<td>View Messages</td>
+							<td>This gives user the ability to view all broadcasted messages</td>
 						</tr>
 						<tr>
 							<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="view_map" <?=has_permission($id,'view_map')?'checked':''?>/></td>
@@ -172,9 +177,19 @@
 							<td>This gives user the ability to access map module</td>
 						</tr>
 						<tr>
+							<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="manage_product" <?=has_permission($id,'manage_product')?'checked':''?>/></td>
+							<td>Access Product Module</td>
+							<td>This gives user the ability to access product module</td>
+						</tr>
+						<tr>
 							<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="view_product" <?=has_permission($id,'view_product')?'checked':''?>/></td>
 							<td>View Product</td>
-							<td>This gives user the ability to access product and sub-categories</td>
+							<td>This gives user the ability to view product data</td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="create_product" <?=has_permission($id,'create_product')?'checked':''?>/></td>
+							<td>Create Product</td>
+							<td>This gives user the ability to create product data</td>
 						</tr>
 						<tr>
 					  		<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="access property"/></td>
@@ -219,7 +234,7 @@
 						<tr>
 					  		<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="print invoice"/></td>
 					  		<td>Print Invoice</td>
-					  		<td>This gives user the ability to make payment</td>
+					  		<td>This gives user the ability to print invoices</td>
 						</tr>
 						<tr>
 							<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="invoice adjustment"/></td>
@@ -322,9 +337,19 @@
 							<td>This gives user the ability to view user management module</td>
 						</tr>
 						<tr>
+							<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" <?=has_permission($id,'manage_signage')?'checked':''?> value="manage_signage"/></td>
+							<td>Access Signage Module</td>
+							<td>This gives user the ability to manage Signage module</td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" <?=has_permission($id,'create_signage')?'checked':''?> value="create_signage"/></td>
+							<td>Create Signage</td>
+							<td>This gives user the ability to view Signage module</td>
+						</tr>
+						<tr>
 							<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" <?=has_permission($id,'view_signage')?'checked':''?> value="view_signage"/></td>
 							<td>View Signage</td>
-							<td>This gives user the ability to view Signage module</td>
+							<td>This gives user the ability to create Signage module</td>
 						</tr>
 						<tr>
 							<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" <?=has_permission($id,'view_telecom')?'checked':''?> value="view_telecom"/></td>
@@ -332,10 +357,20 @@
 							<td>This gives user the ability to view Telecom module</td>
 						</tr>
 						<tr>
-							<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" <?=has_permission($id,'view_telecom')?'checked':''?> value="view_telecom"/></td>
-							<td>View Telecom</td>
-							<td>This gives user the ability to view Telecom</td>
+							<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="manage_telecom"/></td>
+							<td>Access Telecom Module</td>
+							<td>This gives user the ability to access Telecom module</td>
 						</tr>
+						<tr>
+							<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="create_telecom"/></td>
+							<td>Create Telecom</td>
+							<td>This gives user the ability to create Telecom data</td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="view_telecom"/></td>
+							<td>View Telecom</td>
+							<td>This gives user the ability to view Telecom data</td>
+							</tr>
 		              </tbody>
 		          	</table>
 		        </div>
