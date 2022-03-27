@@ -47,7 +47,7 @@ class BillModel extends CI_Model
         $this->db->from('buisness_occ o');
         $this->db->join('busocc_to_category b', 'b.busocc_id = o.id');
         $this->db->join('buisness_property as p', 'o.buis_property_code = p.buis_prop_code');
-
+        // $this->db->where('o.generate_bill_status', 1);
         if($runtime == "normal"){
             $this->db->where('o.invoice_status', 0);
         }
@@ -74,6 +74,7 @@ class BillModel extends CI_Model
         $this->db->select('b.*,o.accessed');
         $this->db->from('buisness_property o');
         $this->db->join('busprop_to_category b', 'b.property_id = o.id');
+        // $this->db->where('o.generate_bill_status', 1);
         if($runtime == "normal"){
             $this->db->where('o.invoice_status', 0);
         }
@@ -154,6 +155,15 @@ class BillModel extends CI_Model
     {
         $this->db->where($update_where);
         return $this->db->update('invoice', $update_data);
+    }
+
+    public function check_bill_generation_status($id, $table){
+        $this->db->select('*');
+        $this->db->from($table);
+        $this->db->where($id);
+        $this->db->where('generate_bill_status', 0);
+        $result = $this->db->get()->row_array();
+        return $result;
     }
 
 }

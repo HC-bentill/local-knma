@@ -416,11 +416,6 @@
 								<td>This gives user the ability to view all system audit</td>
 							</tr>
 							<tr>
-								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" <?=has_permission($id,'fixed_amount')?'checked':''?> value="fixed_amount"/></td>
-								<td>Bill Generation Using Fixed Amount Module</td>
-								<td>This gives user the ability to generate bills using the fixed amount module</td>
-							</tr>
-							<tr>
 								<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" <?=has_permission($id,'consolidated_invoice')?'checked':''?> value="consolidated_invoice"/></td>
 								<td>View Consolidated Invoice</td>
 								<td>This gives user the ability to view consolidated invoice</td>

@@ -1290,7 +1290,7 @@ class BillGeneration extends CI_Controller {
 
 	}
 
-	// generate batch bills
+	// generate single bills
 	public function generate_single_bill(){
     	
 
@@ -1304,7 +1304,7 @@ class BillGeneration extends CI_Controller {
 		$electoral_area = "";
 		$town = "";
         $id = $this->input->post("property_id");
-		$count = 0;
+		$count = 0;	
 
         // get all products
         $products = $this->BillModel->get_product($pid);
@@ -1323,196 +1323,208 @@ class BillGeneration extends CI_Controller {
 						'target' => $product->target,
 						'invoice_year' => $year
 					);
-
 					$check = $this->BillModel->check_invoice_exist($checkwhere);
-					//end check
 
-					if($runtime == "generation"){		
-						if($check){
-							$invoice_no = $check['invoice_no'];
-							$msg = "$year $product_name bill generation for business occupant code: $property_code failed because an invoice with no: $invoice_no already exist for the same property";
-							$status = false;
-							$insert = false;						
-						}else{
+					$generate_status = array(
+						'id' => $id,
+					);
+					
+					$table = 'buisness_occ';
+					$check_bill_generation_status = $this->BillModel->check_bill_generation_status($generate_status, $table);
 
-							//start bill generation
-
-							//check if property is accessed
-							if($bus->accessed){
-								$where = array( 
-									'property_id' => $bus->busocc_id,
-									'product_id' =>  $product->id,
-									'target' => 3
-								);
-								$get_accessed_amount =  $this->TaxModel->get_accessed_details($where);
-
-								//start check - amount type that was selected 
-								if($amount_type == "fixed_amount"){
-									$inv_amount = $amount;			
-								}else{
-									$inv_amount = $get_accessed_amount;
-								}
-								//end amount type check
-								
-								$code = $this->TaxModel->get_code($product->id,$year);
-								$final_code = $code + 1;
-								$number = str_pad($final_code, 5, '0', STR_PAD_LEFT);
-								$invoice_no = "INVN".$product->code.$year."-".$number;
-								$today =  date('Y-m-d');
-								
-								$day = strtotime("+21 days", strtotime($today));
-								$data = array(
-									'invoice_no' => $invoice_no,
-									'invoice_due_date' => strtotime(date("Y-m-d H:i:s")),
-									'payment_due_date' => $day,
-									'property_id' => $bus->busocc_id,
-									'product_id' => $product->id,
-									'invoice_amount' => $inv_amount,
-									'invoice_year' => $year
-								);
-								$update = $this->TaxModel->update_business_occ($bus->busocc_id);
-								$insert = $this->TaxModel->insert_invoice_record($data);
-		
-							}else{
-								$where = array(
-									'product_id' => $product->id,
-									'category1_id' => $bus->category1,
-									'category2_id' => $bus->category2,
-									'category3_id' => $bus->category3,
-									'category4_id' => $bus->category4,
-									'category5_id' => $bus->category5,
-									'category6_id' => $bus->category6,
-								);
-								$compare = $this->TaxModel->get_busocc_compare($where);
-
-								//start check - amount type that was selected 
-								if($amount_type == "fixed_amount"){
-									$inv_amount = $amount;			
-								}else{
-									$inv_amount = $compare['price1'];
-								}
-								//end amount type check
-								$code = $this->TaxModel->get_code($product->id,$year);
-								$final_code = $code + 1;
-								$number = str_pad($final_code, 5, '0', STR_PAD_LEFT);
-								$invoice_no = "INVN".$product->code.$year."-".$number;
-								$today =  date('Y-m-d');
-								$day = strtotime("+21 days", strtotime($today));
-								$data = array(
-									'invoice_no' => $invoice_no,
-									'invoice_due_date' => strtotime(date("Y-m-d H:i:s")),
-									'payment_due_date' => $day,
-									'property_id' => $bus->busocc_id,
-									'product_id' => $product->id,
-									'category1_id' => $bus->category1,
-									'category2_id' => $bus->category2,
-									'category3_id' => $bus->category3,
-									'category4_id' => $bus->category4,
-									'category5_id' => $bus->category5,
-									'category6_id' => $bus->category6,
-									'invoice_amount' => $inv_amount,
-									'invoice_year' => $year
-								);
-								$update = $this->TaxModel->update_business_occ($bus->busocc_id);
-								$insert = $this->TaxModel->insert_invoice_record($data);
-							}
-							// end bill generation
-
-							//check if bill was successfully generated
-							if($insert){
-								$status = true;
-							}else{
-								$status = false;
-							}
-							$msg = "$year $product_name bill with invoice no: $invoice_no was generated for business occupant code: $property_code using the $amount_type";
-						}
-					}else if($runtime == "update"){
-						if($check){
-							//start bill generation
-
-							//check if property is accessed
-							if($bus->accessed){
-								$where = array( 
-									'property_id' => $bus->busocc_id,
-									'product_id' =>  $product->id,
-									'target' => $product->target
-								);
-								$get_accessed_amount =  $this->TaxModel->get_accessed_details($where);
-
-								//start check - amount type that was selected 
-								if($amount_type == "fixed_amount"){
-									$final_invoice_amount = $amount - $check["adjustment_amount"];			
-								}else{
-									$final_invoice_amount = $get_accessed_amount - $check["adjustment_amount"];
-								}
-								//end amount type check
-
-								$update_data = array(
-									'invoice_amount' => $final_invoice_amount
-								);
-
-								$update_where = array(
-									'id' => $check["id"]
-								);
-								
-								$update = $this->TaxModel->update_business_occ($bus->busocc_id);
-								$insert = $this->BillModel->update_invoice_record($update_data,$update_where);
-		
-							}else{
-								$where = array(
-									'product_id' => $product->id,
-									'category1_id' => $bus->category1,
-									'category2_id' => $bus->category2,
-									'category3_id' => $bus->category3,
-									'category4_id' => $bus->category4,
-									'category5_id' => $bus->category5,
-									'category6_id' => $bus->category6,
-								);
-								$compare = $this->TaxModel->get_busocc_compare($where);
-
-								//start check - amount type that was selected 
-								if($amount_type == "fixed_amount"){
-									$final_invoice_amount = $amount - $check["adjustment_amount"];			
-								}else{
-									$final_invoice_amount = $compare['price1'] - $check["adjustment_amount"];
-								}
-								//end amount type check
-								$update_data = array(
-									'invoice_amount' => $final_invoice_amount,
-									'category1_id' => $bus->category1,
-									'category2_id' => $bus->category2,
-									'category3_id' => $bus->category3,
-									'category4_id' => $bus->category4,
-									'category5_id' => $bus->category5,
-									'category6_id' => $bus->category6
-								);
-
-								$update_where = array(
-									'id' => $check["id"]
-								);
-								$update = $this->TaxModel->update_business_occ($bus->busocc_id);
-								$insert = $this->BillModel->update_invoice_record($update_data,$update_where);
-							}
-							// end bill generation
-
-							//check if bill was successfully generated
-							if($insert){
-								$status = true;
-							}else{
-								$status = false;
-							}
-							$invoice_no = $check['invoice_no'];
-							$msg = "$year $product_name bill for invoice no: $invoice_no and business property code: $property_code was updated using the $amount_type";
-						}else{
-							$msg = "$year $product_name bill update for business occupant code: $property_code failed because there was no bill found for the property per the selected criteria";
-							$status = false;
-							$insert = false;						
-						}
-					}else{
-						$msg = "System Error: No operation performed";
+					//end checks
+					if ($check_bill_generation_status){
+						$msg = "Bill Generation cannot be performed on this record"; 
 						$status = false;
-						$insert = false;						
-					}	
+						$insert = false;
+					}else{
+						if($runtime == "generation"){	
+							if($check){
+								$invoice_no = $check['invoice_no'];
+								$msg = "$year $product_name bill generation for business occupant code: $property_code failed because an invoice with no: $invoice_no already exist for the same property";
+								$status = false;
+								$insert = false;						
+							}else{
+	
+								//start bill generation
+	
+								//check if property is accessed
+								if($bus->accessed){
+									$where = array( 
+										'property_id' => $bus->busocc_id,
+										'product_id' =>  $product->id,
+										'target' => 3
+									);
+									$get_accessed_amount =  $this->TaxModel->get_accessed_details($where);
+	
+									//start check - amount type that was selected 
+									if($amount_type == "fixed_amount"){
+										$inv_amount = $amount;			
+									}else{
+										$inv_amount = $get_accessed_amount;
+									}
+									//end amount type check
+									
+									$code = $this->TaxModel->get_code($product->id,$year);
+									$final_code = $code + 1;
+									$number = str_pad($final_code, 5, '0', STR_PAD_LEFT);
+									$invoice_no = "INVN".$product->code.$year."-".$number;
+									$today =  date('Y-m-d');
+									
+									$day = strtotime("+21 days", strtotime($today));
+									$data = array(
+										'invoice_no' => $invoice_no,
+										'invoice_due_date' => strtotime(date("Y-m-d H:i:s")),
+										'payment_due_date' => $day,
+										'property_id' => $bus->busocc_id,
+										'product_id' => $product->id,
+										'invoice_amount' => $inv_amount,
+										'invoice_year' => $year
+									);
+									$update = $this->TaxModel->update_business_occ($bus->busocc_id);
+									$insert = $this->TaxModel->insert_invoice_record($data);
+			
+								}else{
+									$where = array(
+										'product_id' => $product->id,
+										'category1_id' => $bus->category1,
+										'category2_id' => $bus->category2,
+										'category3_id' => $bus->category3,
+										'category4_id' => $bus->category4,
+										'category5_id' => $bus->category5,
+										'category6_id' => $bus->category6,
+									);
+									$compare = $this->TaxModel->get_busocc_compare($where);
+	
+									//start check - amount type that was selected 
+									if($amount_type == "fixed_amount"){
+										$inv_amount = $amount;			
+									}else{
+										$inv_amount = $compare['price1'];
+									}
+									//end amount type check
+									$code = $this->TaxModel->get_code($product->id,$year);
+									$final_code = $code + 1;
+									$number = str_pad($final_code, 5, '0', STR_PAD_LEFT);
+									$invoice_no = "INVN".$product->code.$year."-".$number;
+									$today =  date('Y-m-d');
+									$day = strtotime("+21 days", strtotime($today));
+									$data = array(
+										'invoice_no' => $invoice_no,
+										'invoice_due_date' => strtotime(date("Y-m-d H:i:s")),
+										'payment_due_date' => $day,
+										'property_id' => $bus->busocc_id,
+										'product_id' => $product->id,
+										'category1_id' => $bus->category1,
+										'category2_id' => $bus->category2,
+										'category3_id' => $bus->category3,
+										'category4_id' => $bus->category4,
+										'category5_id' => $bus->category5,
+										'category6_id' => $bus->category6,
+										'invoice_amount' => $inv_amount,
+										'invoice_year' => $year
+									);
+									$update = $this->TaxModel->update_business_occ($bus->busocc_id);
+									$insert = $this->TaxModel->insert_invoice_record($data);
+								}
+								// end bill generation
+	
+								//check if bill was successfully generated
+								if($insert){
+									$status = true;
+								}else{
+									$status = false;
+								}
+								$msg = "$year $product_name bill with invoice no: $invoice_no was generated for business occupant code: $property_code using the $amount_type";
+							}
+						}else if($runtime == "update"){
+							if($check){
+								//start bill generation
+	
+								//check if property is accessed
+								if($bus->accessed){
+									$where = array( 
+										'property_id' => $bus->busocc_id,
+										'product_id' =>  $product->id,
+										'target' => $product->target
+									);
+									$get_accessed_amount =  $this->TaxModel->get_accessed_details($where);
+	
+									//start check - amount type that was selected 
+									if($amount_type == "fixed_amount"){
+										$final_invoice_amount = $amount - $check["adjustment_amount"];			
+									}else{
+										$final_invoice_amount = $get_accessed_amount - $check["adjustment_amount"];
+									}
+									//end amount type check
+	
+									$update_data = array(
+										'invoice_amount' => $final_invoice_amount
+									);
+	
+									$update_where = array(
+										'id' => $check["id"]
+									);
+									
+									$update = $this->TaxModel->update_business_occ($bus->busocc_id);
+									$insert = $this->BillModel->update_invoice_record($update_data,$update_where);
+			
+								}else{
+									$where = array(
+										'product_id' => $product->id,
+										'category1_id' => $bus->category1,
+										'category2_id' => $bus->category2,
+										'category3_id' => $bus->category3,
+										'category4_id' => $bus->category4,
+										'category5_id' => $bus->category5,
+										'category6_id' => $bus->category6,
+									);
+									$compare = $this->TaxModel->get_busocc_compare($where);
+	
+									//start check - amount type that was selected 
+									if($amount_type == "fixed_amount"){
+										$final_invoice_amount = $amount - $check["adjustment_amount"];			
+									}else{
+										$final_invoice_amount = $compare['price1'] - $check["adjustment_amount"];
+									}
+									//end amount type check
+									$update_data = array(
+										'invoice_amount' => $final_invoice_amount,
+										'category1_id' => $bus->category1,
+										'category2_id' => $bus->category2,
+										'category3_id' => $bus->category3,
+										'category4_id' => $bus->category4,
+										'category5_id' => $bus->category5,
+										'category6_id' => $bus->category6
+									);
+	
+									$update_where = array(
+										'id' => $check["id"]
+									);
+									$update = $this->TaxModel->update_business_occ($bus->busocc_id);
+									$insert = $this->BillModel->update_invoice_record($update_data,$update_where);
+								}
+								// end bill generation
+	
+								//check if bill was successfully generated
+								if($insert){
+									$status = true;
+								}else{
+									$status = false;
+								}
+								$invoice_no = $check['invoice_no'];
+								$msg = "$year $product_name bill for invoice no: $invoice_no and business property code: $property_code was updated using the $amount_type";
+							}else{
+								$msg = "$year $product_name bill update for business occupant code: $property_code failed because there was no bill found for the property per the selected criteria";
+								$status = false;
+								$insert = false;						
+							}
+						}else{
+							$msg = "System Error: No operation performed";
+							$status = false;
+							$insert = false;						
+						}	
+					}
 				}
 			}else if($product->target == 2){
 				$busprop = $this->BillModel->get_ungenerated_business_prop($electoral_area,$town,$runtime,$id,12);
@@ -1529,196 +1541,209 @@ class BillGeneration extends CI_Controller {
 					);
 
 					$check = $this->BillModel->check_invoice_exist($checkwhere);
+
+					$generate_status = array(
+						'id' => $id,
+					);
+					
+					$table = 'buisness_property';
+					$check_bill_generation_status = $this->BillModel->check_bill_generation_status($generate_status, $table);
+
 					//end check
-
-					if($runtime == "generation"){		
-						if($check){
-							$invoice_no = $check['invoice_no'];
-							$msg = "$year $product_name bill generation for business property code: $property_code failed because an invoice with no: $invoice_no already exist for the same property";
-							$status = false;
-							$insert = false;						
-						}else{
-
-							//start bill generation
-
-							//check if property is accessed
-							if($bus->accessed == 1){
-								$where = array(
-									'property_id' => $bus->property_id,
-									'product_id' =>  $product->id,
-									'target' => $product->target
-								);
-								$get_accessed_amount =  $this->TaxModel->get_accessed_details($where);
-
-								//start check - amount type that was selected 
-								if($amount_type == "fixed_amount"){
-									$inv_amount = $amount;			
-								}else{
-									$inv_amount = $get_accessed_amount;
-								}
-								//end amount type check
-								
-								$code = $this->TaxModel->get_code($product->id,$year);
-								$final_code = $code + 1;
-								$number = str_pad($final_code, 5, '0', STR_PAD_LEFT);
-								$invoice_no = "INVN".$product->code.$year."-".$number;
-								$today =  date('Y-m-d');
-								$day = strtotime("+21 days", strtotime($today));
-								$data = array(
-									'invoice_no' => $invoice_no,
-									'invoice_due_date' => strtotime(date("Y-m-d H:i:s")),
-									'payment_due_date' => $day,
-									'property_id' => $bus->property_id,
-									'product_id' => $product->id,
-									'invoice_amount' => $inv_amount,
-									'invoice_year' => $year
-								);
-								$update = $this->TaxModel->update_business_property($bus->property_id);
-								$insert = $this->TaxModel->insert_invoice_record($data);
-							}else{
-								$where = array(
-									'product_id' => $product->id,
-									'category1_id' => $bus->category1,
-									'category2_id' => $bus->category2,
-									'category3_id' => $bus->category3,
-									'category4_id' => $bus->category4,
-									'category5_id' => $bus->category5,
-									'category6_id' => $bus->category6,
-								);
-								$compare = $this->TaxModel->get_busocc_compare($where);
-								//start check - amount type that was selected 
-								if($amount_type == "fixed_amount"){
-									$inv_amount = $amount;			
-								}else{
-									$inv_amount = $compare['price1'];
-								}
-								//end amount type check
-								
-								$code = $this->TaxModel->get_code($product->id,$year);
-								$final_code = $code + 1;
-								$number = str_pad($final_code, 5, '0', STR_PAD_LEFT);
-								$invoice_no = "INVN".$product->code.$year."-".$number;
-								$today =  date('Y-m-d');
-								$day = strtotime("+21 days", strtotime($today));
-								$data = array(
-									'invoice_no' => $invoice_no,
-									'invoice_due_date' => strtotime(date("Y-m-d H:i:s")),
-									'payment_due_date' => $day,
-									'property_id' => $bus->property_id,
-									'product_id' => $product->id,
-									'category1_id' => $bus->category1,
-									'category2_id' => $bus->category2,
-									'category3_id' => $bus->category3,
-									'category4_id' => $bus->category4,
-									'category5_id' => $bus->category5,
-									'category6_id' => $bus->category6,
-									'invoice_amount' => $inv_amount,
-									'invoice_year' => $year
-								);
-								$update = $this->TaxModel->update_business_property($bus->property_id);
-								$insert = $this->TaxModel->insert_invoice_record($data);
-							}		
-							// end bill generation
-
-							//check if bill was successfully generated
-							if($insert){
-								$status = true;
-							}else{
-								$status = false;
-							}
-							$msg = "$year $product_name bill with invoice no: $invoice_no was generated for business property code: $property_code using the $amount_type";
-						}
-					}else if($runtime == "update"){
-						if($check){
-							//start bill generation
-
-							//check if property is accessed
-							if($bus->accessed){
-								$where = array( 
-									'property_id' => $bus->property_id,
-									'product_id' =>  $product->id,
-									'target' => $product->target
-								);
-								$get_accessed_amount =  $this->TaxModel->get_accessed_details($where);
-								$final_invoice_amount = $get_accessed_amount - $check["adjustment_amount"];
-
-								//start check - amount type that was selected 
-								if($amount_type == "fixed_amount"){
-									$final_invoice_amount = $amount - $check["adjustment_amount"];			
-								}else{
-									$final_invoice_amount = $get_accessed_amount - $check["adjustment_amount"];
-								}
-								//end amount type check
-
-								$update_data = array(
-									'invoice_amount' => $final_invoice_amount
-								);
-
-								$update_where = array(
-									'id' => $check["id"]
-								);
-								
-								$update = $this->TaxModel->update_business_property($bus->property_id);
-								$insert = $this->BillModel->update_invoice_record($update_data,$update_where);
-		
-							}else{
-								$where = array(
-									'product_id' => $product->id,
-									'category1_id' => $bus->category1,
-									'category2_id' => $bus->category2,
-									'category3_id' => $bus->category3,
-									'category4_id' => $bus->category4,
-									'category5_id' => $bus->category5,
-									'category6_id' => $bus->category6,
-								);
-								$compare = $this->TaxModel->get_busocc_compare($where);
-
-								//start check - amount type that was selected 
-								if($amount_type == "fixed_amount"){
-									$final_invoice_amount = $amount - $check["adjustment_amount"];			
-								}else{
-									$final_invoice_amount = $compare['price1'] - $check["adjustment_amount"];
-								}
-								//end amount type check
-
-								$update_data = array(
-									'invoice_amount' => $final_invoice_amount,
-									'category1_id' => $bus->category1,
-									'category2_id' => $bus->category2,
-									'category3_id' => $bus->category3,
-									'category4_id' => $bus->category4,
-									'category5_id' => $bus->category5,
-									'category6_id' => $bus->category6
-								);
-
-								$update_where = array(
-									'id' => $check["id"]
-								);
-								$update = $this->TaxModel->update_business_property($bus->property_id);
-								$insert = $this->BillModel->update_invoice_record($update_data,$update_where);
-							}
-							// end bill generation
-
-							//check if bill was successfully generated
-							if($insert){
-								$status = true;
-							}else{
-								$status = false;
-							}
-							//end check
-
-							$invoice_no = $check['invoice_no'];
-							$msg = "$year $product_name bill for invoice no: $invoice_no and business property code: $property_code was updated using the $amount_type";
-						}else{
-							$msg = "$year $product_name bill update for business property code: $property_code failed because there was no bill found for the property per the selected criteria";
-							$status = false;
-							$insert = false;						
-						}
+					if ($check_bill_generation_status){
+						$msg = "Bill Generation cannot be performed on this record";
+						$status = false;
+						$insert = false;
 					}else{
-						$msg = "System Error: No operation performed";
-							$status = false;
-							$insert = false;						
-					}	
+						if($runtime == "generation"){		
+							if($check){
+								$invoice_no = $check['invoice_no'];
+								$msg = "$year $product_name bill generation for business property code: $property_code failed because an invoice with no: $invoice_no already exist for the same property";
+								$status = false;
+								$insert = false;						
+							}else{
+	
+								//start bill generation
+	
+								//check if property is accessed
+								if($bus->accessed == 1){
+									$where = array(
+										'property_id' => $bus->property_id,
+										'product_id' =>  $product->id,
+										'target' => $product->target
+									);
+									$get_accessed_amount =  $this->TaxModel->get_accessed_details($where);
+	
+									//start check - amount type that was selected 
+									if($amount_type == "fixed_amount"){
+										$inv_amount = $amount;			
+									}else{
+										$inv_amount = $get_accessed_amount;
+									}
+									//end amount type check
+									
+									$code = $this->TaxModel->get_code($product->id,$year);
+									$final_code = $code + 1;
+									$number = str_pad($final_code, 5, '0', STR_PAD_LEFT);
+									$invoice_no = "INVN".$product->code.$year."-".$number;
+									$today =  date('Y-m-d');
+									$day = strtotime("+21 days", strtotime($today));
+									$data = array(
+										'invoice_no' => $invoice_no,
+										'invoice_due_date' => strtotime(date("Y-m-d H:i:s")),
+										'payment_due_date' => $day,
+										'property_id' => $bus->property_id,
+										'product_id' => $product->id,
+										'invoice_amount' => $inv_amount,
+										'invoice_year' => $year
+									);
+									$update = $this->TaxModel->update_business_property($bus->property_id);
+									$insert = $this->TaxModel->insert_invoice_record($data);
+								}else{
+									$where = array(
+										'product_id' => $product->id,
+										'category1_id' => $bus->category1,
+										'category2_id' => $bus->category2,
+										'category3_id' => $bus->category3,
+										'category4_id' => $bus->category4,
+										'category5_id' => $bus->category5,
+										'category6_id' => $bus->category6,
+									);
+									$compare = $this->TaxModel->get_busocc_compare($where);
+									//start check - amount type that was selected 
+									if($amount_type == "fixed_amount"){
+										$inv_amount = $amount;			
+									}else{
+										$inv_amount = $compare['price1'];
+									}
+									//end amount type check
+									
+									$code = $this->TaxModel->get_code($product->id,$year);
+									$final_code = $code + 1;
+									$number = str_pad($final_code, 5, '0', STR_PAD_LEFT);
+									$invoice_no = "INVN".$product->code.$year."-".$number;
+									$today =  date('Y-m-d');
+									$day = strtotime("+21 days", strtotime($today));
+									$data = array(
+										'invoice_no' => $invoice_no,
+										'invoice_due_date' => strtotime(date("Y-m-d H:i:s")),
+										'payment_due_date' => $day,
+										'property_id' => $bus->property_id,
+										'product_id' => $product->id,
+										'category1_id' => $bus->category1,
+										'category2_id' => $bus->category2,
+										'category3_id' => $bus->category3,
+										'category4_id' => $bus->category4,
+										'category5_id' => $bus->category5,
+										'category6_id' => $bus->category6,
+										'invoice_amount' => $inv_amount,
+										'invoice_year' => $year
+									);
+									$update = $this->TaxModel->update_business_property($bus->property_id);
+									$insert = $this->TaxModel->insert_invoice_record($data);
+								}		
+								// end bill generation
+	
+								//check if bill was successfully generated
+								if($insert){
+									$status = true;
+								}else{
+									$status = false;
+								}
+								$msg = "$year $product_name bill with invoice no: $invoice_no was generated for business property code: $property_code using the $amount_type";
+							}
+						}else if($runtime == "update"){
+							if($check){
+								//start bill generation
+	
+								//check if property is accessed
+								if($bus->accessed){
+									$where = array( 
+										'property_id' => $bus->property_id,
+										'product_id' =>  $product->id,
+										'target' => $product->target
+									);
+									$get_accessed_amount =  $this->TaxModel->get_accessed_details($where);
+									$final_invoice_amount = $get_accessed_amount - $check["adjustment_amount"];
+	
+									//start check - amount type that was selected 
+									if($amount_type == "fixed_amount"){
+										$final_invoice_amount = $amount - $check["adjustment_amount"];			
+									}else{
+										$final_invoice_amount = $get_accessed_amount - $check["adjustment_amount"];
+									}
+									//end amount type check
+	
+									$update_data = array(
+										'invoice_amount' => $final_invoice_amount
+									);
+	
+									$update_where = array(
+										'id' => $check["id"]
+									);
+									
+									$update = $this->TaxModel->update_business_property($bus->property_id);
+									$insert = $this->BillModel->update_invoice_record($update_data,$update_where);
+			
+								}else{
+									$where = array(
+										'product_id' => $product->id,
+										'category1_id' => $bus->category1,
+										'category2_id' => $bus->category2,
+										'category3_id' => $bus->category3,
+										'category4_id' => $bus->category4,
+										'category5_id' => $bus->category5,
+										'category6_id' => $bus->category6,
+									);
+									$compare = $this->TaxModel->get_busocc_compare($where);
+	
+									//start check - amount type that was selected 
+									if($amount_type == "fixed_amount"){
+										$final_invoice_amount = $amount - $check["adjustment_amount"];			
+									}else{
+										$final_invoice_amount = $compare['price1'] - $check["adjustment_amount"];
+									}
+									//end amount type check
+	
+									$update_data = array(
+										'invoice_amount' => $final_invoice_amount,
+										'category1_id' => $bus->category1,
+										'category2_id' => $bus->category2,
+										'category3_id' => $bus->category3,
+										'category4_id' => $bus->category4,
+										'category5_id' => $bus->category5,
+										'category6_id' => $bus->category6
+									);
+	
+									$update_where = array(
+										'id' => $check["id"]
+									);
+									$update = $this->TaxModel->update_business_property($bus->property_id);
+									$insert = $this->BillModel->update_invoice_record($update_data,$update_where);
+								}
+								// end bill generation
+	
+								//check if bill was successfully generated
+								if($insert){
+									$status = true;
+								}else{
+									$status = false;
+								}
+								//end check
+	
+								$invoice_no = $check['invoice_no'];
+								$msg = "$year $product_name bill for invoice no: $invoice_no and business property code: $property_code was updated using the $amount_type";
+							}else{
+								$msg = "$year $product_name bill update for business property code: $property_code failed because there was no bill found for the property per the selected criteria";
+								$status = false;
+								$insert = false;						
+							}
+						}else{
+							$msg = "System Error: No operation performed";
+								$status = false;
+								$insert = false;						
+						}	
+					}
 				}
 			}else if($product->target == 1){
 				$busprop = $this->BillModel->get_ungenerated_business_prop($electoral_area,$town,$runtime,$id,13);
@@ -1735,196 +1760,210 @@ class BillGeneration extends CI_Controller {
 					);
 
 					$check = $this->BillModel->check_invoice_exist($checkwhere);
+
+					$generate_status = array(
+						'id' => $id,
+					);
+					
+					$table = 'buisness_property';
+					$check_bill_generation_status = $this->BillModel->check_bill_generation_status($generate_status, $table);
+
 					//end check
-
-					if($runtime == "generation"){		
-						if($check){
-							$invoice_no = $check['invoice_no'];
-							$msg = "$year $product_name bill generation for business property code: $property_code failed because an invoice with no: $invoice_no already exist for the same property";
-							$status = false;
-							$insert = false;						
-						}else{
-
-							//start bill generation
-
-							//check if property is accessed
-							if($bus->accessed == 1){
-								$where = array(
-									'property_id' => $bus->property_id,
-									'product_id' =>  $product->id,
-									'target' => $product->target
-								);
-								$get_accessed_amount =  $this->TaxModel->get_accessed_details($where);
-
-								//start check - amount type that was selected 
-								if($amount_type == "fixed_amount"){
-									$inv_amount = $amount;			
-								}else{
-									$inv_amount = $get_accessed_amount;
-								}
-								//end amount type check
-								
-								$code = $this->TaxModel->get_code($product->id,$year);
-								$final_code = $code + 1;
-								$number = str_pad($final_code, 5, '0', STR_PAD_LEFT);
-								$invoice_no = "INVN".$product->code.$year."-".$number;
-								$today =  date('Y-m-d');
-								$day = strtotime("+21 days", strtotime($today));
-								$data = array(
-									'invoice_no' => $invoice_no,
-									'invoice_due_date' => strtotime(date("Y-m-d H:i:s")),
-									'payment_due_date' => $day,
-									'property_id' => $bus->property_id,
-									'product_id' => $product->id,
-									'invoice_amount' => $inv_amount,
-									'invoice_year' => $year
-								);
-								$update = $this->TaxModel->update_business_property($bus->property_id);
-								$insert = $this->TaxModel->insert_invoice_record($data);
-							}else{
-								$where = array(
-									'product_id' => $product->id,
-									'category1_id' => $bus->category1,
-									'category2_id' => $bus->category2,
-									'category3_id' => $bus->category3,
-									'category4_id' => $bus->category4,
-									'category5_id' => $bus->category5,
-									'category6_id' => $bus->category6,
-								);
-								$compare = $this->TaxModel->get_busocc_compare($where);
-								//start check - amount type that was selected 
-								if($amount_type == "fixed_amount"){
-									$inv_amount = $amount;			
-								}else{
-									$inv_amount = $compare['price1'];
-								}
-								//end amount type check
-								
-								$code = $this->TaxModel->get_code($product->id,$year);
-								$final_code = $code + 1;
-								$number = str_pad($final_code, 5, '0', STR_PAD_LEFT);
-								$invoice_no = "INVN".$product->code.$year."-".$number;
-								$today =  date('Y-m-d');
-								$day = strtotime("+21 days", strtotime($today));
-								$data = array(
-									'invoice_no' => $invoice_no,
-									'invoice_due_date' => strtotime(date("Y-m-d H:i:s")),
-									'payment_due_date' => $day,
-									'property_id' => $bus->property_id,
-									'product_id' => $product->id,
-									'category1_id' => $bus->category1,
-									'category2_id' => $bus->category2,
-									'category3_id' => $bus->category3,
-									'category4_id' => $bus->category4,
-									'category5_id' => $bus->category5,
-									'category6_id' => $bus->category6,
-									'invoice_amount' => $inv_amount,
-									'invoice_year' => $year
-								);
-								$update = $this->TaxModel->update_business_property($bus->property_id);
-								$insert = $this->TaxModel->insert_invoice_record($data);
-							}		
-							// end bill generation
-
-							//check if bill was successfully generated
-							if($insert){
-								$status = true;
-							}else{
-								$status = false;
-							}
-							$msg = "$year $product_name bill with invoice no: $invoice_no was generated for business property code: $property_code using the $amount_type";
-						}
-					}else if($runtime == "update"){
-						if($check){
-							//start bill generation
-
-							//check if property is accessed
-							if($bus->accessed){
-								$where = array( 
-									'property_id' => $bus->property_id,
-									'product_id' =>  $product->id,
-									'target' => $product->target
-								);
-								$get_accessed_amount =  $this->TaxModel->get_accessed_details($where);
-								$final_invoice_amount = $get_accessed_amount - $check["adjustment_amount"];
-
-								//start check - amount type that was selected 
-								if($amount_type == "fixed_amount"){
-									$final_invoice_amount = $amount - $check["adjustment_amount"];			
-								}else{
-									$final_invoice_amount = $get_accessed_amount - $check["adjustment_amount"];
-								}
-								//end amount type check
-
-								$update_data = array(
-									'invoice_amount' => $final_invoice_amount
-								);
-
-								$update_where = array(
-									'id' => $check["id"]
-								);
-								
-								$update = $this->TaxModel->update_business_property($bus->property_id);
-								$insert = $this->BillModel->update_invoice_record($update_data,$update_where);
-		
-							}else{
-								$where = array(
-									'product_id' => $product->id,
-									'category1_id' => $bus->category1,
-									'category2_id' => $bus->category2,
-									'category3_id' => $bus->category3,
-									'category4_id' => $bus->category4,
-									'category5_id' => $bus->category5,
-									'category6_id' => $bus->category6,
-								);
-								$compare = $this->TaxModel->get_busocc_compare($where);
-
-								//start check - amount type that was selected 
-								if($amount_type == "fixed_amount"){
-									$final_invoice_amount = $amount - $check["adjustment_amount"];			
-								}else{
-									$final_invoice_amount = $compare['price1'] - $check["adjustment_amount"];
-								}
-								//end amount type check
-
-								$update_data = array(
-									'invoice_amount' => $final_invoice_amount,
-									'category1_id' => $bus->category1,
-									'category2_id' => $bus->category2,
-									'category3_id' => $bus->category3,
-									'category4_id' => $bus->category4,
-									'category5_id' => $bus->category5,
-									'category6_id' => $bus->category6
-								);
-
-								$update_where = array(
-									'id' => $check["id"]
-								);
-								$update = $this->TaxModel->update_business_property($bus->property_id);
-								$insert = $this->BillModel->update_invoice_record($update_data,$update_where);
-							}
-							// end bill generation
-
-							//check if bill was successfully generated
-							if($insert){
-								$status = true;
-							}else{
-								$status = false;
-							}
-							//end check
-
-							$invoice_no = $check['invoice_no'];
-							$msg = "$year $product_name bill for invoice no: $invoice_no and business property code: $property_code was updated using the $amount_type";
-						}else{
-							$msg = "$year $product_name bill update for business property code: $property_code failed because there was no bill found for the property per the selected criteria";
-							$status = false;
-							$insert = false;						
-						}
+					if ($check_bill_generation_status){
+						$msg = "Bill Generation cannot be performed on this record";
+						$status = false;
+						$insert = false;
 					}else{
-						$msg = "System Error: No operation performed";
-							$status = false;
-							$insert = false;						
-					}	
+						if($runtime == "generation"){		
+							if($check){
+								$invoice_no = $check['invoice_no'];
+								$msg = "$year $product_name bill generation for business property code: $property_code failed because an invoice with no: $invoice_no already exist for the same property";
+								$status = false;
+								$insert = false;						
+							}else{
+	
+								//start bill generation
+	
+								//check if property is accessed
+								if($bus->accessed == 1){
+									$where = array(
+										'property_id' => $bus->property_id,
+										'product_id' =>  $product->id,
+										'target' => $product->target
+									);
+									$get_accessed_amount =  $this->TaxModel->get_accessed_details($where);
+	
+									//start check - amount type that was selected 
+									if($amount_type == "fixed_amount"){
+										$inv_amount = $amount;			
+									}else{
+										$inv_amount = $get_accessed_amount;
+									}
+									//end amount type check
+									
+									$code = $this->TaxModel->get_code($product->id,$year);
+									$final_code = $code + 1;
+									$number = str_pad($final_code, 5, '0', STR_PAD_LEFT);
+									$invoice_no = "INVN".$product->code.$year."-".$number;
+									$today =  date('Y-m-d');
+									$day = strtotime("+21 days", strtotime($today));
+									$data = array(
+										'invoice_no' => $invoice_no,
+										'invoice_due_date' => strtotime(date("Y-m-d H:i:s")),
+										'payment_due_date' => $day,
+										'property_id' => $bus->property_id,
+										'product_id' => $product->id,
+										'invoice_amount' => $inv_amount,
+										'invoice_year' => $year
+									);
+									$update = $this->TaxModel->update_business_property($bus->property_id);
+									$insert = $this->TaxModel->insert_invoice_record($data);
+								}else{
+									$where = array(
+										'product_id' => $product->id,
+										'category1_id' => $bus->category1,
+										'category2_id' => $bus->category2,
+										'category3_id' => $bus->category3,
+										'category4_id' => $bus->category4,
+										'category5_id' => $bus->category5,
+										'category6_id' => $bus->category6,
+									);
+									$compare = $this->TaxModel->get_busocc_compare($where);
+									//start check - amount type that was selected 
+									if($amount_type == "fixed_amount"){
+										$inv_amount = $amount;			
+									}else{
+										$inv_amount = $compare['price1'];
+									}
+									//end amount type check
+									
+									$code = $this->TaxModel->get_code($product->id,$year);
+									$final_code = $code + 1;
+									$number = str_pad($final_code, 5, '0', STR_PAD_LEFT);
+									$invoice_no = "INVN".$product->code.$year."-".$number;
+									$today =  date('Y-m-d');
+									$day = strtotime("+21 days", strtotime($today));
+									$data = array(
+										'invoice_no' => $invoice_no,
+										'invoice_due_date' => strtotime(date("Y-m-d H:i:s")),
+										'payment_due_date' => $day,
+										'property_id' => $bus->property_id,
+										'product_id' => $product->id,
+										'category1_id' => $bus->category1,
+										'category2_id' => $bus->category2,
+										'category3_id' => $bus->category3,
+										'category4_id' => $bus->category4,
+										'category5_id' => $bus->category5,
+										'category6_id' => $bus->category6,
+										'invoice_amount' => $inv_amount,
+										'invoice_year' => $year
+									);
+									$update = $this->TaxModel->update_business_property($bus->property_id);
+									$insert = $this->TaxModel->insert_invoice_record($data);
+								}		
+								// end bill generation
+	
+								//check if bill was successfully generated
+								if($insert){
+									$status = true;
+								}else{
+									$status = false;
+								}
+								$msg = "$year $product_name bill with invoice no: $invoice_no was generated for business property code: $property_code using the $amount_type";
+							}
+						}else if($runtime == "update"){
+							if($check){
+								//start bill generation
+	
+								//check if property is accessed
+								if($bus->accessed){
+									$where = array( 
+										'property_id' => $bus->property_id,
+										'product_id' =>  $product->id,
+										'target' => $product->target
+									);
+									$get_accessed_amount =  $this->TaxModel->get_accessed_details($where);
+									$final_invoice_amount = $get_accessed_amount - $check["adjustment_amount"];
+	
+									//start check - amount type that was selected 
+									if($amount_type == "fixed_amount"){
+										$final_invoice_amount = $amount - $check["adjustment_amount"];			
+									}else{
+										$final_invoice_amount = $get_accessed_amount - $check["adjustment_amount"];
+									}
+									//end amount type check
+	
+									$update_data = array(
+										'invoice_amount' => $final_invoice_amount
+									);
+	
+									$update_where = array(
+										'id' => $check["id"]
+									);
+									
+									$update = $this->TaxModel->update_business_property($bus->property_id);
+									$insert = $this->BillModel->update_invoice_record($update_data,$update_where);
+			
+								}else{
+									$where = array(
+										'product_id' => $product->id,
+										'category1_id' => $bus->category1,
+										'category2_id' => $bus->category2,
+										'category3_id' => $bus->category3,
+										'category4_id' => $bus->category4,
+										'category5_id' => $bus->category5,
+										'category6_id' => $bus->category6,
+									);
+									$compare = $this->TaxModel->get_busocc_compare($where);
+	
+									//start check - amount type that was selected 
+									if($amount_type == "fixed_amount"){
+										$final_invoice_amount = $amount - $check["adjustment_amount"];			
+									}else{
+										$final_invoice_amount = $compare['price1'] - $check["adjustment_amount"];
+									}
+									//end amount type check
+	
+									$update_data = array(
+										'invoice_amount' => $final_invoice_amount,
+										'category1_id' => $bus->category1,
+										'category2_id' => $bus->category2,
+										'category3_id' => $bus->category3,
+										'category4_id' => $bus->category4,
+										'category5_id' => $bus->category5,
+										'category6_id' => $bus->category6
+									);
+	
+									$update_where = array(
+										'id' => $check["id"]
+									);
+									$update = $this->TaxModel->update_business_property($bus->property_id);
+									$insert = $this->BillModel->update_invoice_record($update_data,$update_where);
+								}
+								// end bill generation
+	
+								//check if bill was successfully generated
+								if($insert){
+									$status = true;
+								}else{
+									$status = false;
+								}
+								//end check
+	
+								$invoice_no = $check['invoice_no'];
+								$msg = "$year $product_name bill for invoice no: $invoice_no and business property code: $property_code was updated using the $amount_type";
+							}else{
+								$msg = "$year $product_name bill update for business property code: $property_code failed because there was no bill found for the property per the selected criteria";
+								$status = false;
+								$insert = false;						
+							}
+						}else{
+							$msg = "System Error: No operation performed";
+								$status = false;
+								$insert = false;						
+						}	
+					}
+
 				}
 			}else if($product->target == 4){
 				$signage = $this->TaxModel->get_ungenerated_signage($electoral_area,$town,$runtime,$id);

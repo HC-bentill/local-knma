@@ -307,11 +307,6 @@
 							<td>This gives user the ability to view all system audit</td>
 						</tr>
 						<tr>
-							<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="fixed_amount"/></td>
-							<td>Bill Generation Using Fixed Amount Module</td>
-							<td>This gives user the ability to generate bills using the fixed amount module</td>
-						</tr>
-						<tr>
 							<td><input type="checkbox" class = "chcktbl" id="inputUnchecked" name="role[]" value="consolidated_invoice"/></td>
 							<td>View Consolidated Invoice</td>
 							<td>This gives user the ability to view consolidated invoice</td>

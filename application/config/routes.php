@@ -163,7 +163,7 @@ $route['invoice_distribution'] = 'Invoice/invoice_distribution';
 $route['batch_bill_generation'] = 'BillGeneration/batch_bill_generation';
 
 //messages routes
-$route['message'] = 'Message/message';
+$route['message'] = 'Message/create_message';
 $route['view_message'] = 'Message/view_message';
 
 //commission routes

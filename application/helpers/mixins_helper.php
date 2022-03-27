@@ -241,6 +241,20 @@ function has_permission($user_id, $role) {
     }
 }
 
+//check for generate_bill_status
+ function generate_bill_status($id, $table){
+    $CI = & get_instance();
+    $data = array(
+    	'id' => $id,
+    	'generate_bill_status' => 1
+    );
+    $CI->db->select('*');
+    $CI->db->from($table);
+    $CI->db->where($data);
+    $result = $CI->db->get()->row_array();
+    return $result;
+}
+
 
 // get area council code
 function get_areacode($id) {

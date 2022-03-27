@@ -26,7 +26,7 @@ class Message extends CI_Controller {
 
 	//	load message page
 
-	public function message(){
+	public function create_message(){
 
 		//set last page session
 		$this->session->set_userdata('last_page', 'add_mess');
@@ -35,7 +35,7 @@ class Message extends CI_Controller {
 			"url" => "message"
 		), TRUE);
 
-		if(has_permission($this->session->userdata('user_info')['id'],'create message')){
+		if(has_permission($this->session->userdata('user_info')['id'],'create_message')){
 			$data = array(
 				'title' => 'Create Message',
 				'page' => 'message/create_message',
@@ -62,10 +62,10 @@ class Message extends CI_Controller {
 			"label" => "View Message"
 		), TRUE);
 		
-		if(has_permission($this->session->userdata('user_info')['id'],'view message')){
+		if(has_permission($this->session->userdata('user_info')['id'],'view_message')){
 			$data = array(
 				'title' => 'Business Property',
-				'page' => 'business/business',
+				'page' => 'message/view_message',
 				'start_date' => '',
 				'end_date' => '',
 				'keyword' => '',

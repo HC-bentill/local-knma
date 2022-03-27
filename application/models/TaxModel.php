@@ -915,6 +915,7 @@ class TaxModel extends CI_Model
         $this->db->from('buisness_occ o');
         $this->db->join('busocc_to_category b', 'b.busocc_id = o.id');
         $this->db->where('o.invoice_status', 0);
+        $this->db->where('o.generate_bill_status', 1);
         $bus_categories = $this->db->get()->result();
         return ($bus_categories);
     }
@@ -1118,6 +1119,7 @@ class TaxModel extends CI_Model
         $this->db->from('buisness_property o');
         $this->db->join('busprop_to_category b', 'b.property_id = o.id');
         $this->db->where('o.invoice_status', 0);
+        $this->db->where('o.generate_bill_status', 1);
         $this->db->where('o.category', $category);
         $bus_categories = $this->db->get()->result();
         return ($bus_categories);

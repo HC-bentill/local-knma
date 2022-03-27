@@ -415,6 +415,9 @@
     if (isset($title) && $title == "View Consolidated Invoice") {
       $this->load->view('invoices/view_consolidated_invoice_js.php');
     }
+    if (isset($title) && $title == "Create Message") {
+      $this->load->view('message/message_js.php');
+    }
     ?>
     <script type="text/javascript">
       const qrcode = document.getElementById("qrcode");
