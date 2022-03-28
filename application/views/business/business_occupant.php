@@ -190,7 +190,6 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                  <?php if(has_permission($this->session->userdata('user_info')['id'],'fixed_amount')){ ?>
                     <div class="col-sm-4">
                       <label class="control-label text-sm-right pt-2"><strong>Amount Type:</strong></label>
                       <select data-plugin-selecttwo="" data-plugin-options="{ &quot;minimumResultsForSearch&quot;: 5 }" id="amount_type" name="amount_type" class="form-control" autocomplete="off" required>  
@@ -198,7 +197,6 @@
                         <option value="fixed_amount">Fixed Amount</option>
                       </select>
                     </div>
-                  <?php  } ?>
                   <div class="col-sm-4"  id="amount" style="display: none;">
                     <label class="control-label text-sm-right pt-2"><strong>Amount:</strong></label>
                     <input type="number" value="0" class="form-control" name="amount" autocomplete="off"/>

@@ -47,14 +47,12 @@
                             <option value="force">Force Run(Runs All records)</option>
                         </select>
                     </div>
-                    <?php if(has_permission($this->session->userdata('user_info')['id'],'fixed_amount')){ ?>
                       <div class="col-sm-3">
                         <select data-plugin-selecttwo="" data-plugin-options="{ &quot;minimumResultsForSearch&quot;: 5 }" id="amount_type" name="amount_type" class="form-control" autocomplete="off" required>  
                           <option value="fee_fixing">Fee Fixing</option>
                           <option value="fixed_amount">Fixed Amount</option>
                         </select>
                       </div>
-                    <?php  } ?>
                     <div class="col-sm-3"  id="amount" style="display: none;">
                       <input type="number" value="0" class="form-control" name="amount" autocomplete="off"/>
                     </div>

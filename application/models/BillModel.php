@@ -97,6 +97,63 @@ class BillModel extends CI_Model
         return ($bus_categories);
     }
 
+    //    get business occupant categories
+    public function get_ungenerated_busocc_categories_batch($electoral_area,$town,$runtime,$id)
+    {
+        $this->db->select('b.*,o.accessed');
+        $this->db->from('buisness_occ o');
+        $this->db->join('busocc_to_category b', 'b.busocc_id = o.id');
+        $this->db->join('buisness_property as p', 'o.buis_property_code = p.buis_prop_code');
+        $this->db->where('o.generate_bill_status', 1);
+        if($runtime == "normal"){
+            $this->db->where('o.invoice_status', 0);
+        }
+
+        if($electoral_area){
+            $this->db->where('p.area_council', $electoral_area);
+        }
+        
+        if($town){
+            $this->db->where('p.town', $town);
+        }
+
+        if($id){
+            $this->db->where('o.id', $id);
+        }
+        $bus_categories = $this->db->get()->result();
+        return ($bus_categories);
+    }
+
+    // get business and display on the business page
+    public function get_ungenerated_business_prop_batch($electoral_area,$town,$runtime,$id,$category)
+    {
+
+        $this->db->select('b.*,o.accessed');
+        $this->db->from('buisness_property o');
+        $this->db->join('busprop_to_category b', 'b.property_id = o.id');
+        $this->db->where('o.generate_bill_status', 1);
+        if($runtime == "normal"){
+            $this->db->where('o.invoice_status', 0);
+        }
+        if($electoral_area){
+            $this->db->where('o.area_council', $electoral_area);
+        }
+
+        if($town){
+            $this->db->where('o.town', $town);
+        }
+
+        if($category){
+            $this->db->where('o.category', $category);
+        }
+
+        if($id){
+            $this->db->where('o.id', $id);
+        }
+        $bus_categories = $this->db->get()->result();
+        return ($bus_categories);
+    }
+
     // get business and display on the business page
      public function get_ungenerated_residence_prop($electoral_area,$town,$runtime,$id)
      {

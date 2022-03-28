@@ -1082,7 +1082,7 @@ class Business_model extends CI_Model
             $message_button = '<a class="btn btn-info" style="margin:0.5em" onclick="' . $funcCall . '"><i style="color:white" class="fa fa-envelope"></i></a>';
 
             //  bill generation button
-            if(has_permission($this->session->userdata('user_info')['id'],'single_bill_generation')){
+            if(has_permission($this->session->userdata('user_info')['id'],'single_bill_generation') && generate_bill_status($id, 'buisness_property')){
                 $bill_button = "<a class='btn btn-info' onclick=$billCall><i style='color:white' class='fa fa-file'></i></a>";
             }else{
                 $bill_button = '';
@@ -1283,7 +1283,7 @@ class Business_model extends CI_Model
             $message_button = "<a class='btn btn-info' onclick=$funcCall style='margin:0.5em'><i style='color:white' class='fa fa-envelope'></i></a>";
 
             //  bill generation button
-            if(has_permission($this->session->userdata('user_info')['id'],'single_bill_generation') && !generate_bill_status($id, 'buisness_occ') ){
+            if(has_permission($this->session->userdata('user_info')['id'],'single_bill_generation') && generate_bill_status($id, 'buisness_occ') ){
                 $bill_button = "<a class='btn btn-info' onclick=$billCall><i style='color:white' class='fa fa-file'></i></a>";
             }else{
                 $bill_button = '';

@@ -888,7 +888,7 @@ class BillGeneration extends CI_Controller {
 		foreach($products as $product){
 
 			if($product->target == 3){
-				$bus_categories = $this->BillModel->get_ungenerated_busocc_categories($electoral_area,$town,$runtime,$id);
+				$bus_categories = $this->BillModel->get_ungenerated_busocc_categories_batch($electoral_area,$town,$runtime,$id);
 				foreach($bus_categories as $bus){
 					$count++;
 					if($bus->accessed){
@@ -972,7 +972,7 @@ class BillGeneration extends CI_Controller {
 
 				}
 			}else if($product->target == 2){
-				$busprop = $this->BillModel->get_ungenerated_business_prop($electoral_area,$town,$runtime,$id,12);
+				$busprop = $this->BillModel->get_ungenerated_business_prop_batch($electoral_area,$town,$runtime,$id,12);
 				foreach($busprop as $bus){
 					$count++;
 					if($bus->accessed == 1){
@@ -1052,7 +1052,7 @@ class BillGeneration extends CI_Controller {
 					}
 				}
 			}else if($product->target == 1){
-				$busprop = $this->BillModel->get_ungenerated_business_prop($electoral_area,$town,$runtime,$id,13);
+				$busprop = $this->BillModel->get_ungenerated_business_prop_batch($electoral_area,$town,$runtime,$id,13);
 				foreach($busprop as $bus){
 					$count++;
 					if($bus->accessed == 1){
